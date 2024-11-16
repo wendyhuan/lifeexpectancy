@@ -1,26 +1,27 @@
 #### Preamble ####
-# Purpose: Downloads and saves the data from [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 11 February 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Downloads and saves the data from 'https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who'
+# Author: Yanfei Huang
+# Date: 27 November 2024
+# Contact: Yanfei Huang
+# License: University of Toronto
+# Pre-requisites: No
+# Any other information needed? Thanks to Kaggle opendataset
 
 
 #### Workspace setup ####
-library(opendatatoronto)
+
 library(tidyverse)
-# [...UPDATE THIS...]
+library(dplyr)
 
 #### Download data ####
-# [...ADD CODE HERE TO DOWNLOAD...]
+raw_expectancy <- read.csv(
+  file = ""
+)
 
 
 
 #### Save data ####
-# [...UPDATE THIS...]
-# change the_raw_data to whatever name you assigned when you downloaded it.
-write_csv(the_raw_data, "inputs/data/raw_data.csv") 
+# change raw_data to whatever name you assigned when you downloaded it.
+write_csv(raw_expectancy, "data/01-raw_data/raw_data.csv") 
 
          
