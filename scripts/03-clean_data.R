@@ -1,19 +1,44 @@
 #### Preamble ####
-# Purpose: Cleans the raw plane data recorded by two observers..... [...UPDATE THIS...]
-# Author: Rohan Alexander [...UPDATE THIS...]
-# Date: 6 April 2023 [...UPDATE THIS...]
-# Contact: rohan.alexander@utoronto.ca [...UPDATE THIS...]
-# License: MIT
-# Pre-requisites: [...UPDATE THIS...]
-# Any other information needed? [...UPDATE THIS...]
+# Purpose: Cleans the raw life expectancy data and recorded by six predictors
+# Author:Yanfei Huang
+# Date: 25 November 2024
+# Contact: yanfei.huang@mail.utoronto.ca
+# License: University of Toronto
+# Pre-requisites: raw data downloaded and saved from Kaggle
+# Any other information needed? No
 
 #### Workspace setup ####
 library(tidyverse)
+library(dplyr)
+library(janitor)
+library(arrow)
 
 #### Clean data ####
-raw_data <- read_csv("inputs/data/plane_data.csv")
+#Load  the dataset
+raw_expectancy <- read_csv("data/01-raw_data/raw_data.csv") |> clean_names()
 
-cleaned_data <-
+# Filter and select relevant columns
+cleaned_expectancy <-raw_expectancy |> 
+  select(Country, Year, Status, Life.expectancy, percentage.expenditure, BMI, Total.expenditure, GDP,
+         Income.composition.of.resources, Schooling) |>
+  filter (
+    !is.na(GDP), 
+    !is.na(Year),
+    !is.na(Status),
+    !is.na(Life.expectancy),
+    !is.na(percentage.expenditure),
+    !is.na(BMI),
+    !is.na(Total.expenditure),
+    !is.na(Income.composition.of.resources),
+    !is.na(Schooling)
+  )
+  
+  
+  
+  
+  
+  
+  
   raw_data |>
   janitor::clean_names() |>
   select(wing_width_mm, wing_length_mm, flying_time_sec_first_timer) |>
@@ -41,4 +66,4 @@ cleaned_data <-
   tidyr::drop_na()
 
 #### Save data ####
-write_csv(cleaned_data, "outputs/data/analysis_data.csv")
+write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.parquet")
