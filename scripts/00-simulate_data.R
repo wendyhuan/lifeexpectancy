@@ -1,12 +1,12 @@
 #### Preamble ####
-# Purpose: Simulates a dataset of Australian electoral divisions, including the 
-  #state and party that won each division.
-# Author: Rohan Alexander
-# Date: 26 September 2024
-# Contact: rohan.alexander@utoronto.ca
-# License: MIT
+# Purpose: Simulates the raw dataset of life expectancy, including the 
+  #
+# Author: Yanfei Huang
+# Date: 26 November 2024
+# Contact: yanfei.huang@mail.utoronto.ca
+# License: University of Toronto
 # Pre-requisites: The `tidyverse` package must be installed
-# Any other information needed? Make sure you are in the `starter_folder` rproj
+# Any other information needed? N/A
 
 
 #### Workspace setup ####
@@ -15,16 +15,16 @@ set.seed(853)
 
 
 #### Simulate data ####
-# State names
-states <- c(
-  "New South Wales",
-  "Victoria",
-  "Queensland",
-  "South Australia",
-  "Western Australia",
-  "Tasmania",
-  "Northern Territory",
-  "Australian Capital Territory"
+# Define Country Name
+country <- c(
+  "Canada",
+  "Australia",
+  "Argentina",
+  "Brazil",
+  "United States of America",
+  "Portugal",
+  "Qatar",
+  "Republic of Korea"
 )
 
 # Political parties
@@ -49,4 +49,4 @@ analysis_data <- tibble(
 
 
 #### Save data ####
-write_csv(analysis_data, "data/00-simulated_data/simulated_data.csv")
+write_csv(simulated_expectancy, "data/00-simulated_data/simulated_data.csv")
