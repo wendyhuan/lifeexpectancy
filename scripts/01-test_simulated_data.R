@@ -1,23 +1,22 @@
 #### Preamble ####
-# Purpose: Tests the structure and validity of the simulated Australian 
-  #electoral divisions dataset.
-# Author: Rohan Alexander
-# Date: 26 September 2024
-# Contact: rohan.alexander@utoronto.ca
-# License: MIT
+# Purpose: Tests the structure and validity of the simulated life expectancy dataset
+# Author: Yanfei Huang
+# Date: 26 November 2024
+# Contact: yanfei.huang@mail.utoronto.ca
+# License: University of Toronto
 # Pre-requisites: 
   # - The `tidyverse` package must be installed and loaded
   # - 00-simulate_data.R must have been run
-# Any other information needed? Make sure you are in the `starter_folder` rproj
+# Any other information needed? N/A
 
 
 #### Workspace setup ####
 library(tidyverse)
 
-analysis_data <- read_csv("data/00-simulated_data/simulated_data.csv")
+simulated_expectancy <- read_csv("data/00-simulated_data/simulated_data.csv")
 
 # Test if the data was successfully loaded
-if (exists("analysis_data")) {
+if (exists("simulated_expectancy")) {
   message("Test Passed: The dataset was successfully loaded.")
 } else {
   stop("Test Failed: The dataset could not be loaded.")
@@ -26,12 +25,25 @@ if (exists("analysis_data")) {
 
 #### Test data ####
 
-# Check if the dataset has 151 rows
-if (nrow(analysis_data) == 151) {
-  message("Test Passed: The dataset has 151 rows.")
+# Check if the dataset has 50 rows
+if (nrow(analysis_data) == 50) {
+  message("Test Passed: The dataset has 50 rows.")
 } else {
-  stop("Test Failed: The dataset does not have 151 rows.")
+  stop("Test Failed: The dataset does not have 50 rows.")
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 # Check if the dataset has 3 columns
 if (ncol(analysis_data) == 3) {
