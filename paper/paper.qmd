@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: [https://github.com/wendyhuan/lifeexpectancy](https://github.com/wendyhuan/lifeexpectancy)."
 date: 26 November 2024
 date-format: long
-abstract: "First sentence. Second sentence. Third sentence. Fourth sentence."
+abstract: "This paper analyze life expectancy and its determinants through 193 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 82, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 number-sections: true
 bibliography: references.bib
@@ -17,43 +17,162 @@ bibliography: references.bib
 #| warning: false
 #| message: false
 
+# Install Packages if not downloaded:
+required_packages <- c(
+  "tidyverse", "sf", "dplyr", "here", "arrow", "ggplot2", "janitor", "purrr", "knitr", "kableExtra", "ggcorrplot", "modelsummary"
+)
+for (p in required_packages) {
+  if (!require(p, character.only = TRUE)) {
+    install.packages(p, character.only = TRUE)
+  }
+}
+
+#load libraries
 library(tidyverse)
+library(sf)
+library(dplyr)
+library(here)
+library(arrow)
+library(ggplot2)
+library(janitor)
+library(purrr)
+library(knitr)
+library(kableExtra)
+library(ggcorrplot)
+library(modelsummary)
+
+# load data
+cleaned_expectancy <- read_parquet(here:here("data/02-analysis_data/analysis_data.parquet"))
 
 ```
 
 
 # Introduction
+This paper analyze life expectancy and its determinants through 193 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 82, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population.
 
-Overview paragraph
-
-Estimand paragraph
-
-Results paragraph
-
-Why it matters paragraph
-
-Telegraphing paragraph: The remainder of this paper is structured as follows. @sec-data....
-
-
-
-
+The structure of the paper is as follows: [@sec-data] outlines the data sources and variables considered, followed by the model setup in [@sec-modset] and justification in [@sec-modjust]. The results in [@sec-result] presents the key findings of the analysis, with a discussion on the implications. [@sec-discussion] then discusses potential limitations and suggestions for future research. [@sec-appx] provides additional detailed information about the data, model and methodology.
 
 
 # Data {#sec-data}
 
 ## Overview
 
-We use the statistical programming language R [@citeR].... Our data [@shelter].... Following @tellingstories, we consider...
+The data used in this analysis comes from a 
 
-Overview text
+
+
+
+combination of publicly available polling data for the 2024 U.S. Presidential election [@FiveThirtyEightPolls]. The analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various polls conducted across multiple states, capturing the support for each major candidate—Donald Trump and Kamala Harris—along with detailed attributes of the polls.
 
 ## Measurement
 	
 Some paragraphs about how we go from a phenomena in the world to an entry in the dataset.
 
-## Outcome variables
 
-Add graphs, tables and text. Use sub-sub-headings for each outcome variable or update the subheading to be singular.
+
+## Data Cleaning
+
+
+
+
+## Outcome Variables
+
+The main outcome variable of interest is the Expectancy of Life, which represents the predicted age of people from either developed country or developing country. This variable is needed 
+
+
+
+Percentage of support each candidate has in a given poll, which represents the proportion of respondents who favor one candidate over the other. This variable is needed to estimate both the popular vote and Electoral College outcomes. We see a bimodal distribution in @fig-percentage. This indicates that candidates are either recieveing very high percentages of support or very low percentages of support. When we pull out Harris and Trump and view their distributions versus all candidates in @fig-candidatepercentage, we see that these two candidates see statistically high percentages of support, indicating they are leading the polls.
+
+```{r}
+#| label: fig-percentage
+#| fig-cap: This histogram shows the distribution of the percentage of support each candidate receives in various polls. The bimodal nature of the distribution suggests that candidates either receive very high or low support, with few receiving moderate levels of backing.
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+
+# create plot for Distribution of Percentage
+ggplot(cleaned_expectancy, aes(x = Percentage)) +
+  geom_histogram(
+    bins = 30,
+    fill = "orange",
+    color = "black",
+    alpha = 0.7
+  ) +
+  labs(
+    x = "Percentage",
+    y = "Frequency"
+  ) +
+  theme_minimal()
+```
+
+```{r}
+#| label: fig-candidatepercentage
+#| fig-cap:  Violin plot comparing the distribution of support between Donald Trump, Kamala Harris, and all other candidates. The two candidates exhibit higher-than-average support levels, with Harris and Trump leading the polls in terms of percentage of backing.
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# filter for trump/harris
+harris_trump_selection <- cleaned_data %>%
+  filter(CandidateName %in% c(
+    "Donald Trump",
+    "Kamala Harris"
+  ))
+
+all_candidates <- cleaned_data %>%
+  mutate(CandidateName = "All Candidates")
+
+# create data frame with trump vs harris vs all candidates
+combined_data <- bind_rows(
+  harris_trump_selection,
+  all_candidates
+)
+
+# create plot for Distribution of Percentage by candidate
+ggplot(combined_data, aes(
+  x = CandidateName,
+  y = Percentage,
+  fill = CandidateName
+)) +
+  geom_violin(alpha = 0.5) +
+  geom_boxplot(width = 0.1, color = "black", outlier.shape = NA) +
+  labs(
+    x = "Candidate",
+    y = "Percentage"
+  ) +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
+  scale_fill_manual(values = c("grey", "salmon", "blue")) +
+  facet_wrap(~CandidateName, scales = "free_x") +
+  theme_minimal()
+```
+
+
+
+## Predictor Variables
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
@@ -110,12 +229,18 @@ Use sub-sub-headings for each outcome variable and feel free to combine a few in
 
 
 # Model
-
-The goal of our modelling strategy is twofold. Firstly,...
+To predict the outcome of the life expectancy of people from different regions, we developed tow linear regression models: one for the developed country and one for developing country. These models aim to estimate the life expectancy of people under different environment. 
 
 Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
 
-## Model set-up
+## Model set-up {#sec-modset}
+
+This paper utilizes linear regression models: 
+$$LifeExpecetancy_I = \beta_0 + \beta_1 $$
+$$LifeExpectancy_D = \beta_0 + \beta_1$$
+
+
+
 
 Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
 
