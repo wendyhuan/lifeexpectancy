@@ -2,13 +2,9 @@
 
 ## Overview
 
-This repository provides provides a comprehensive view of health-related statistics and factors for countries worldwide. 
-Using open dataset provided by The World Health Organization’s (WHO) from Global Health Observatory (GHO), we analyze life expectancy and its determinants on a global scale. Data regarding life expectancy and critical health-related factors from 193 countries were combined with corresponding economic data from the United Nations, focusing on the years 2000 to 2015. Our finding reveals that the crime types shift around time, with a marked rise in property-related crimes within ten years. These insights can help shape a comprehensive understanding of crime dynamics in Toronto during the 2014-2024 period and contribute to discussions on improving public safety and crime prevention strategies.
+This repository provides provides a comprehensive view of health-related statistics and factors for countries worldwide.We analyze life expectancy and its determinants on a global scale. Data regarding life expectancy and critical health-related factors from 193 countries were combined with corresponding economic data from the United Nations, focusing on the years 2000 to 2015. Our finding reveals that the developed countries tend to live longer life as assumed. Direct health factor  BMI influences the upper limit of the predicted age of life. Socio-economic factors such as schooling, income composition of resources, general government expenditure on health as well significantly influence the life expectancy. According to our prediction, the average age of persons in developed country is 82, while those in underdeveloped countries are 75.
 
-The data used in this analysis comes from the data provided by the open dataset provided by The World Health Organization’s (WHO) from Global Health Observatory (GHO). This data was collected and tidyed up by the open data from Kaggle. 
-The data used in this analysis comes from a combination of publicly available polling data for the 2024 U.S. Presidential election. The analysis leverages R and several libraries. The dataset covers various polls conducted across multiple states, capturing the support for each major candidate—Donald Trump and Kamala Harris—along with detailed attributes of the polls. Obtained from: https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who/data.
-
-
+The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO), as compiled and merged by Kumar Rajarshi on Kaggle. The dataset provides insights into global health indicators such as life expectancy, adult mortality, and various socio-economic factors influencing health outcomes. This repository analysis utilizes R and its robust suite of libraries to explore the relationships between these variables. The dataset is publicly available and can be accessed at https://www.kaggle.com/datasets/kumarajarshi/life-expectancy-who/data.
 
 ## File Structure
 
