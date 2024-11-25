@@ -1,5 +1,5 @@
 #### Preamble ####
-# Purpose: Multiple Linear Regression Model of life expectancy
+# Purpose: Multiple Linear Regression Model of life expectancy of developing and developed country
 # Author: Yanfei Huang
 # Date: 26 November 2024
 # Contact: yanfei.huang@mail.utoronto.ca
@@ -11,27 +11,46 @@
 #### Workspace setup ####
 library(tidyverse)
 library(rstanarm)
+library(car)
+library(arrow)
+library(dplyr)
 
 #### Read data ####
-analysis_data <- read_csv("data/analysis_data/analysis_data.csv")
+cleaned_expectancy <- read_csv("data/02-analysis_data/analysis_data.parquet")
 
-### Model data ####
-first_model <-
-  stan_glm(
-    formula = flying_time ~ length + width,
-    data = analysis_data,
-    family = gaussian(),
-    prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
-    prior_aux = exponential(rate = 1, autoscale = TRUE),
-    seed = 853
+#Convert the columns into appropriate data types
+cleaned_expectancy <- cleaned_expectancy %>%
+  mutate(
+    LifeExpectancy = as.numeric(LifeExpectancy),
+    State = as.factor(State),
+    PercentageExpenditure = as.numeric(PercentageExpenditure),
+    BMI = as.numeric(BMI),
+    TotalExpenditure = as.numeric(TotalExpenditure),
+    GDP = as.numeric(GDP),
+    IncomeComposition = as.numeric(IncomeComposition),
+    Schooling = as.numeric(Schooling)
   )
 
 
-#### Save model ####
-saveRDS(
-  first_model,
-  file = "models/first_model.rds"
-)
+### Model for developing country based on various predictors ###
+lm_model_developing <-
+  lm(LifeExpectancy ~ PercentageExpenditure + BMI + TotalExpenditure + GDP + IncomeComposition + Schooling,
+     data = cleaned_expectancy %>% filter (Status == 'Developing') )
+
+### Model for developed country based on various predictors###
+lm_model_developed <-
+  lm(LifeExpectancy ~ PercentageExpenditure + BMI + TotalExpenditure + GDP + IncomeComposition + Schooling,
+     data = cleaned_expectancy %>% filter (Status == 'Developed') )
+
+
+#### Save modified data for model as a CSV + parquet and save model as RDS ####
+write_csv(cleaned_expectancy, here::here("data/02-analysis_data/analysis_data.csv"))
+write_parquet(cleaned_expectancy, here::here('data/02-analysis_data/analysis_data.parquet'))
+saveRDS(lm_model_developing, file = "models/lm_model_developing.rds")
+saveRDS(lm_model_developed, file = "models/lm_model_developed.rds")
+
+
+
+
 
 
