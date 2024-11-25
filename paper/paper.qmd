@@ -8,6 +8,8 @@ date: 26 November 2024
 date-format: long
 abstract: "This paper analyze life expectancy and its determinants through 193 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 82, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
+toc: true
+toc-depth: 3
 number-sections: true
 bibliography: references.bib
 ---
