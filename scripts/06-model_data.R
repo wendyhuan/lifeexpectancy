@@ -22,7 +22,7 @@ cleaned_expectancy <- read_csv("data/02-analysis_data/analysis_data.parquet")
 cleaned_expectancy <- cleaned_expectancy %>%
   mutate(
     LifeExpectancy = as.numeric(LifeExpectancy),
-    State = as.factor(State),
+    Status = as.factor(Status),
     PercentageExpenditure = as.numeric(PercentageExpenditure),
     BMI = as.numeric(BMI),
     TotalExpenditure = as.numeric(TotalExpenditure),
