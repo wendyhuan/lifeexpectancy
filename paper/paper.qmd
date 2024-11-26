@@ -50,7 +50,13 @@ cleaned_expectancy <- read_parquet(here:here("data/02-analysis_data/analysis_dat
 
 
 # Introduction
-This paper analyze life expectancy and its determinants through 193 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 82, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population.
+Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as personal health, government healthcare access, economic stability, and social structures. The index of life expectancy is generally served as a benchmark for development, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to better living standards, access to education, and equitable healthcare. Conversely, low life expectancy often signals systemic challenges such as poverty, disease burden, and inadequate healthcare access. Policymakers and researchers rely on life expectancy data to design targeted strategies, allocate resources, and monitor progress toward achieving global health and development goals.
+
+This study focuses on understanding the relationship between country status(developed or developing), personal average expenditure on health based on GDP, general BMI of entire population, percentage of government expenditure on health, GDP, income composition of resources and year of schooling in predicting life expectancy across different countries. By identifying and analyzing these predictors, the study aims to highlight actionable aspects for policymakers to target in their efforts to improve population longevity effectively.
+
+Related Research has shown that higher healthcare expenditure of government positively impact life expectancy [@valueofvaccination]. Additionally, addressing social determinants such as education and income inequality has been identified as a vital pathway to improving longevity [@healthequity]. Studies also highlight the role of global collaboration in tackling health crises, which can disproportionately affect lower-income nations, mostly developing countries, further influencing life expectancy disparities [@World_Health_Organization].
+
+The ultimate goal is to assist policymakers in developing evidence-based strategies that can enhance population health outcomes. The approach of this paper not only emphasizes the importance of equitable access to healthcare but also contributes to a broader understanding of the multifaceted factors shaping life expectancy globally. By highlighting the interplay between various determinants, this study contributes to a broader understanding of the challenges and opportunities in improving life expectancy on a global scale. 
 
 The structure of the paper is as follows: [@sec-data] outlines the data sources and variables considered, followed by the model setup in [@sec-modset] and justification in [@sec-modjust]. The results in [@sec-result] presents the key findings of the analysis, with a discussion on the implications. [@sec-discussion] then discusses potential limitations and suggestions for future research. [@sec-appx] provides additional detailed information about the data, model and methodology.
 
@@ -59,12 +65,7 @@ The structure of the paper is as follows: [@sec-data] outlines the data sources 
 
 ## Overview
 
-The data used in this analysis comes from a 
-
-
-
-
-combination of publicly available polling data for the 2024 U.S. Presidential election [@FiveThirtyEightPolls]. The analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various polls conducted across multiple states, capturing the support for each major candidate—Donald Trump and Kamala Harris—along with detailed attributes of the polls.
+The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO), as compiled and merged by Kumar Rajarshi on Kaggle. [@lifeexpectancykaggle]. The analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various predictors conducted across multiple countries, capturing the support for a country to determine the predicting factor which is contributing to lower value of life expectancy.
 
 ## Measurement
 	
