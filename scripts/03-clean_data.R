@@ -24,7 +24,7 @@ raw_expectancy <- read_csv("data/01-raw_data/raw_data.csv")
 cleaned_expectancy <- tryCatch(
   {
     raw_expectancy |> 
-  select(Country, Year, Status, Life.expectancy, percentage.expenditure, BMI, Total.expenditure, GDP,
+  select(Country, Year, Status, Life.expectancy, percentage.expenditure, Total.expenditure,
          Income.composition.of.resources, Schooling) |>
   rename(LifeExpectancy = Life.expectancy,
          PercentageExpenditure = percentage.expenditure,
@@ -32,12 +32,10 @@ cleaned_expectancy <- tryCatch(
          IncomeComposition = Income.composition.of.resources) |>
   filter (
     # filtering invalid entries 
-    !is.na(GDP), 
     !is.na(Year),
     !is.na(Status),
     !is.na(LifeExpectancy),
     !is.na(PercentageExpenditure),
-    !is.na(BMI),
     !is.na(TotalExpenditure),
     !is.na(IncomeComposition),
     !is.na(Schooling) ) |>
@@ -46,7 +44,6 @@ cleaned_expectancy <- tryCatch(
     LifeExpectancy = round(LifeExpectancy, 2),
     PercentageExpenditure = round(PercentageExpenditure, 4),
     TotalExpenditure = round(TotalExpenditure, 2),
-    GDP = round(GDP, 4),
     IncomeComposition = round(IncomeComposition, 3),
     Schooling = round(Schooling, 1)) |>
   mutate(
@@ -63,7 +60,5 @@ cleaned_expectancy <- tryCatch(
     NULL  # Return NULL if error occurs
     })
 
-  
-  
 #### Save data ####
 write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.parquet")

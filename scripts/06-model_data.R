@@ -14,6 +14,7 @@ library(rstanarm)
 library(car)
 library(arrow)
 library(dplyr)
+library(countrycode)
 
 #### Read data ####
 cleaned_expectancy <- read_csv("data/02-analysis_data/analysis_data.parquet")
@@ -24,9 +25,8 @@ cleaned_expectancy <- cleaned_expectancy %>%
     LifeExpectancy = as.numeric(LifeExpectancy),
     Status = as.factor(Status),
     PercentageExpenditure = as.numeric(PercentageExpenditure),
-    BMI = as.numeric(BMI),
+    Continent = as.factor(Continent),
     TotalExpenditure = as.numeric(TotalExpenditure),
-    GDP = as.numeric(GDP),
     IncomeComposition = as.numeric(IncomeComposition),
     Schooling = as.numeric(Schooling)
   )
@@ -34,12 +34,12 @@ cleaned_expectancy <- cleaned_expectancy %>%
 
 ### Model for developing country based on various predictors ###
 lm_model_developing <-
-  lm(LifeExpectancy ~ PercentageExpenditure + BMI + TotalExpenditure + GDP + IncomeComposition + Schooling,
+  lm(LifeExpectancy ~ PercentageExpenditure + Continent + TotalExpenditure + IncomeComposition + Schooling,
      data = cleaned_expectancy %>% filter (Status == 'Developing') )
 
 ### Model for developed country based on various predictors###
 lm_model_developed <-
-  lm(LifeExpectancy ~ PercentageExpenditure + BMI + TotalExpenditure + GDP + IncomeComposition + Schooling,
+  lm(LifeExpectancy ~ PercentageExpenditure + Continent + TotalExpenditure + IncomeComposition + Schooling,
      data = cleaned_expectancy %>% filter (Status == 'Developed') )
 
 

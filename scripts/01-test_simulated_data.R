@@ -12,6 +12,7 @@
 
 #### Workspace setup ####
 library(tidyverse)
+library(countrycode)
 
 simulated_expectancy <- read_csv("data/00-simulated_data/simulated_data.csv")
 

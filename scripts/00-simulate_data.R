@@ -12,6 +12,7 @@
 #### Workspace setup ####
 library(tidyverse)
 library(dplyr)
+library(countrycode)
 set.seed(853)
 
 
@@ -49,16 +50,6 @@ simulated_expectancy <- tibble(
                            #for developing countries, draw normal distribution with mean 65 and standard deviation of 10
                            rnorm(n, mean = 65, sd = 10)),
   
-  #using a normal distribution with a mean of 25 and a standard deviation of 5 for all observations of BMI
-  BMI = rnorm(n, mean = 25, sd = 5),
-  
-  
-  GDP = ifelse(status == "Developed",
-               #for developed countries, draw normal distribution with mean 40,000 and standard deviation of 10,000
-               rnorm(n, mean = 40000, sd = 10000),
-               #for developing countries, draw normal distribution with mean 5,000 and standard deviation of 2,000
-               rnorm(n, mean = 5000, sd = 2000)),
-  
   #random value between 1 to 100,000 of Expenditure on health as a percentage of Gross Domestic Product per capita(%)
   percentage_expenditure = runif(n, min = 1, max = 100000),
   
@@ -79,8 +70,6 @@ simulated_expectancy <- tibble(
 simulated_expectancy <- simulated_expectancy %>%
   mutate(
     life_expectancy = ifelse(life_expectancy < 0, 0, life_expectancy),
-    BMI = ifelse(BMI < 0, 0, BMI),
-    GDP = ifelse(GDP < 0, 0, GDP),
     schooling = ifelse(schooling < 0, 0, schooling)
   )
 
