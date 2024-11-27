@@ -12,6 +12,7 @@
 library(tidyverse)
 library(testthat)
 library(arrow)
+library(countrycode)
 
 cleaned_expectancy <- read_csv("data/02-analysis_data/analysis_data.parquet")
 
