@@ -98,79 +98,32 @@ More information on the data cleaning process can be found in @sec-appx.
 
 ## Outcome Variables
 
-The main outcome variable of interest is the Expectancy of Life, which represents the predicted age of people from either developed country or developing country. This variable is needed 
-
-
-
-Percentage of support each candidate has in a given poll, which represents the proportion of respondents who favor one candidate over the other. This variable is needed to estimate both the popular vote and Electoral College outcomes. We see a bimodal distribution in @fig-percentage. This indicates that candidates are either recieveing very high percentages of support or very low percentages of support. When we pull out Harris and Trump and view their distributions versus all candidates in @fig-candidatepercentage, we see that these two candidates see statistically high percentages of support, indicating they are leading the polls.
+The outcome variable is `LifeExpendency`. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries. According to the graph, under the same variables, developed countries often have longer life expectancy than developing nations as assumption. 
 
 ```{r}
-#| label: fig-percentage
-#| fig-cap: This histogram shows the distribution of the percentage of support each candidate receives in various polls. The bimodal nature of the distribution suggests that candidates either receive very high or low support, with few receiving moderate levels of backing.
+#| label: fig-expectancy
+#| fig-cap: This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph shows that more developed countries are tend to have higher average of ages than developing countries. 
+#| 
+#| . The bimodal nature of the distribution suggests that candidates either receive very high or low support, with few receiving moderate levels of backing.
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
 
-# create plot for Distribution of Percentage
-ggplot(cleaned_expectancy, aes(x = Percentage)) +
-  geom_histogram(
-    bins = 30,
-    fill = "orange",
-    color = "black",
-    alpha = 0.7
-  ) +
+# create plot of historical 193 countries life expectancy dividing by country status. 
+ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
+  geom_histogram(aes(y = ..density..), 
+                 bins = 70, fill = "brown", color = "white", alpha = 0.7) +
+  geom_density(color = "royalblue", fill = "lightblue", alpha = 0.6) +
   labs(
-    x = "Percentage",
-    y = "Frequency"
+    title = "Distribution of Life Expectancy by Status",
+    x = "Life Expectancy", y = "Density"
   ) +
-  theme_minimal()
+  theme_minimal() +
+  facet_wrap(~Status)
+
 ```
-
-```{r}
-#| label: fig-candidatepercentage
-#| fig-cap:  Violin plot comparing the distribution of support between Donald Trump, Kamala Harris, and all other candidates. The two candidates exhibit higher-than-average support levels, with Harris and Trump leading the polls in terms of percentage of backing.
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-# filter for trump/harris
-harris_trump_selection <- cleaned_data %>%
-  filter(CandidateName %in% c(
-    "Donald Trump",
-    "Kamala Harris"
-  ))
-
-all_candidates <- cleaned_data %>%
-  mutate(CandidateName = "All Candidates")
-
-# create data frame with trump vs harris vs all candidates
-combined_data <- bind_rows(
-  harris_trump_selection,
-  all_candidates
-)
-
-# create plot for Distribution of Percentage by candidate
-ggplot(combined_data, aes(
-  x = CandidateName,
-  y = Percentage,
-  fill = CandidateName
-)) +
-  geom_violin(alpha = 0.5) +
-  geom_boxplot(width = 0.1, color = "black", outlier.shape = NA) +
-  labs(
-    x = "Candidate",
-    y = "Percentage"
-  ) +
-  theme(axis.text.x = element_text(angle = 45, hjust = 1)) +
-  scale_fill_manual(values = c("grey", "salmon", "blue")) +
-  facet_wrap(~CandidateName, scales = "free_x") +
-  theme_minimal()
-```
-
-
 
 ## Predictor Variables
 
@@ -199,19 +152,7 @@ ggplot(combined_data, aes(
 
 Some of our data is of penguins (@fig-bills), from @palmerpenguins.
 
-```{r}
-#| label: fig-bills
-#| fig-cap: Bills of penguins
-#| echo: false
 
-ggplot(penguins, aes(x = island, fill = species)) +
-  geom_bar(alpha = 0.8) +
-  scale_fill_manual(values = c("darkorange","purple","cyan4"),
-                    guide = "none") +
-  theme_minimal() +
-  facet_wrap(~species, ncol = 1) +
-  coord_flip()
-```
 
 Talk more about it.
 
@@ -296,8 +237,8 @@ Our results are summarized in @tbl-modelresults.
 
 library(rstanarm)
 
-first_model <-
-  readRDS(file = here::here("models/first_model.rds"))
+model_developed <-
+  readRDS(file = here::here("models/lm_model_developed.rds"))
 ```
 
 ```{r}
@@ -309,7 +250,7 @@ first_model <-
 
 modelsummary::modelsummary(
   list(
-    "First model" = first_model
+    "developed model" = model_developed
   ),
   statistic = "mad",
   fmt = 2
@@ -380,11 +321,11 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #| fig-cap: "Examining how the model fits, and is affected by, the data"
 #| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
 
-pp_check(first_model) +
+pp_check(model_developed) +
   theme_classic() +
   theme(legend.position = "bottom")
 
-posterior_vs_prior(first_model) +
+posterior_vs_prior(model_developed) +
   theme_minimal() +
   scale_color_brewer(palette = "Set1") +
   theme(legend.position = "bottom") +
@@ -407,9 +348,9 @@ posterior_vs_prior(first_model) +
 #| fig-subcap: ["Trace plot", "Rhat plot"]
 #| layout-ncol: 2
 
-plot(first_model, "trace")
+plot(model_developed, "trace")
 
-plot(first_model, "rhat")
+plot(model_developed, "rhat")
 ```
 
 
