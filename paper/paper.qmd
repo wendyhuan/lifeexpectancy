@@ -98,11 +98,11 @@ More information on the data cleaning process can be found in @sec-appx.
 
 ## Outcome Variables
 
-The outcome variable is `LifeExpendency`. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries. According to the graph, under the same variables, developed countries often have longer life expectancy than developing nations as assumption. 
+The outcome variable is `LifeExpendency`. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.  
 
 ```{r}
 #| label: fig-expectancy
-#| fig-cap: This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph shows that more developed countries are tend to have higher average of ages than developing countries. The bimodal nature of the distribution suggests that candidates either receive very high or low support, with few receiving moderate levels of backing.
+#| fig-cap: This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph of developed countries shows narrower spread with density curve located on the rightside of the x-axis. The graph of developing countries performs a wider spread while the highest density position at mid-seventies.
 #| echo: false
 #| eval: true
 #| warning: false
@@ -112,7 +112,7 @@ The outcome variable is `LifeExpendency`. This is the primary dependent variable
 # create plot of historical 193 countries life expectancy dividing by country status. 
 ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
   geom_histogram(aes(y = ..density..), 
-                 bins = 70, fill = "brown", color = "white", alpha = 0.7) +
+                 bins = 70, fill = "salmon", color = "pink", alpha = 0.9) +
   geom_density(color = "royalblue", fill = "lightblue", alpha = 0.6) +
   labs(
     title = "Distribution of Life Expectancy by Status",
@@ -125,7 +125,19 @@ ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
 
 ## Predictor Variables
 
+The **predictor variables** (or independent variables) are the factors believed to influence the life expectancy:
 
+1. **Status(`Status`)**: 
+
+2. **Continent(`Continent`)**:
+
+3. **Percentage Expenditure on Health (`PercentageExpenditure`)**:
+
+4. **Total expenditure (`TotalExpenditure`)**:
+
+5. **Income composition of resource (`IncomeComposition`)**:
+
+6.**Schooling (`Schooling`)**:
 
 
 
@@ -172,20 +184,6 @@ And also planes (@fig-planes). (You can change the height and width, but don't w
   #labs(x = "Wing width (mm)",
       # y = "Wing length (mm)")
 ```
-
-Talk way more about it. 
-
-## Predictor variables
-
-Add graphs, tables and text.
-
-Use sub-sub-headings for each outcome variable and feel free to combine a few into one if they go together naturally.
-
-
-
-
-
-
 
 
 # Model
