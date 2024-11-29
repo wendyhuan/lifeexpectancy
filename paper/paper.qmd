@@ -1,12 +1,12 @@
 ---
 title: "Global Life Expectancy: Unraveling Health and Economic Determinants (2000-2015)"
-subtitle: "Analyzing Critical Factors Shaping Mortality and Well-Being Across 193 Nations"
+subtitle: "Analyzing Critical Factors Shaping Mortality and Well-Being Across 155 Nations"
 author: 
   - Yanfei Huang
 thanks: "Code and data are available at: [https://github.com/wendyhuan/lifeexpectancy](https://github.com/wendyhuan/lifeexpectancy)."
 date: 30 November 2024
 date-format: long
-abstract: "This paper analyze life expectancy and its determinants through 193 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 80, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
+abstract: "This paper analyze life expectancy and its determinants through 155 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 80, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
 toc-depth: 3
@@ -49,10 +49,9 @@ cleaned_expectancy <- read_parquet(here::here("data/02-analysis_data/analysis_da
 
 ```
 
-
 # Introduction
 
-Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as personal expenditure on health, government healthcare access, economic stability, and social structures. The index of life expectancy is generally served as a benchmark for development, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to better living standards, access to education, and equitable healthcare. Conversely, low life expectancy often signals systemic challenges such as poverty, disease burden, and inadequate healthcare access [@socialdeterminantsofhealth]. 
+Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as personal expenditure on health, government healthcare access, economic stability, and social structures. The index of life expectancy is generally served as a benchmark for development, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to better living standards, access to education, and equitable healthcare. Conversely, low life expectancy often signals systemic challenges such as poverty, disease burden, and inadequate healthcare access [@socialdeterminantsofhealth].
 
 The primary goal of this paper is to determine which factors play a statistically significant role in driving lower life expectancy values and to offer actionable insights based on country status. Using Multiple Linear Regression model, this study focuses on understanding the relationship between country status(developed or developing), continent, personal average expenditure on health based on GDP, percentage of government expenditure on health, income composition of resources and year of schooling in predicting life expectancy across different countries. By identifying and analyzing these predictors, the study aims to highlight actionable aspects for policymakers to target in their efforts to improve population longevity effectively.
 
@@ -60,7 +59,7 @@ Related Research has shown that higher healthcare expenditure of government posi
 
 Findings from this paper reveal that countries with greater healthcare spending tend to achieve higher life expectancy, while factors like income inequality and absence of education emerge as significant obstacles. The analysis underscores the importance of targeted interventions in key areas such as healthcare accessibility and economic equity to address disparities in life expectancy. This study further contributes to a deeper understanding of how predictive modeling under different country status can inform public health strategies and policy-making on a global scale.
 
-The ultimate goal is to assist policymakers in developing evidence-based strategies that can enhance population health outcomes. The approach of this paper not only emphasizes the importance of equitable access to healthcare but also contributes to a broader understanding of the multifaceted factors shaping life expectancy globally. By highlighting the interplay between various determinants, this study contributes to a broader understanding of the challenges and opportunities in improving life expectancy on a global scale. 
+The ultimate goal is to assist policymakers in developing evidence-based strategies that can enhance population health outcomes. The approach of this paper not only emphasizes the importance of equitable access to healthcare but also contributes to a broader understanding of the multifaceted factors shaping life expectancy globally. By highlighting the interplay between various determinants, this study contributes to a broader understanding of the challenges and opportunities in improving life expectancy on a global scale.
 
 The structure of the paper is as follows: [@sec-data] outlines the data sources and variables considered, followed by the model setup in [@sec-modset] and justification in [@sec-modjust]. The results in [@sec-result] presents the key findings of the analysis, with a discussion on the implications. [@sec-discussion] then discusses potential limitations and suggestions for future research. [@sec-appx] provides additional detailed information about the data, model and methodology.
 
@@ -68,48 +67,48 @@ The structure of the paper is as follows: [@sec-data] outlines the data sources 
 
 ## Overview
 
-The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO) [@lifeexpectancy]. This data-set related to life expectancy, health factors for 193 countries has been collected from WHO data repository website and its corresponding economic data was collected from United Nation website. Among all categories of health-related factors only those socio-economic factors on the national level were chosen for global scale analysis.
+The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO) [@lifeexpectancy]. This data-set related to life expectancy, health factors for 155 countries has been collected from WHO data repository website and its corresponding economic data was collected from United Nation website. Among all categories of health-related factors only those socio-economic factors on the national level were chosen for global scale analysis.
 
 This analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various predictors conducted across multiple countries, capturing the support for a country to determine the predicting factor which is contributing to lower value of life expectancy.
 
 ## Measurement
-	
-The measurement process refers to how real-world factors—such as the status of a country, average personal health care investment, average year of education,  geographic location of a country and social determinants (country's healthcare investment, human development index of income) — are translated into numerical entries representing life expectancy in a dataset. Each entry captures the average life expectancy of individuals in a specific country during a given year.
 
-Life Expectancy (`LifeExpectancy`): This variable represents the average number of years a person is expected to live, assuming current mortality conditions persist. It is derived using data from national health records, the World Health Organization (WHO) and Global Health Observatory (GHO). The values are calculated and represented in age between 36.3 to 89. 
+The measurement process refers to how real-world factors—such as the status of a country, average personal health care investment, average year of education, geographic location of a country and social determinants (country's healthcare investment, human development index of income) — are translated into numerical entries representing life expectancy in a dataset. Each entry captures the average life expectancy of individuals in a specific country during a given year.
 
-Percentage Expenditure on Health (`PercentageExpenditure`): This variable reflects the expenditure allocated to health-related expenditures as a percentage of GDP per capita. The data is typically collected from government reports, economic surveys, and global health databases. It indicates the level of personal financial investment in the health sector and is expressed as a percentage. 
+**Life Expectancy (`LifeExpectancy`)**: This variable represents the average number of years a person is expected to live, assuming current mortality conditions persist. It is derived using data from national health records, the World Health Organization (WHO) and Global Health Observatory (GHO). The values are calculated and represented in age between 36.3 to 89.
 
-Schooling (`Schooling`): This variable captures the average number of years of education received by individuals in a country. Data is obtained from educational surveys and censuses conducted by international and national organizations. The values are recorded in years and used to assess the link between education and health outcomes like life expectancy. The data range from 0 to 20.7
+**Percentage Expenditure on Health (`PercentageExpenditure`)**: This variable reflects the expenditure allocated to health-related expenditures as a percentage of GDP per capita. The data is typically collected from government reports, economic surveys, and global health databases. It indicates the level of personal financial investment in the health sector and is expressed as a percentage.
 
-Status (`Status`): This is a categorical variable that classifies countries as "Developed" or "Developing," based on various socio-economic and health indicators accepted globally. It provides context for comparing life expectancy across different stages of national development.
+**Schooling (`Schooling`)**: This variable captures the average number of years of education received by individuals in a country. Data is obtained from educational surveys and censuses conducted by international and national organizations. The values are recorded in years and used to assess the link between education and health outcomes like life expectancy. The data range from 0 to 20.7
 
-Continent(`Continent`): This is a categorical variable that classifies the geographic location of the countries. It is detected by the name of the country using rpackage `countrycode`. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’)
+**Status (`Status`)**: This is a categorical variable that classifies countries as "Developed" or "Developing," based on various socio-economic and health indicators accepted globally. It provides context for comparing life expectancy across different stages of national development.
 
-Total expenditure (`TotalExpenditure`): This is a numerical variable that shows the general government expenditure on health as a percentage of total government expenditure. The number drop of the percentage and shows as the number between 0 to 100, where higher values indicate a greater share of government spending allocated to health.
+**Continent(`Continent`)**: This is a categorical variable that classifies the geographic location of the countries. It is detected by the name of the country using rpackage `countrycode`. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’)
 
-Income composition of resource (`IncomeComposition`): This is a numerical variable representing the income component of the Human Development Index (HDI). It reflects the contribution of income to human development, with values ranging from 0 to 1, where higher values signify a greater income contribution to overall development.
+**Total expenditure (`TotalExpenditure`)**: This is a numerical variable that shows the general government expenditure on health as a percentage of total government expenditure. The number drop of the percentage and shows as the number between 0 to 100, where higher values indicate a greater share of government spending allocated to health.
+
+**Income composition of resource (`IncomeComposition`)**: This is a numerical variable representing the income component of the Human Development Index (HDI). It reflects the contribution of income to human development, with values ranging from 0 to 1, where higher values signify a greater income contribution to overall development.
 
 ## Data Cleaning
 
-The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. We first select and rename key variables from raw data to focus on relevant information. The key variables of interest in our analysis include Country, Year, Status of the country, Life expectancy, Percentage expenditure, Total expenditure, Income composition of resources and the year of education. Additionally, we develop a new predictor named "Continent" to monitor each nation's geographic data. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data. The cleaned dataset was then saved as a Parquet file for efficient storage and further analysis. 
+The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. We first select and rename key variables from raw data to focus on relevant information. The key variables of interest in our analysis include Country, Year, Status of the country, Life expectancy, Percentage expenditure, Total expenditure, Income composition of resources and the year of education. Additionally, we develop a new predictor named "Continent" to monitor each nation's geographic data. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data. The cleaned dataset was then saved as a Parquet file for efficient storage and further analysis.
 
 More information on the data cleaning process can be found in @sec-appx.
 
 ## Outcome Variables
 
-The outcome variable is `LifeExpendency`. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.  
+The outcome variable is **`LifeExpendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.
 
 ```{r}
 #| label: fig-expectancy
-#| fig-cap: This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph of developed countries shows narrower spread with density curve located on the rightside of the x-axis. The graph of developing countries performs a wider spread while the highest density position at mid-seventies.
+#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph of developed countries shows narrower spread with density curve located on the rightside of the x-axis. The graph of developing countries performs a wider spread while the highest density position at mid-seventies."
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
 
-# create plot of historical 193 countries life expectancy dividing by country status. 
+# create plot of historical 155 countries life expectancy dividing by country status. 
 ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
   geom_histogram(aes(y = ..density..), 
                  bins = 70, fill = "salmon", color = "pink", alpha = 0.9) +
@@ -127,80 +126,129 @@ ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
 
 The **predictor variables** (or independent variables) are the factors believed to influence the life expectancy:
 
-1. **Status(`Status`)**: 
+1.  **Status(`Status`)**: The status of a country is the key factor influencing the life expectancy. We divide the life expectancy by the status of a country as it is believed that developed country generally have higher life expectancy due to better healthcare access, sanitation, and living standards, while developing countries face greater health challenges. This variable provides context for comparing life expectancy between different levels of country development. @fig-statusdistribution includes 28 developed countries and 127 developing countries. The graph on left shows that we've got much greater representation of developing nations across the dataset. Comparing both graph, we still could tell that the dataset contains significantly more data for developing countries than for developed countries, even relative to the difference in the number of countries themselves.
 
-2. **Continent(`Continent`)**:
+2.  **Continent(`Continent`)**: This is the categorical variable showing the geographic information of each country. Continent usually 
 
-3. **Percentage Expenditure on Health (`PercentageExpenditure`)**:
+3.  **Percentage Expenditure on Health (`PercentageExpenditure`)**:
 
-4. **Total expenditure (`TotalExpenditure`)**:
+4.  **Total expenditure (`TotalExpenditure`)**:
 
-5. **Income composition of resource (`IncomeComposition`)**:
+5.  **Income composition of resource (`IncomeComposition`)**:
 
 6.**Schooling (`Schooling`)**:
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Some of our data is of penguins (@fig-bills), from @palmerpenguins.
-
-
-
-Talk more about it.
-
-And also planes (@fig-planes). (You can change the height and width, but don't worry about doing that until you have finished every other aspect of the paper - Quarto will try to make it look nice and the defaults usually work well once you have enough text.)
-
 ```{r}
-#| label: fig-planes
-#| fig-cap: Relationship between wing length and width
+#| label: fig-statusdistribution
+#| fig-cap: "Distribution of country status, showing 28 dveloped countries and 127 developing countries, with a substantial difference in the number of data points. From 2000 to 2015, notably, the number of data entries for developing countries far exceeds that of developed countries, reflecting the greater representation of developing nations across the dataset."
 #| echo: false
+#| eval: true
 #| warning: false
 #| message: false
 
-#analysis_data <- read_csv(here::here("data/02-analysis_data/analysis_data.csv"))
+# Count the number of unique countries for each Status
+country_counts <- cleaned_expectancy %>%
+  distinct(Country, Status) %>%  # Ensure each country is only counted once
+  count(Status)  # Count the number of countries in each Status category
 
-#analysis_data |> 
-  #ggplot(aes(x = width, y = length)) +
-  #geom_point(alpha = 0.8) +
-  #theme_minimal() +
-  #labs(x = "Wing width (mm)",
-      # y = "Wing length (mm)")
+#Plot1: create bar plot of count of status
+numberrows <- ggplot(cleaned_expectancy, aes(x = Status, fill = Status)) +
+  geom_bar() +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5) +
+  labs(
+    title = "Distribution of Count of Developed and Developing Countries",
+    x = "Status (Developed vs Developing)",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
+  theme(legend.position = "none",
+  plot.title = element_text(size = 7))
+
+# Plot2: Create a bar plot to show the distribution of countries by Status
+numbercountry <- ggplot(country_counts, aes(x = Status, y = n, fill = Status)) +
+  geom_bar(stat = "identity") +  # Use 'identity' to directly use the count values
+  geom_text(aes(label = n), vjust = -0.5) +  # Add count labels on top of bars
+  labs(
+    title = "Distribution of Countries by Status (Developed vs Developing)",
+    x = "Status (Developed vs Developing)",
+    y = "Number of Countries"
+  ) +
+  theme_minimal() +
+  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
+  theme(
+    legend.position = "none", 
+  plot.title = element_text(size = 7))
+
+# Arrange the plots side by side
+grid.arrange(numberrows, numbercountry, ncol = 2)
 ```
 
 
+
+
+```{r}
+#| label: fig-continent
+#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+#Calculate the number of unique countries per continent
+continent_count <- cleaned_expectancy %>%
+  group_by(Continent) %>%
+  summarise(num_countries = n_distinct(Country))
+
+#Plot1: Distribution of number of data per continent
+#Create the bar plot showing the number of data per continent
+continentrow <- ggplot(cleaned_expectancy, aes(x = Continent)) +
+  geom_bar(fill = "orange", color = "white") +
+  labs(
+    title = "Distribution of Count by Continent",
+    x = "Continent",
+    y = "Count"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.title = element_text(size = 12)
+  ) +
+  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5, size = 2.5)
+
+# Plot2: The distribution of number of countries each continent
+#Create the bar plot showing the number of unique countries per continent
+continentnumber <-ggplot(continent_count, aes(x = Continent, y = num_countries)) +
+  geom_bar(stat = "identity", fill = "#FFA07A", color = "white") +
+  labs(
+    title = "Number of Countries by Continent",
+    x = "Continent",
+    y = "Number of Countries"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    plot.title = element_text(size = 12, face = "bold"),
+    axis.title = element_text(size = 10)
+  ) +
+  geom_text(aes(label = num_countries), vjust = -0.5, size = 2.5)
+
+# Arrange the plots side by side
+grid.arrange(continentnumber, continentrow, ncol = 2)
+```
+
 # Model
-To predict the outcome of the life expectancy of people from different regions, we developed tow linear regression models: one for the developed country and one for developing country. These models aim to estimate the life expectancy of people under different environment. 
+
+To predict the outcome of the life expectancy of people from different regions, we developed tow linear regression models: one for the developed country and one for developing country. These models aim to estimate the life expectancy of people under different environment.
 
 Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
 
 ## Model set-up {#sec-modset}
 
-This paper utilizes linear regression models: 
-$$LifeExpecetancy_I = \beta_0 + \beta_1 $$
-$$LifeExpectancy_D = \beta_0 + \beta_1$$
+This paper utilizes linear regression models: $$LifeExpecetancy_I = \beta_0 + \beta_1 $$ $$LifeExpectancy_D = \beta_0 + \beta_1$$
 
-
-
-
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.  
+Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.
 
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
@@ -213,17 +261,22 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
 
-
 ### Model justification
 
 We expect a positive relationship between the size of the wings and time spent aloft. In particular...
 
 We can use maths by including latex between dollar signs, for instance $\theta$.
 
-
 # Results
 
 Our results are summarized in @tbl-modelresults.
+
+
+
+1. check different continent has its different life expectancy. 
+2. compare the develop country with 
+3. check the shcooling year of develop countries to developing country, showing a relationship between shcooling with the life expenctancy. 
+4. 
 
 ```{r}
 #| echo: false
@@ -253,14 +306,11 @@ model_developed <-
 #)
 ```
 
-
-
-
 # Discussion
 
 ## First discussion point {#sec-first-point}
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this. 
+If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
 ## Second discussion point
 
@@ -282,20 +332,19 @@ Weaknesses and next steps should also be included.
 
 We began by importing the raw dataset using the read_csv function from the tidyverse package. To focus our analysis on more relevant variables, we selected specific columns, such as percentage of expenditure of the country, total health expenditure by government .etc., omitting any unnecessary columns.
 
-We filter out the rows containing NA values in any of the selected columns for reducing the noise and simpler further analysis.. 
+We filter out the rows containing NA values in any of the selected columns for reducing the noise and simpler further analysis..
 
 We then renaming columns for clarity. For example, we changed ‘Income.composition.of.resources’ into ‘IncomeComposition’ , making it easier for anyone working with the data to read and understand what each variable represents.
 
-Each column is rounded using the round function, specifying the desired number of decimal places for each. Columns not mentioned in mutate remain unchanged. This ensures a flexible and precise cleaning process tailored to further compairation and graphing. 
+Each column is rounded using the round function, specifying the desired number of decimal places for each. Columns not mentioned in mutate remain unchanged. This ensures a flexible and precise cleaning process tailored to further compairation and graphing.
 
-We also modified the country name of ‘Republic of Korea’ under Country variable to ‘South Korea’ to avoid misunderstanding of North Korea. 
+We also modified the country name of ‘Republic of Korea’ under Country variable to ‘South Korea’ to avoid misunderstanding of North Korea.
 
-We also created a new variable called Continent, which indicates which continent does the country comes from in order to provide a geographical context to the analysis. Life expectancy may be higher in developed regions like Europe or North America compared to regions like Sub-Saharan Africa due to differences in healthcare, living standards, and economic development. 
+We also created a new variable called Continent, which indicates which continent does the country comes from in order to provide a geographical context to the analysis. Life expectancy may be higher in developed regions like Europe or North America compared to regions like Sub-Saharan Africa due to differences in healthcare, living standards, and economic development.
 
 We also wrapped the cleaning process in a tryCatch block in order to mitigate any errors that arose throughout the cleaning process.
 
 After completing the cleaning, we saved the final dataset in both Parquet and CSV formats for later analysis.
-
 
 # Additional data details
 
@@ -305,7 +354,7 @@ After completing the cleaning, we saved the final dataset in both Parquet and CS
 
 In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows... 
+In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
 
 ```{r}
 #| eval: true
@@ -349,11 +398,6 @@ In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. Th
 #plot(model_developed, "rhat")
 ```
 
-
-
 \newpage
 
-
 # References
-
-
