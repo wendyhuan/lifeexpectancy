@@ -21,7 +21,7 @@ bibliography: references.bib
 
 # Install Packages if not downloaded:
 required_packages <- c(
-  "tidyverse", "sf", "dplyr", "here", "arrow", "ggplot2", "janitor", "purrr", "knitr", "kableExtra", "ggcorrplot", "modelsummary", "countrycode"
+  "tidyverse", "sf", "dplyr", "here", "arrow", "ggplot2", "janitor", "purrr", "knitr", "kableExtra", "ggcorrplot", "modelsummary", "countrycode", "gridExtra"
 )
 for (p in required_packages) {
   if (!require(p, character.only = TRUE)) {
@@ -43,6 +43,7 @@ library(kableExtra)
 library(ggcorrplot)
 library(modelsummary)
 library(countrycode)
+library(gridExtra)
 
 # load data
 cleaned_expectancy <- read_parquet(here::here("data/02-analysis_data/analysis_data.parquet"))
