@@ -129,15 +129,15 @@ The **predictor variables** (or independent variables) are the factors believed 
 
 1.  **Status(`Status`)**: The status of a country is the key factor influencing the life expectancy. We divide the life expectancy by the status of a country as it is believed that developed country generally have higher life expectancy due to better healthcare access, sanitation, and living standards, while developing countries face greater health challenges. This variable provides context for comparing life expectancy between different levels of country development. @fig-statusdistribution includes 28 developed countries and 127 developing countries. The graph on left shows that we've got much greater representation of developing nations across the dataset. Comparing both graph, we still could tell that the dataset contains significantly more data for developing countries than for developed countries, even relative to the difference in the number of countries themselves.
 
-2.  **Continent(`Continent`)**: This is the categorical variable showing the geographic information of each country. Continent usually 
+2.  **Continent(`Continent`)**: This is the categorical variable showing the geographic information of each country. Developed continents, for example Europe and North America, typically have well-established healthcare infrastructure, which are considered to contribute to higher life expectancy. Factors like clean water access, education resources, nutrition and lifestyle factors can significantly impact life expectancy and vary greatly across continents. @fig-continent reveals that Africa has the highest number of countries represented with the largest portion of the data. Other continents, America and Europe, have fewer countries included, with only 9 countries from Oceania. 
 
-3.  **Percentage Expenditure on Health (`PercentageExpenditure`)**:
+3.  **Percentage Expenditure on Health (`PercentageExpenditure`)**: This variable reflects the expenditure allocated to health-related expenditures as a percentage of GDP per capita.
 
-4.  **Total expenditure (`TotalExpenditure`)**:
+4.  **Total expenditure (`TotalExpenditure`)**: This variable shows the general government expenditure on health as a percentage of total government expenditure. This is considered as a reflection of economic situation of a country. A higher percentage indicates that a country places significant emphasis on healthcare as a key area of public investment.
 
-5.  **Income composition of resource (`IncomeComposition`)**:
+5. **Income composition of resource (`IncomeComposition`)**: his is a numerical variable representing the income component of the Human Development Index (HDI).
 
-6.**Schooling (`Schooling`)**:
+6. **Schooling (`Schooling`)**: This is a numerical variable showing the number of education per person.  
 
 ```{r}
 #| label: fig-statusdistribution
@@ -155,23 +155,23 @@ country_counts <- cleaned_expectancy %>%
 #Plot1: create bar plot of count of status
 numberrows <- ggplot(cleaned_expectancy, aes(x = Status, fill = Status)) +
   geom_bar() +
-  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5) +
+  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5,size = 2.5) +
   labs(
-    title = "Distribution of Count of Developed and Developing Countries",
+    title = "Distribution of Count of Country by Status",
     x = "Status (Developed vs Developing)",
     y = "Count"
   ) +
   theme_minimal() +
   scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
   theme(legend.position = "none",
-  plot.title = element_text(size = 7))
+  plot.title = element_text(size = 7,face = "bold"))
 
 # Plot2: Create a bar plot to show the distribution of countries by Status
 numbercountry <- ggplot(country_counts, aes(x = Status, y = n, fill = Status)) +
   geom_bar(stat = "identity") +  # Use 'identity' to directly use the count values
-  geom_text(aes(label = n), vjust = -0.5) +  # Add count labels on top of bars
+  geom_text(aes(label = n), vjust = -0.5,size = 2.5) +  # Add count labels on top of bars
   labs(
-    title = "Distribution of Countries by Status (Developed vs Developing)",
+    title = "Distribution of Country by Status",
     x = "Status (Developed vs Developing)",
     y = "Number of Countries"
   ) +
@@ -179,7 +179,7 @@ numbercountry <- ggplot(country_counts, aes(x = Status, y = n, fill = Status)) +
   scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
   theme(
     legend.position = "none", 
-  plot.title = element_text(size = 7))
+  plot.title = element_text(size = 7,face = "bold"))
 
 # Arrange the plots side by side
 grid.arrange(numberrows, numbercountry, ncol = 2)
@@ -190,7 +190,7 @@ grid.arrange(numberrows, numbercountry, ncol = 2)
 
 ```{r}
 #| label: fig-continent
-#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. "
+#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
 #| echo: false
 #| eval: true
 #| warning: false
@@ -213,8 +213,8 @@ continentrow <- ggplot(cleaned_expectancy, aes(x = Continent)) +
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(size = 12, face = "bold"),
-    axis.title = element_text(size = 12)
+    plot.title = element_text(size = 10, face = "bold"),
+    axis.title = element_text(size = 10)
   ) +
   geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5, size = 2.5)
 
@@ -223,14 +223,14 @@ continentrow <- ggplot(cleaned_expectancy, aes(x = Continent)) +
 continentnumber <-ggplot(continent_count, aes(x = Continent, y = num_countries)) +
   geom_bar(stat = "identity", fill = "#FFA07A", color = "white") +
   labs(
-    title = "Number of Countries by Continent",
+    title = "Distribution of Country by Continent",
     x = "Continent",
-    y = "Number of Countries"
+    y = "Number of Country"
   ) +
   theme_minimal() +
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(size = 12, face = "bold"),
+    plot.title = element_text(size = 10, face = "bold"),
     axis.title = element_text(size = 10)
   ) +
   geom_text(aes(label = num_countries), vjust = -0.5, size = 2.5)
@@ -239,18 +239,65 @@ continentnumber <-ggplot(continent_count, aes(x = Continent, y = num_countries))
 grid.arrange(continentnumber, continentrow, ncol = 2)
 ```
 
+```{r}
+#| label: fig-percentage
+#| fig-cap: "Distribution of expenditure allocated to health-related expenditures as a percentage of GDP per capita. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+
+
+
+```
+
+```{r}
+#| label: fig-total
+#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+
+
+```
+
+
+```{r}
+#| label: fig-income
+#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+
+
+```
+
+```{r}
+#| label: fig-schooling
+#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+
+
+```
+
 # Model
-
-To predict the outcome of the life expectancy of people from different regions, we developed tow linear regression models: one for the developed country and one for developing country. These models aim to estimate the life expectancy of people under different environment.
-
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
 
 ## Model set-up {#sec-modset}
 
-This paper utilizes linear regression models: $$LifeExpecetancy_I = \beta_0 + \beta_1 $$ $$LifeExpectancy_D = \beta_0 + \beta_1$$
+To predict the outcome of the life expectancy of people from different regions, we developed two linear regression models using R [@citeR]: one for the developed country and one for developing country. The outcome variable, `LifeExpectancy`, is a continuous and represents the average number of years a person is expected to live, assuming all related resources remain constant throughout their lifetime. These models aim to estimate the life expectancy of people under different environment. The GAM allows for capturing potential non-linear relationships between the predictors and the outcome.
 
-Define $y_i$ as the number of seconds that the plane remained aloft. Then $\beta_i$ is the wing width and $\gamma_i$ is the wing length, both measured in millimeters.
+The model is specified as follows:
 
+```{=tex}
 \begin{align} 
 y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \mu_i &= \alpha + \beta_i + \gamma_i\\
@@ -259,8 +306,45 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 \gamma &\sim \mbox{Normal}(0, 2.5) \\
 \sigma &\sim \mbox{Exponential}(1)
 \end{align}
+```
 
+
+
+
+
+$$overall\_time\_seconds_i​=\beta_0​+s(age_i​)+\beta_1⋅gender_i​+s(race\_count_i​​)+ \beta_2⋅iaaf\_category​​ + ϵ_i​$$
+
+Where:
+
+-   $overall\_time\_seconds_i$ is the marathon finishing time in seconds for the i-th runner.
+
+-   $s(age_i)$ is a smooth function of the runner’s age at the time of the race.
+
+-   $gender_i$ is the runner's gender (treated as a categorical variable).
+
+-   $s(race\_count_i)$ is a smooth function of the total number of NYRR races the runner has participated in.
+
+-   $iaaf\_category_i$​ is the country the runner is from under IAAF standards.
+
+-   $\epsilon_i$ is the error term, assumed to be normally distributed with a mean of 0 and constant variance $ϵ_i​∼N(0,\sigma^2)$
+
+This GAM model allows for smooth, non-linear effects of continuous predictors (**`age`** and **`races_count`**) while keeping the categorical predictors (**`gender`** and **`iaaf_category`**) in a linear framework.
+
+Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+
+```{=tex}
+\begin{align} 
+y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_i + \gamma_i\\
+\alpha &\sim \mbox{Normal}(0, 2.5) \\
+\beta &\sim \mbox{Normal}(0, 2.5) \\
+\gamma &\sim \mbox{Normal}(0, 2.5) \\
+\sigma &\sim \mbox{Exponential}(1)
+\end{align}
+```
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
+
+
 
 ### Model justification
 
