@@ -1,106 +1,36 @@
 #### Preamble ####
 # Purpose: Cleans the raw life expectancy data and recorded by 10 columns
 # Author:Yanfei Huang
-# Date: 25 November 2024
+# Date: 01 December 2024
 # Contact: yanfei.huang@mail.utoronto.ca
 # License: University of Toronto
-# Pre-requisites: raw data downloaded and saved from Kaggle
+# Pre-requisites: Raw data downloaded and saved 
 # Any other information needed? No
 
-#### Workspace setup ####
-install.packages("countrycode")
-library(tidyverse)
-library(dplyr)
-library(janitor)
-library(arrow)
-library(countrycode)
-
-#### Clean data ####
-#Load the dataset
-raw_expectancy <- read_csv("/Users/wendyhuang/lifeexpectancy/data/01-raw_data/WHOlifeexpectancy.csv")
-
-# Data cleaning by Filter and select relevant columns, renaming complex names, 
-# filtering invalid entries, round columns into specific decimals 
-cleaned_expectancy <-
-    raw_expectancy |> 
-  select(Country, Year, Status, Life.expectancy, percentage.expenditure, Total.expenditure,
-         Income.composition.of.resources, Schooling) |>
-  rename(LifeExpectancy = Life.expectancy,
-         PercentageExpenditure = percentage.expenditure,
-         TotalExpenditure = Total.expenditure,
-         IncomeComposition = Income.composition.of.resources) |>
-  filter (
-    # filtering invalid entries 
-    !is.na(Year),
-    !is.na(Status),
-    !is.na(LifeExpectancy),
-    !is.na(PercentageExpenditure),
-    !is.na(TotalExpenditure),
-    !is.na(IncomeComposition),
-    !is.na(Schooling) ) |>
-  mutate(
-    #Round specific columns to varying decimal places
-    LifeExpectancy = round(LifeExpectancy, 2),
-    PercentageExpenditure = round(PercentageExpenditure, 4),
-    TotalExpenditure = round(TotalExpenditure, 2),
-    IncomeComposition = round(IncomeComposition, 3),
-    Schooling = round(Schooling, 1)) |>
-  mutate(
-    #Change the name of South Korea avoiding misunderstanding
-    Country = ifelse(Country == "Republic of Korea",
-                           "South Korea", Country) )|>
-  mutate(
-    #create continent variable and check the continent of each country
-    Continent = countrycode(Country, "country.name", "continent")) %>%
-      ungroup() 
-    cleaned_expectancy}, # error handling to mitigate any cleaning issues
-  error = function(e) { 
-    message("An error occurred during data cleaning: ", e)
-    NULL  # Return NULL if error occurs
-    })
-
-head(cleaned_expectancy)  # Check the first few rows
-summary(cleaned_expectancy) 
-
-
-
-#### Save data ####
-write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.parquet")
-write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.csv")
-
-
-
-
-
-
-
-
-
 
 #### Workspace setup ####
 library(tidyverse)
 library(dplyr)
 library(arrow)
 
-#### Clean data ####
-# Read in the data
+#### Read data ####
+# Read in data
 lfex_data <- read_csv("/Users/wendyhuang/lifeexpectancy/data/01-raw_data/WHOlifeexpectancy.csv")
-
 
 # Function to extract the number before the opening square bracket
 extract_number <- function(x) {
   gsub("\\[.*", "", x)
 }
 
+### Clean Data ###
+
 lecleaned_data <- lfex_data %>%
-  filter(!is.na(Location)) %>%       # Remove rows where 'Location' is NA
+  # Remove rows where 'Location' is NA
+  filter(!is.na(Location)) %>%    
+  # Select the useful predictor from raw data
   select(
-    Indicator,                       # Correct column name
-    Location,                        # Correct column name
-    Period,                          # Correct column name
-    Dim1,                            # Correct column name
-    Value                            # Correct column name
-  )|>
+    Indicator, Location, Period, Dim1, Value)|>
+  # Ensure it contains purely numerical data, drop percentage symbol if exist any
   mutate(
     `Value` = extract_number(`Value`))
 
@@ -233,17 +163,14 @@ lelecleaned_data <- lecleaned_data|>
   rename(
     Country = Location,
     `Life Expectancy` = Value,
-    Gender = Dim1,
-  )|>
+    Gender = Dim1) |>
   mutate(
     Income_Group = case_when(
       Country %in% lower_income ~ "lower_income",
       Country %in% lower_middle ~ "lower_middle",
       Country %in% upper_middle ~ "upper_middle",
       Country %in% high_income ~ "high_income",
-      TRUE ~ NA_character_
-    )
-  )|>
+      TRUE ~ NA_character_)) |>
   mutate(
     Region = case_when(
       Country %in% Africa ~ "Africa",
@@ -252,18 +179,56 @@ lelecleaned_data <- lecleaned_data|>
       Country %in% Oceania ~ "Oceania",
       Country %in% South_America ~ "South America",
       Country %in% Asia ~ "Asia",
-      TRUE ~ NA_character_
-    )
-  )
-# Assuming your data frame is named df
-lelecleaned_data <- lelecleaned_data %>%
-  filter(Country != "occupied Palestinian territory, including east Jerusalem")
-lelecleaned_data <- lelecleaned_data %>%
-  arrange(Country)
+      TRUE ~ NA_character_))
 
-leab <- lelecleaned_data %>%
-  filter(Indicator == "Life expectancy at birth (years)")
+# Filter out the Palestinian territory, which is not a country
+lelecleaned_data <- lelecleaned_data %>%
+  filter(Country != "occupied Palestinian territory, including east Jerusalem") %>%
+  # Arrange the country into Alphabet order for easy reading
+  arrange(Country) %>%
+  # Convert the columns into appropriate data types
+  mutate(
+    `Life Expectancy` = as.numeric(`Life Expectancy`),
+    Country = as.factor(Country),
+    Gender = as.factor(Gender), 
+    Income_Group = as.factor(Income_Group),
+    Region = as.factor(Region)
+    )
 
 # Create a table of life expectancy at age 60
 lea60 <- lelecleaned_data %>%
   filter(Indicator == "Life expectancy at age 60 (years)")
+
+# Create a table of life expectancy at birth
+leab <- lelecleaned_data %>%
+  filter(Indicator == "Life expectancy at birth (years)")
+
+#Create a table of life expectancy at birth of Male
+male_table <- leab[leab$Gender == 'Male', ]
+male_table <- male_table |>
+  summarise(
+    "Gender" = "Male",
+    "Average life ex" = mean(`Life Expectancy`))
+
+# Create a table of life expectancy at birth of Female
+female_table <- leab[leab$Gender == 'Female', ]
+female_table <- female_table |>
+  summarise(
+    "Gender" = "Female",
+    "Average life ex" = mean(`Life Expectancy`))
+
+
+
+
+### Save table as parquet, csv file
+write_csv(lelecleaned_data, "data/02-analysis_data/lelecleaned.csv")
+write_csv(lea60, "data/02-analysis_data/lea60.csv")
+write_csv(male_table, "data/02-analysis_data/male_table.csv")
+write_csv(female_table, "data/02-analysis_data/female_table.csv")
+write_csv(leab, "data/02-analysis_data/leab.csv")
+write_csv(lelecleaned_data, "data/02-analysis_data/lelecleaned.parquet")
+write_csv(lea60, "data/02-analysis_data/lea60.parquet")
+write_csv(leab, "data/02-analysis_data/leab.parquet")
+write_csv(male_table, "data/02-analysis_data/male_table.parquet")
+write_csv(female_table, "data/02-analysis_data/female_table.parquet")
+
