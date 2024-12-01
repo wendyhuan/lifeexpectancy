@@ -205,17 +205,10 @@ leab <- lelecleaned_data %>%
 
 #Create a table of life expectancy at birth of Male
 male_table <- leab[leab$Gender == 'Male', ]
-male_table <- male_table |>
-  summarise(
-    "Gender" = "Male",
-    "Average life ex" = mean(`Life Expectancy`))
+
 
 # Create a table of life expectancy at birth of Female
 female_table <- leab[leab$Gender == 'Female', ]
-female_table <- female_table |>
-  summarise(
-    "Gender" = "Female",
-    "Average life ex" = mean(`Life Expectancy`))
 
 
 
