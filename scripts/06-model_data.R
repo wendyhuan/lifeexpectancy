@@ -25,7 +25,6 @@ cleaned_expectancy <- cleaned_expectancy %>%
     LifeExpectancy = as.numeric(LifeExpectancy),
     Status = as.factor(Status),
     PercentageExpenditure = as.numeric(PercentageExpenditure),
-    Continent = as.factor(Continent),
     TotalExpenditure = as.numeric(TotalExpenditure),
     IncomeComposition = as.numeric(IncomeComposition),
     Schooling = as.numeric(Schooling)
@@ -34,18 +33,18 @@ cleaned_expectancy <- cleaned_expectancy %>%
 
 ### Model for developing country based on various predictors ###
 lm_model_developing <-
-  lm(LifeExpectancy ~ PercentageExpenditure + Continent + TotalExpenditure + IncomeComposition + Schooling,
-     data = cleaned_expectancy %>% filter (Status == 'Developing') )
+  lm(LifeExpectancy ~ PercentageExpenditure + TotalExpenditure + IncomeComposition + Schooling,
+     data = cleaned_expectancy %>% filter (Status == 'Developing'))
 
 ### Model for developed country based on various predictors###
 lm_model_developed <-
-  lm(LifeExpectancy ~ PercentageExpenditure + Continent + TotalExpenditure + IncomeComposition + Schooling,
+  lm(LifeExpectancy ~ PercentageExpenditure + TotalExpenditure + IncomeComposition + Schooling,
      data = cleaned_expectancy %>% filter (Status == 'Developed') )
 
 
 #### Save modified data for model as a CSV + parquet and save model as RDS ####
-write_csv(cleaned_expectancy, here::here("data/02-analysis_data/analysis_data.csv"))
-write_parquet(cleaned_expectancy, here::here('data/02-analysis_data/analysis_data.parquet'))
+write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.csv")
+write_parquet(cleaned_expectancy, 'data/02-analysis_data/analysis_data.parquet')
 saveRDS(lm_model_developing, file = "models/lm_model_developing.rds")
 saveRDS(lm_model_developed, file = "models/lm_model_developed.rds")
 
