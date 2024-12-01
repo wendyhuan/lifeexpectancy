@@ -1,12 +1,12 @@
 ---
-title: "Global Life Expectancy: Unraveling Health and Economic Determinants (2000-2015)"
+title: "Global Life Expectancy: Unraveling Health and Economic Determinants (2015-2020)"
 subtitle: "Multiple Linear Regression Analyzing Critical Factors Shaping Life Expectancy "
 author: 
   - Yanfei Huang
 thanks: "Code and data are available at: [https://github.com/wendyhuan/lifeexpectancy](https://github.com/wendyhuan/lifeexpectancy)."
 date: 02 December 2024
 date-format: long
-abstract: "This paper analyze life expectancy and its determinants through 155 countries and make the prediction of people from both developed and developing country. Multiple Linear regression is used to deploying the health and socio-economic factors. Predictions of life expectancy of people from developed or developing country is made according to the essential predictors. The finding indicates that the developed countries tend to live longer life as assumed. And we predict that the average age of persons in developed country is 80, while those in underdeveloped countries are 75. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
+abstract: "This paper analyze life expectancy and its determinants through 155 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 65,70, 75,80. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
 toc-depth: 3
@@ -46,13 +46,16 @@ library(countrycode)
 library(gridExtra)
 
 # load data
-cleaned_expectancy <- read_parquet(here::here("data/02-analysis_data/analysis_data.parquet"))
-
+lelecleaned_data<- read_parquet("data/02-analysis_data/lelecleaned.parquet")
+lea60 <- read_parquet("data/02-analysis_data/lea60.parquet")
+leab <- read_parquet("data/02-analysis_data/leab.parquet")
+male_table <- read_parquet("data/02-analysis_data/male_table.parquet")
+female_table <- read_parquet("data/02-analysis_data/female_table.parquet")
 ```
 
 # Introduction
 
-Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as personal expenditure on health, government healthcare access, economic stability, and social structures. The index of life expectancy is generally served as a benchmark for development, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to better living standards, access to education, and equitable healthcare. Conversely, low life expectancy often signals systemic challenges such as poverty, disease burden, and inadequate healthcare access [@socialdeterminantsofhealth].
+Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as gender, geographic location and economic group. The index of life expectancy is generally served as a benchmark for income group, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to stronger physical factor, better living standards, and geographic location. Conversely, low life expectancy often signals systemic challenges such as weaker health, lower economic situation, and inadequate healthcare access of different region.  [@socialdeterminantsofhealth].
 
 The primary goal of this paper is to determine which factors play a statistically significant role in driving lower life expectancy values and to offer actionable insights based on country status. Using Multiple Linear Regression model, this study focuses on understanding the relationship between country status(developed or developing), personal average expenditure on health based on GDP, percentage of government expenditure on health, income composition of resources and year of schooling in predicting life expectancy across different countries. By identifying and analyzing these predictors, the study aims to highlight actionable aspects for policymakers to target in their efforts to improve population longevity effectively.
 
