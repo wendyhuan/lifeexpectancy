@@ -93,34 +93,64 @@ The raw life expectancy data underwent a several cleaning steps to ensure it was
 
 To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. 
 
+@fig-cleaned shows the average of life expectancy under male, female, 6 different regions and 4 income groups. 
+
 The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
-More information on the data cleaning process can be found in @sec-appx.
-
-## Outcome Variables
-
-The outcome variable is **`Life Expendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.
-
 ```{r}
-#| label: fig-expectancy
-#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy dividing by the status of countries. The graph of developed countries shows narrower spread with density curve located on the rightside of the x-axis. The graph of developing countries performs a wider spread while the highest density position at mid-seventies."
+#| label: fig-cleaned
+#| fig-cap: ""
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
 
-# create plot of historical 184 countries life expectancy dividing by country status. 
-ggplot(lelecleaned, aes(x = `Life Expectancy`)) +
-  geom_histogram(aes(y = ..density..), 
-                 bins = 70, fill = "salmon", color = "pink", alpha = 0.9) +
-  geom_density(color = "royalblue", fill = "lightblue", alpha = 0.6) +
+
+```
+More information on the data cleaning process can be found in @sec-appx.
+
+## Outcome Variables
+
+The outcome variable is **`Life Expendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. 
+
+@fig-expectancy visualizes the distribution of life expectancy from 2015 to 2020 as percentages, combining a histogram and a density plot. A large concentration of observations is observed range of 0% to 25%, reflecting a significant proportion of countries with lower life expectancy relative to others in the dataset. Another visible concentration is around 75% to 100%, indicating a group of countries with relatively high life expectancy. The blue density curve overlays the histogram, providing a smoothed representation of the distribution. Peaks in the curve correspond to high frequency within the histogram. The density plot emphasized the bimodal nature of the distribution with two distinct peaks: one around 12 as low life expectancy percentages; another peak around 87as high life expectancy percentage. 
+
+```{r}
+#| label: fig-expectancy
+#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy. With a huge gap between 25 and 50, we could indicate that most of the countries has a life expectancy of. There exist large data with low life expectancy less than 25 years.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# Create 10-year bins for Life Expectancy
+lerange <- lelecleaned_data %>%
+  mutate(LifeExpectancyRange = cut(`Life Expectancy`, 
+                                   breaks = seq(floor(min(`Life Expectancy`, na.rm = TRUE)), 
+                                   ceiling(max(`Life Expectancy`, na.rm = TRUE)), by = 10), 
+                                   include.lowest = TRUE))
+
+# Calculate percentages for each bin
+life_expectancy_distribution <- lerange %>%
+  count(LifeExpectancyRange) %>%
+  mutate(Percentage = 100 * n / sum(n))
+
+# Plot the histogram with percentages
+ggplot(life_expectancy_distribution, aes(x = LifeExpectancyRange, y = Percentage, fill = LifeExpectancyRange)) +
+  geom_bar(stat = "identity", color = "white", alpha = 0.8) +
   labs(
-    title = "Distribution of Life Expectancy",
-    x = "Life Expectancy", y = "Density"
+    title = "Distribution of Life Expectancy by Age Range",
+    x = "Life Expectancy (10-Year Ranges)",
+    y = "Percentage"
   ) +
   theme_minimal() +
-  facet_wrap(~Status)
+  scale_fill_viridis_d(option = "C") +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  )
 
 ```
 
@@ -346,8 +376,8 @@ Our results are summarized in @tbl-modelresults.
 
 library(rstanarm)
 
-model_developed <-
-  readRDS(file = here::here("models/lm_model_developed.rds"))
+#model_developed <-
+  #readRDS(file = here::here("models/lm_model_developed.rds"))
 ```
 
 ```{r}
@@ -392,19 +422,25 @@ Weaknesses and next steps should also be included.
 
 ## Data Cleaning Notes
 
-We began by importing the raw dataset using the read_csv function from the tidyverse package. To focus our analysis on more relevant variables, we selected specific columns, such as percentage of expenditure of the country, total health expenditure by government .etc., omitting any unnecessary columns.
+We began by importing the raw dataset using the read_csv function from the tidyverse package. To focus our analysis on more relevant variables, we selected specific columns, such as Indicator of life expectancy as birth and life expectancy at 60 years, Country, Period, Gender, and Life expectancy, omitting any unnecessary columns. 
 
-We filter out the rows containing NA values in any of the selected columns for reducing the noise and simpler further analysis..
+We functioned to extract the number before opening the square bracket of life expectancy since the raw data gave both the range and the mean of life expectancy of each country under each year. 
 
-We then renaming columns for clarity. For example, we changed ‘Income.composition.of.resources’ into ‘IncomeComposition’ , making it easier for anyone working with the data to read and understand what each variable represents.
+We filter out the rows containing NA values in any of the selected columns for reducing the noise and simpler further analysis.
 
-Each column is rounded using the round function, specifying the desired number of decimal places for each. Columns not mentioned in mutate remain unchanged. This ensures a flexible and precise cleaning process tailored to further compairation and graphing.
+We then renaming columns for clarity. For example, we changed ‘Location’ into ‘Country’, "Dim1" for "Gender" and "Value" for "Life Expectancy", making it easier for anyone working with the data to read and understand what each variable represents.
 
-We also modified the country name of ‘Republic of Korea’ under Country variable to ‘South Korea’ to avoid misunderstanding of North Korea.
+Each column is rounded using the round function, specifying the desired number of decimal places for each. Columns not mentioned in mutate remain unchanged. This ensures a flexible and precise cleaning process tailored to further comparison and graphing. We dropped the potential percentage symbol to contain purely numerical data.
 
-We also created a new variable called Continent, which indicates which continent does the country comes from in order to provide a geographical context to the analysis. Life expectancy may be higher in developed regions like Europe or North America compared to regions like Sub-Saharan Africa due to differences in healthcare, living standards, and economic development.
+The income group column and the region column was not given in the raw dataset. We created a new variable called "Income_Group" by mapping over country name to four income group (lower_income, lower_middle, upper_middle, high_income) according to the index given by World Bank Income Group. This is a key variable in predicting life expectancy since it is believed that life expectancy is correlated to the income situation. We as well made a mapping to the countries according to its continent and saved as "Region". This is the variable indicates the geographic context to the analysis. Countries are mapped into six continents ("Africa", "Asia", "Europe", "North America", "South America", "Oceania") one by one. 
 
-We also wrapped the cleaning process in a tryCatch block in order to mitigate any errors that arose throughout the cleaning process.
+We again merge the table, removing repeated columns and rows and mapping the region and the country income under different given names. 
+
+Lastly, we filter out NAs again as a further check. We continue filter out the Palestinian territory, which is not a country and was not mapped in neither Region nor Income Group.
+
+For easy reading format, we arrange the country into Alphabet order and mutate the variables again for converting columns into appropriate data types. 
+
+For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female.
 
 After completing the cleaning, we saved the final dataset in both Parquet and CSV formats for later analysis.
 
@@ -532,56 +568,6 @@ Thank you for completing this survey! Your responses will help capture informati
 
 ## Additional graph for analysis
 
-```{r}
-#| label: fig-continent
-#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-#Calculate the number of unique countries per continent
-continent_count <- cleaned_expectancy %>%
-  group_by(Continent) %>%
-  summarise(num_countries = n_distinct(Country))
-
-#Plot1: Distribution of number of data per continent
-#Create the bar plot showing the number of data per continent
-continentrow <- ggplot(cleaned_expectancy, aes(x = Continent)) +
-  geom_bar(fill = "orange", color = "white") +
-  labs(
-    title = "Distribution of Count by Continent",
-    x = "Continent",
-    y = "Count"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(size = 10, face = "bold"),
-    axis.title = element_text(size = 10)
-  ) +
-  geom_text(stat = 'count', aes(label = ..count..), vjust = -0.5, size = 2.5)
-
-# Plot2: The distribution of number of countries each continent
-#Create the bar plot showing the number of unique countries per continent
-continentnumber <-ggplot(continent_count, aes(x = Continent, y = num_countries)) +
-  geom_bar(stat = "identity", fill = "#FFA07A", color = "white") +
-  labs(
-    title = "Distribution of Country by Continent",
-    x = "Continent",
-    y = "Number of Country"
-  ) +
-  theme_minimal() +
-  theme(
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    plot.title = element_text(size = 10, face = "bold"),
-    axis.title = element_text(size = 10)
-  ) +
-  geom_text(aes(label = num_countries), vjust = -0.5, size = 2.5)
-
-# Arrange the plots side by side
-grid.arrange(continentnumber, continentrow, ncol = 2)
-```
 
 ## Posterior predictive check
 
