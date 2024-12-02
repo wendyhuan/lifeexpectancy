@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: [https://github.com/wendyhuan/lifeexpectancy](https://github.com/wendyhuan/lifeexpectancy)."
 date: 02 December 2024
 date-format: long
-abstract: "This paper analyze life expectancy and its determinants through 155 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 65,70, 75,80. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
+abstract: "This paper analyze life expectancy and its determinants through 184 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 65,70, 75,80. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
 toc-depth: 3
@@ -46,20 +46,20 @@ library(countrycode)
 library(gridExtra)
 
 # load data
-lelecleaned_data <- read_parquet("data/02-analysis_data/lelecleaned.parquet")
-lea60 <- read_parquet("data/02-analysis_data/lea60.parquet")
-leab <- read_parquet("data/02-analysis_data/leab.parquet")
-male_table <- read_parquet("data/02-analysis_data/male_table.parquet")
-female_table <- read_parquet("data/02-analysis_data/female_table.parquet")
+lelecleaned_data <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lelecleaned.parquet")
+lea60 <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lea60.parquet")
+leab <- read_parquet("~/lifeexpectancy/data/02-analysis_data/leab.parquet")
+male_table <- read_parquet("~/lifeexpectancy/data/02-analysis_data/male_table.parquet")
+female_table <- read_parquet("~/lifeexpectancy/data/02-analysis_data/female_table.parquet")
 ```
 
 # Introduction
 
-Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as gender, geographic location and economic group. The index of life expectancy is generally served as a benchmark for income group, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to stronger physical factor, better living standards, and geographic location. Conversely, low life expectancy often signals systemic challenges such as weaker health, lower economic situation, and inadequate healthcare access of different region.  [@socialdeterminantsofhealth].
+Life expectancy is a critical measure of a population's overall health and well-being, shaped by various factors such as gender, geographic location and economic group. The index of life expectancy is generally served as a benchmark for income group, indicating the effectiveness of interventions in reducing mortality and improving well-being. Higher life expectancy is believed to linked to stronger physical factor, better living standards, and geographic location. Conversely, low life expectancy often signals systemic challenges such as weaker health, lower economic situation, and inadequate healthcare access of different region. [@socialdeterminantsofhealth].
 
-The primary goal of this paper is to determine which factors play a statistically significant role in driving lower life expectancy values and to offer actionable insights based on different income group. Using Multiple Linear Regression model and Bayesian model, this study focuses on understanding the relationship between Gender, Region and different income group in predicting life expectancy across different countries. By identifying and analyzing these predictors, the study aims to highlight actionable aspects for policymakers to target in their efforts to improve population longevity effectively.
+The primary goal of this paper is to determine which factors play a statistically significant role in driving lower life expectancy values and to offer actionable insights based on different income group. According to the World Bank Income Group, the countries are classified into low, lower-middle, upper-middle, and high based on the country's Gross National Income. Using Multiple Linear Regression model and Bayesian model, this study focuses on understanding the relationship between Gender, Region and different income group in predicting life expectancy across different countries. By identifying and analyzing these predictors, the study aims to highlight actionable aspects for policymakers to target in their efforts to improve population longevity effectively.
 
-Related Research has shown that there exist difference between men and women related with biological, behavioral, and socioeconomic factors, highlighting that gender-specific health behaviors and societal roles influence longevity [@GenderandLifeExpectancy]. Higher-income individuals tend to live longer due to better access to healthcare and healthier lifestyles, with notable regional disparities even within similar income groups [@IncomeGroupsandLongevity]. Additionally, regional socioeconomic differences on health outcomes, especially life expectancy. It emphasizes that addressing regional inequities in wealth and resources is essential for improving population health globally. [@RegionalVariations]. 
+Related Research has shown that there exist difference between men and women related with biological, behavioral, and socioeconomic factors, highlighting that gender-specific health behaviors and societal roles influence longevity [@GenderandLifeExpectancy]. Higher-income individuals tend to live longer due to better access to healthcare and healthier lifestyles, with notable regional disparities even within similar income groups [@IncomeGroupsandLongevity]. Additionally, regional socioeconomic differences on health outcomes, especially life expectancy. It emphasizes that addressing regional inequities in wealth and resources is essential for improving population health globally. [@RegionalVariations].
 
 Findings from this paper reveal that countries of higher income group tend to achieve higher life expectancy, while factors like lower income and poverty region emerge as significant obstacles. The analysis underscores the importance of targeted interventions in key areas such as healthcare accessibility and economic equity to address disparities in life expectancy. This study further contributes to a deeper understanding of how predictive modeling under different country status can inform public health strategies and policy-making on a global scale.
 
@@ -71,35 +71,35 @@ The structure of the paper is as follows: [@sec-data] outlines the data sources 
 
 ## Overview
 
-The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO) [@lifeexpectancy]. This data-set related to life expectancy, health factors for 155 countries has been collected from WHO data repository website and its corresponding economic data was collected from United Nation website. Among all categories of health-related factors only those socio-economic factors on the national level were chosen for global scale analysis.
+The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO) [@lifeexpectancy]. This data-set related to life expectancy, health factors for 184 countries has been collected from WHO data repository website and its corresponding economic data was collected from United Nation website. Among all categories of health-related factors only those socio-economic factors on the national level were chosen for global scale analysis.
 
 This analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various predictors conducted across multiple countries, capturing the support for a country to determine the predicting factor which is contributing to lower value of life expectancy.
 
 ## Measurement
 
-The measurement process refers to how real-world factors—such as the status of a country, average personal health care investment, average year of education and social determinants (country's healthcare investment, human development index of income) — are translated into numerical entries representing life expectancy in a dataset. Each entry captures the average life expectancy of individuals in a specific country during a given year.
+The measurement process refers to how real-world factors—such as the Gender, geographic location of a country and income group - are translated into numerical entries representing life expectancy in a dataset. Each entry captures the average life expectancy of individuals in a specific country during a given year.
 
-**Life Expectancy (`LifeExpectancy`)**: This variable represents the average number of years a person is expected to live, assuming current mortality conditions persist. It is derived using data from national health records, the World Health Organization (WHO) and Global Health Observatory (GHO). The values are calculated and represented in age between 36.3 to 89.
+**Life Expectancy (`Life Expectancy`)**: This variable, life expectancy at birth, represents the number of years a person is expected to live , assuming current mortality conditions persist. It is derived using data from national health records, the World Health Organization (WHO) and Global Health Observatory (GHO). The data on the raw dataset is recorded as a range of age. For simple analysis, we drop the range and take the average of year with one decimal. The values are calculated and represented in age between 10.1 to 87.4.
 
-**Percentage Expenditure on Health (`PercentageExpenditure`)**: This variable reflects the expenditure allocated to health-related expenditures as a percentage of GDP per capita. The data is typically collected from government reports, economic surveys, and global health databases. It indicates the level of personal financial investment in the health sector and is expressed as a percentage.
+**Income Group(`Income_Group`)**: This is a categorical variable that classifies countries into four groups by the country's Gross National Income according to the latest index from World Bank Income Group. The countries are classified into low, lower-middle, upper-middle, and high under the standard as follow. Low-income economies is defined as a country with a gross national income less than \$1135, lower-middle is between the range to \$1136 to \$4465, upper-middle in the range of \$4465 to \$13845 and high is more than \$13846.
 
-**Schooling (`Schooling`)**: This variable captures the average number of years of education received by individuals in a country. Data is obtained from educational surveys and censuses conducted by international and national organizations. The values are recorded in years and used to assess the link between education and health outcomes like life expectancy. The data range from 0 to 20.7
+**Gender(`Gender`)**: The gender of the population of each country is included as a categorical variable (Male/Female/Both Sex).
 
-**Status (`Status`)**: This is a categorical variable that classifies countries as "Developed" or "Developing," based on various socio-economic and health indicators accepted globally. It provides context for comparing life expectancy across different stages of national development.
-
-**Total expenditure (`TotalExpenditure`)**: This is a numerical variable that shows the general government expenditure on health as a percentage of total government expenditure. The number drop of the percentage and shows as the number between 0 to 100, where higher values indicate a greater share of government spending allocated to health.
-
-**Income composition of resource (`IncomeComposition`)**: This is a numerical variable representing the income component of the Human Development Index (HDI). It reflects the contribution of income to human development, with values ranging from 0 to 1, where higher values signify a greater income contribution to overall development.
+**Region(Region)**: This is a categorical variable that classifies the geographic location of the countries. It is mapped one by one by the name of the country. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’).
 
 ## Data Cleaning
 
-The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. We first select and rename key variables from raw data to focus on relevant information. The key variables of interest in our analysis include Country, Year, Status of the country, Life expectancy, Percentage expenditure, Total expenditure, Income composition of resources and the year of education. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data. The cleaned dataset was then saved as a Parquet file for efficient storage and further analysis.
+The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. The goal of this cleaning process is to create a table including income group (high, upper middle, lower middle, low), gender (Male, Female, Both Sex), region (Asia, Europe, North America, South America, Africa, Oceania) as rows and life expectancy as column.
+
+To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. 
+
+The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
 More information on the data cleaning process can be found in @sec-appx.
 
 ## Outcome Variables
 
-The outcome variable is **`LifeExpendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.
+The outcome variable is **`Life Expendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. To examine the differences in life expectancy under the same variables, we separate the data into developed and developing countries, where developed country are generally believed to have higher life expectancy. @fig-expectancy displays density of the historical data of life expectancy across 195 countries from 2000 to 2015, comparing developing to developed countries.The average age of most developed country is approximately 80, while the majority developing countries typically have average life expectancy around mid-seventies.
 
 ```{r}
 #| label: fig-expectancy
@@ -110,13 +110,13 @@ The outcome variable is **`LifeExpendency`**. This is the primary dependent vari
 #| message: false
 
 
-# create plot of historical 155 countries life expectancy dividing by country status. 
-ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
+# create plot of historical 184 countries life expectancy dividing by country status. 
+ggplot(lelecleaned, aes(x = `Life Expectancy`)) +
   geom_histogram(aes(y = ..density..), 
                  bins = 70, fill = "salmon", color = "pink", alpha = 0.9) +
   geom_density(color = "royalblue", fill = "lightblue", alpha = 0.6) +
   labs(
-    title = "Distribution of Life Expectancy by Status",
+    title = "Distribution of Life Expectancy",
     x = "Life Expectancy", y = "Density"
   ) +
   theme_minimal() +
@@ -128,228 +128,160 @@ ggplot(cleaned_expectancy, aes(x = LifeExpectancy)) +
 
 The **predictor variables** (or independent variables) are the factors believed to influence the life expectancy:
 
-1.  **Status(`Status`)**: The status of a country is the key factor influencing the life expectancy. We divide the life expectancy by the status of a country as it is believed that developed country generally have higher life expectancy due to better healthcare access, sanitation, and living standards, while developing countries face greater health challenges. This variable provides context for comparing life expectancy between different levels of country development. @fig-statusdistribution includes 28 developed countries and 127 developing countries. The graph on left shows that we've got much greater representation of developing nations across the dataset. Comparing both graph, we still could tell that the dataset contains significantly more data for developing countries than for developed countries, even relative to the difference in the number of countries themselves.
+1.  **Income Group(`Income_Group`)**: The income group of a country is the key factor influencing the life expectancy. This variable provides context for comparing life expectancy between different levels of country income group. The division of the life expectancy by the income group of a country because income levels often correlate strongly with various factors affecting health and longevity. Higher income countries typically have more resources to invest in robust healthcare systems, with better living conditions while lower income countries often face challenges such as inadequate healthcare infrastructure and malnutrition. 
 
-2.  **Percentage Expenditure on Health (`PercentageExpenditure`)**: This variable reflects the expenditure allocated to health-related expenditures as a percentage of GDP per capita. This percentage is generally expected to fall between 0% and 100%, where 100% would indicate that the total GDP per capita is allocated to healthcare. @fig-percentage shows that in most of the years from 2000 to 2015, most of the countries have the individual health expenditure higher than their GDP. It is noticeable that some developing countries have individual health expenditure less than 20% of the GDP. 
+Following by the four income group, we would like to see the distribution of the income group of 184 WHO member countries. @fid-income shows that there are 55 countries at the high income group, 26 countries at low income group, 54 countries at the lower-middle group while there are 49 countries at the upper-middle group. With significant less low income countries, we expect to see the life expectancy lie in a comparably higher range. On the other hand, there might exist sever outliers dropping the mean. 
 
-3.  **Total expenditure (`TotalExpenditure`)**: This variable shows the general government expenditure on health as a percentage of total government expenditure. This is considered as a reflection of economic situation of a country. A higher percentage indicates that a country places significant emphasis on healthcare as a key area of public investment.
+2.  **Gender(`Gender`)**: The gender of the population of each country is included as a categorical variable (Male/Female/Both Sex). This is a key variable in the dataset because gender has been fully recognized connected with the biological physical factor which directly effect the life expectancy. @fig-gender shows that the with an stable average of 74, life expectancy of female is constantly higher than male's average of 70. The line plot reveals a steady increase until 2019, followed by a sharp decline in 2020, which is assumed to be associated with the impact of COVID-19.
 
-4.  **Income composition of resource (`IncomeComposition`)**: his is a numerical variable representing the income component of the Human Development Index (HDI).
-
-5.  **Schooling (`Schooling`)**: This is a numerical variable showing the year of receiving education. @fig-schooling is a combination of box plot and violin plot showing the year of schooling differs by the status. In development countries, the average number of years of schooling is approximately 16 years, with a narrow distribution suggesting that the educational attainment in these countries is more consistent. In contrast, in developing countries, the average number of years od schooling is around 11 years. With a much wider spread and significant more outlier, the education situation in developing countries is less stable.  
+3.  **Region(Region)**: This is a categorical variable that classifies the geographic location of the countries. It is mapped one by one by the name of the country. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’). @fig-region indicates that with the number of 54, Africa has the most WHO member countries. Both Asia and Europe has 43 countries,listing in the middle while the other three continent has the significant less number of countries. North America has 22 countries, South America has 12 countries and Oceania has the least, 10 countries. 
 
 ```{r}
-#| label: fig-statusdistribution
-#| fig-cap: "Distribution of country status, showing 28 dveloped countries and 127 developing countries, with a substantial difference in the number of data points. From 2000 to 2015, notably, the number of data entries for developing countries far exceeds that of developed countries, reflecting the greater representation of developing nations across the dataset."
+#| label: fig-income
+#| fig-cap: "Distribution of country income group."
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
 # Count the number of unique countries for each Status
-country_counts <- cleaned_expectancy %>%
+country_counts <- lelecleaned_data %>%
   # Ensure each country is only counted once
-  distinct(Country, Status) %>%  
+  distinct(Country, Income_Group) %>%  
    # Count the number of countries in each Status category
-  count(Status)  
+  count(Income_Group)  
 
-#Plot1: create bar plot of count of status
-numberrows <- ggplot(cleaned_expectancy, aes(x = Status, fill = Status)) +
-  geom_bar() +
-  geom_text(stat = "count", aes(label = ..count..), vjust = -0.5,size = 2.5) +
-  labs(
-    title = "Distribution of Count of Country by Status",
-    x = "Status (Developed vs Developing)",
-    y = "Count"
-  ) +
-  theme_minimal() +
-  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
-  theme(legend.position = "none",
-  plot.title = element_text(size = 7,face = "bold"))
-
-# Plot2: Create a bar plot to show the distribution of countries by Status
-numbercountry <- ggplot(country_counts, aes(x = Status, y = n, fill = Status)) +
+# Create a bar plot to show the distribution of countries by Status
+ggplot(country_counts, aes(x = Income_Group, y = n, fill = Income_Group)) +
    # Use 'identity' to directly use the count values
   geom_bar(stat = "identity") + 
    # Add count labels on top of bars
   geom_text(aes(label = n), vjust = -0.5,size = 2.5) +  
   labs(
-    title = "Distribution of Country by Status",
-    x = "Status (Developed vs Developing)",
+    title = "Distribution of Country by Income Group",
+    x = "Income Group",
     y = "Number of Countries"
   ) +
   theme_minimal() +
-  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "darkblue")) +
+  scale_fill_manual(values = c("lower_income" = "skyblue", "lower_middle" = "darkblue", "upper_middle" = "blue", "high_income" = "lightblue")) +
   theme(
     legend.position = "none", 
-  plot.title = element_text(size = 7,face = "bold"))
+  plot.title = element_text(size = 15,face = "bold"))
 
-# Arrange the plots side by side
-grid.arrange(numberrows, numbercountry, ncol = 2)
 ```
 
 ```{r}
-#| label: fig-percentage
-#| fig-cap: "Distribution of Health Expenditure ranges by country status. With the orange color showing the developing and blue showing developed, most of the country has more than 100% of their GDP per capita allocated to health-related expenditures."
+#| label: fig-region
+#| fig-cap: "Distribution of different region of the 184 countries. Africa has the most countries with an number of 54. Asia and Europe has the same amount of 43, North America has 22 countries while the other two continent has almost the same amount of countries."
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-# Define percentage ranges
-ranges <- c("0%-20%", "20%-30%", "30%-50%", "50%-100%", ">100%")
+# Group by Region and count the number of countries
+region_counts <- lelecleaned_data %>%
+  distinct(Country, Region) %>%  # Ensure each country is only counted once
+  count(Region)  # Count the number of distinct countries in each Region
 
-# Create a new variable to classify the ranges
-expenditure_ranges <- cleaned_expectancy %>%
-  mutate(
-    ExpenditureRange = case_when(
-      PercentageExpenditure <= 20 ~ "0%-20%",
-      PercentageExpenditure > 20 & PercentageExpenditure <= 30 ~ "20%-30%",
-      PercentageExpenditure > 30 & PercentageExpenditure <= 50 ~ "30%-50%",
-      PercentageExpenditure > 50 & PercentageExpenditure <= 100 ~ "50%-100%",
-      PercentageExpenditure > 100 ~ ">100%"
-    )
-  ) %>%
-  # Ensure the right order
-  mutate(ExpenditureRange = factor(ExpenditureRange, levels = ranges))
-
-# Plot the histogram of expenditure ranges separated by status
-ggplot(expenditure_ranges, aes(x = ExpenditureRange, fill = Status)) +
-  geom_bar(stat = "count", position = "dodge", color = "white", alpha = 0.7) +
-  # Adds count on top of each bin
-  geom_text(stat='count', aes(label = ..count..), position = position_dodge(width = 0.8), vjust = - 0.5, size = 2.5) +
-  scale_fill_manual(values = c("Developed" = "blue", "Developing" = "orange")) +
+# Plot: Distribution of countries in different regions
+ggplot(region_counts, aes(x = Region, y = n, fill = Region)) +
+  geom_bar(stat = "identity") +  # Plot the count of countries
+  geom_text(aes(label = n), vjust = -0.3, size = 3) +  # Add count labels on top of bars
   labs(
-    title = "Distribution of Health Expenditure Ranges by Country Status",
-    x = "Health Expenditure Range (% of GDP per Capita)",
-    y = "Count",
-    fill = "Status"
+    title = "Distribution of Countries by Region",
+    x = "Region",
+    y = "Number of Countries"
   ) +
   theme_minimal() +
+  scale_fill_brewer(palette = "Set3") +  # Color palette for different regions
   theme(
-    legend.position = "right",
-    axis.text.x = element_text(angle = 45, hjust = 1), # Adjusts the x-axis labels for clarity
-    plot.title = element_text(size = 10,face = "bold")) 
-```
-
-```{r}
-#| label: fig-total
-#| fig-cap: "Distribution of contient. Africa has the highest number of countries represented, followed by Asia among all 5 continents. The distribution of count of data aslo shows that a significant portion of the data is focused on African and Asian nations.  "
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-# Define percentage ranges
-ranges <- c("0%-2%", "2%-4%", "4%-6%", "6%-8%", "8%-10%", "10%-12%","12%-14%", ">14%")
-
-# Create a new variable to classify the ranges
-countryexpenditure <- cleaned_expectancy %>%
-  mutate(
-    TotalRange = case_when(
-      TotalExpenditure <= 2 ~ "0%-2%",
-      TotalExpenditure > 2 & TotalExpenditure <= 4 ~ "2%-4%",
-      TotalExpenditure > 4 & TotalExpenditure <= 6 ~ "4%-6%",
-      TotalExpenditure > 6 & TotalExpenditure <= 8 ~ "6%-8%",
-      TotalExpenditure > 8 & TotalExpenditure <= 10 ~ "8%-10%",
-      TotalExpenditure > 10 & TotalExpenditure <= 12 ~ "10%-12%",
-      TotalExpenditure > 12 & TotalExpenditure <= 14 ~ "12%-14%",
-      TotalExpenditure > 14 ~ ">14%"
-    )
-  ) %>%
-  # Ensure the right order
-  mutate(TotalRange = factor(TotalRange, levels = ranges))
-
-summary(countryexpenditure$TotalRange)
-table(countryexpenditure$TotalRange)
-
-
-# Plot the histogram of expenditure ranges separated by status
-ggplot(countryexpenditure, aes(x = TotalRange, fill = Status)) +
-  geom_bar(stat = "count", position = "dodge", color = "white", alpha = 0.7) +
-  # Adds count on top of each bin
-  geom_text(stat='count', aes(label = ..count..), position = position_dodge(width = 0.8), vjust = - 0.5, size = 2.5) +
-  scale_fill_manual(values = c("Developed" = "lightblue", "Developing" = "salmon")) +
-  labs(
-    title = "Distribution of Government Expenditure on Health as Percentage Range by Country Status",
-    x = "Government Expenditure Range (%)",
-    y = "Count",
-    fill = "Status"
-  ) +
-  theme_minimal() +
-  theme(
-    # Sidebar for the legend
-    legend.position = "right",
-    axis.text.x = element_text(angle = 45, hjust = 1), # Adjusts the x-axis labels for clarity
-    plot.title = element_text(size = 10,face = "bold")) 
-
-```
-
-```{r}
-#| label: fig-income
-#| fig-cap: "Combined Box plot and Violin plot of income component of the Human Development Index (HDI) showing the variance and the average of the income component under status of different statuses."
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-# Create a combined boxplot and violin plot
-ggplot(cleaned_expectancy, aes(x = Status, y = IncomeComposition, fill = Status)) +
-  # Violin plot shows distribution
-  geom_violin(trim = FALSE, alpha = 0.5) + 
-  # Boxplot shows summary statistics
-  geom_boxplot(width = 0.2, alpha = 0.7, outlier.color = "red", outlier.shape = 16) + 
-  # Highlight mean
-  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") + 
-  labs(
-    title = "Income Composition of Resources by Country Status",
-    x = "Country Status",
-    y = "Income Composition (HDI Contribution)"
-  ) +
-  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "salmon")) +
-  theme_minimal() +
-  theme(
-    # Remove legend as x-axis indicates status
-    legend.position = "none", 
-    axis.text.x = element_text(angle = 0, hjust = 0.5)
+    legend.position = "none",
+    plot.title = element_text(size = 10, face = "bold"),
+    axis.text.x = element_text(angle = 45, hjust = 1)  # Rotate axis labels for clarity
   )
+
 ```
 
 ```{r}
-#| label: fig-schooling
-#| fig-cap: "Distribution of school separate by Status. In developed countries, the average number of years of schooling is approximately 16 years, typically following a bell-shaped distribution. In contrast, in developing countries, the average number of years of schooling is around 11 years. However, the variance in the years of schooling is significantly larger."
+#| label: fig-gender
+#| fig-cap: "Distribution of gender each year. The average of female life expectancy is approximately 74 around years, constantly higher than male's average of 70. Compared to male, female's life expectancy is marginally more steady."
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-# Create a combined boxplot and violin plot
-ggplot(cleaned_expectancy, aes(x = Status, y = Schooling, fill = Status)) +
-  # Violin plot shows distribution
-  geom_violin(trim = FALSE, alpha = 0.5) + 
-  # Boxplot shows summary statistics
-  geom_boxplot(width = 0.2, alpha = 0.7, outlier.color = "red", outlier.shape = 16) + 
-  # Highlight mean
-  stat_summary(fun = mean, geom = "point", shape = 18, size = 3, color = "darkblue") + 
+# Calculate the average life expectancy per year for males
+male_avg <- male_table %>%
+  group_by(Period) %>%
+  summarise(AverageLifeExpectancy = mean(`Life Expectancy`, na.rm = TRUE)) 
+
+# Calculate the average life expectancy per year for females
+female_avg <- female_table %>%
+  group_by(Period) %>%
+  summarise(AverageLifeExpectancy = mean(`Life Expectancy`, na.rm = TRUE))
+
+#Combine the two tables into one
+combined_avg <- bind_rows(male_avg %>% mutate(Gender = "Male"), 
+                          female_avg %>% mutate(Gender = "Female"))
+
+# Plot the combined data
+ggplot(combined_avg, aes(x = Period, y = AverageLifeExpectancy, color = Gender, group = Gender)) +
+  geom_line(size = 1) +
+  geom_point(size = 2) +
   labs(
-    title = "Schooling by Country Status",
-    x = "Country Status",
-    y = "Year of Schooling"
+    title = "Life Expectancy Over Years by Gender",
+    x = "Period",
+    y = "Life Expectancy",
+    color = "Gender"
   ) +
-  scale_fill_manual(values = c("Developed" = "skyblue", "Developing" = "pink")) +
   theme_minimal() +
   theme(
-    # Remove legend as x-axis indicates status
-    legend.position = "none", 
-    axis.text.x = element_text(angle = 0, hjust = 0.5)
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    legend.position = "top",
+    axis.text.x = element_text(angle = 45, hjust = 1)
   )
+
+```
+
+## Basic Data Summary
+
+The table below shows the basic summary of the mean, median, max, standard deviation, variance and sample size of life expectancy. We could tell that the average of the life expectancy from the 6 years is 45.9, with a large standard deviation of 26.9. The max of the life expectancy is 87.4, among all 6624 rows of data. The standard deviation and variance are extremely high because of the range of data is large, in other words, because the mean and median are 45.9 and 37.7, compared to the max 87.4, there is likely some outliers in the data creating such a high standard deviation and variance.
+
+```{r}
+#| label: fig-summary
+#| fig-cap: "Summary statistics of the number of life expectancy over countries and years. "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# Calculate summary statistics
+life_expectancy_stats <- lelecleaned_data %>%
+  summarise(
+    Mean = round(mean(`Life Expectancy`, na.rm = TRUE),1),
+    Median = median(`Life Expectancy`, na.rm = TRUE),
+    Max = max(`Life Expectancy`, na.rm = TRUE),
+    SD = round(sd(`Life Expectancy`, na.rm = TRUE),1),
+    Variance = round(var(`Life Expectancy`, na.rm = TRUE),1),
+    N = sum(!is.na(`Life Expectancy`)) # Count of non-missing values
+  )
+
+# Create and format the table
+life_expectancy_stats %>%
+  kbl(
+    caption = "Summary Statistics of Life Expectancy",
+    col.names = c("Mean", "Median","Max", "Standard Deviation", "Variance", "N"),
+    align = "c"
+  ) %>%
+  kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
+
 ```
 
 # Model
 
 ## Model set-up {#sec-modset}
 
-To predict the outcome of the life expectancy of people from different regions, we developed two linear regression models using R [@citeR]: one for the developed country and one for developing country. The outcome variable, `LifeExpectancy`, is a continuous and represents the average number of years a person is expected to live, assuming all related resources remain constant throughout their lifetime. These models aim to estimate the life expectancy of people under different environment. The GAM allows for capturing potential non-linear relationships between the predictors and the outcome.
+The goal of the Bayesian model is to incorporate prior knowledge, such as insights from previous studies or analyses, into the selection of the model. To predict the outcome of the life expectancy of people from different regions, in this paper, we developed a linear regression models using R [@citeR]. The outcome variable, **`Life Expectancy`**, is a continuous and represents the average number of years a person is expected to live, assuming all related resources remain constant throughout their lifetime. The model aim to estimate and predict the life expectancy of people under different gender, region and income group. The normal Gaussian distribution is effective when used for modeling scenarios where the residuals of the data aare assumed to be independent nd normally distributed around the regression line. The GAM allows for capturing potential non-linear relationships between the predictors and the outcome.
 
 The model is specified as follows:
 
@@ -364,25 +296,23 @@ y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
 
 Where:
 
--   $Lifeexpectancy\_developed$ is the life expectancy of developed country.
+-   $yi$ is the outcome variable (Life Expectancy)for the i-th country.
 
--   $Lifeexpectancy\_developing$ is the life expectancy of developing country.
+-   $_i$ represents the expected value of $yi$, modeled as a linear combination of the predictors: Gender, Region, and Income Group.
 
--   $PercentageExpenditure$ is a smooth function of the runner’s age at the time of the race.
+-   $Gender$ is the gender of the individual. 
 
--   $Continent$ is
-
--   $TotalExpenditure$ is the runner's gender (treated as a categorical variable).
-
--   $IncomeComposition$ is a smooth function of the total number of NYRR races the runner has participated in.
-
--   $Schooling$​ is the country the runner is from under IAAF standards.
+-   $Income Group$ is the income group of the country.
 
 -   $\epsilon_i$ is the error term, assumed to be normally distributed with a mean of 0 and constant variance $ϵ_i​∼N(0,\sigma^2)$
 
-This GAM model allows for smooth, non-linear effects of continuous predictors (**`age`** and **`races_count`**) while keeping the categorical predictors (**`gender`** and **`iaaf_category`**) in a linear framework.
 
-Here we briefly describe the Bayesian analysis model used to investigate... Background details and diagnostics are included in [Appendix -@sec-model-details].
+
+
+This GAM model allows for smooth, non-linear effects of continuous predictors (**`age`** and **`races_count`**) while keeping the categorical predictors (**`Income_Group`** and **`iaaf_category`**) in a linear framework.
+
+
+[Appendix -@sec-model-details].
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`.
 
@@ -391,6 +321,13 @@ We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use
 We expect a positive relationship between the size of the wings and time spent aloft. In particular...
 
 We can use maths by including latex between dollar signs, for instance $\theta$.
+
+#### Model Validation
+
+RMSE 
+ 
+Out-of- Sample testing
+
 
 # Results
 
@@ -439,7 +376,9 @@ If my paper were 10 pages, then should be be at least 2.5 pages. The discussion 
 
 Please don't use these as sub-heading labels - change them to be what your point actually is.
 
-## Third discussion point
+## Life Expectancy at 60
+
+The life expectancy at 60 means that how long is a person expected to live at 60 instead of at birth.
 
 ## Weaknesses and next steps
 
@@ -469,7 +408,9 @@ We also wrapped the cleaning process in a tryCatch block in order to mitigate an
 
 After completing the cleaning, we saved the final dataset in both Parquet and CSV formats for later analysis.
 
-## Idealized Survey
+## Data Cleaning Table
+
+### Idealized Survey
 
 **Survey: Understanding Life Expectancy and Influencing Factor**
 
@@ -511,7 +452,7 @@ Thank you for participating in this survey. This survey aims to gather insights 
 -   College or university degree
 -   Postgraduate degree
 
-**5.How many years of formal schooling have you completed?** 
+**5.How many years of formal schooling have you completed?**
 
 Please write the number: \_\_\_\_\_\_\_
 
@@ -529,9 +470,9 @@ Please write the number: \_\_\_\_\_\_\_
 
 **7.What's the distance to the nearest healthcare facility from your residence?**
 
-- Less than 1 km 
-- 1-5 km 
-- More than 5 km
+-   Less than 1 km
+-   1-5 km
+-   More than 5 km
 
 **Section 4: Government Expenditure on Healthcare**
 
@@ -541,7 +482,7 @@ Please write the number: \_\_\_\_\_\_\_
 -   Yes, partially subsidized
 -   No
 
-**9. What is the approximate cost of your most recent healthcare visit (in local currency)?** 
+**9. What is the approximate cost of your most recent healthcare visit (in local currency)?**
 
 Please write the amount \_\_\_\_\_\_\_
 
@@ -641,9 +582,6 @@ continentnumber <-ggplot(continent_count, aes(x = Continent, y = num_countries))
 # Arrange the plots side by side
 grid.arrange(continentnumber, continentrow, ncol = 2)
 ```
-
-
-
 
 ## Posterior predictive check
 
