@@ -1,4 +1,4 @@
-This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.11.28)  2 DEC 2024 12:20
+This is XeTeX, Version 3.141592653-2.6-0.999996 (TeX Live 2024) (preloaded format=xelatex 2024.12.2)  2 DEC 2024 13:27
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -964,19 +964,19 @@ LaTeX Font Info:    Font shape `TU/lmtt/bx/n' in size <10.95> not available
 
 LaTeX Warning: Reference `fig-expectancy' on page 4 undefined on input line 408.
 
+
+
+[4]
 File: paper_files/figure-pdf/fig-expectancy-1.pdf Graphic file (type pdf)
 <use paper_files/figure-pdf/fig-expectancy-1.pdf>
 
 
-[4]
-
-LaTeX Warning: Reference `fig-gender' on page 5 undefined on input line 465.
-
-
-
 [5]
 
-LaTeX Warning: Reference `fig-region' on page 6 undefined on input line 475.
+LaTeX Warning: Reference `fig-gender' on page 6 undefined on input line 474.
+
+
+LaTeX Warning: Reference `fig-region' on page 6 undefined on input line 484.
 
 File: paper_files/figure-pdf/fig-income-1.pdf Graphic file (type pdf)
 <use paper_files/figure-pdf/fig-income-1.pdf>
@@ -998,11 +998,11 @@ See the LaTeX manual or LaTeX Companion for explanation.
 Type  H <return>  for immediate help.
  ...                                              
                                                   
-l.542 \centering
+l.551 \centering
                  
 Here is how much of TeX's memory you used:
  23008 strings out of 475964
- 442603 string characters out of 5776591
+ 442603 string characters out of 5776592
  1122848 words of memory out of 5000000
  45508 multiletter control sequences out of 15000+600000
  566606 words of font info for 102 fonts, out of 8000000 for 9000
