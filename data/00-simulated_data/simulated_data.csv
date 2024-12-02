@@ -1,51 +1,181 @@
-country,status,year,life_expectancy,BMI,GDP,percentage_expenditure,total_expenditure,income_composition_resources,schooling
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2013,NA,20.264411643002585,NA,35460.96134426142,15.632663108408451,0.4172916709911078,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2007,NA,23.174839618604924,NA,73187.24331228225,18.959417218575254,0.6050437695812434,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2004,NA,27.848678545947127,NA,80013.48362838058,10.674772253492847,0.4408485846128315,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2005,NA,25.172890911033527,NA,28933.665483805584,13.749759242171422,0.6857042403426021,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2014,NA,33.178110830246155,NA,66703.2941703049,11.0432748880703,0.7420807655900717,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2004,NA,22.690918791401458,NA,84650.69298499939,7.002176713664085,0.667019509524107,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2008,NA,22.235272377849743,NA,39209.839199584676,3.5128951447550207,0.591705271275714,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2008,NA,23.323078277145676,NA,24808.44000475621,3.9115640413947403,0.4366500717122108,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2012,NA,27.90879455045489,NA,31227.102922968566,12.43654557899572,0.6008930051699282,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2004,NA,24.26932079913782,NA,52692.224079236155,16.451739088864997,0.371283573936671,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2014,NA,20.381134216350436,NA,52583.022546963766,12.857248879270628,0.6370297678280622,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2011,NA,23.593786137071987,NA,21732.285899654962,17.669276141095906,0.30162308625876905,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2005,NA,28.255002697766376,NA,77010.96103563416,6.046409932198003,0.5900439698249103,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2000,NA,19.622297013694542,NA,30472.77447801549,19.015267562121153,0.7647734804078937,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2005,NA,24.88744191605676,NA,72929.00478979992,16.26318225916475,0.5811032439116388,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2011,NA,24.25478573966677,NA,98726.84781020903,7.261634001042694,0.855764609668404,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2004,NA,23.90732589008111,NA,58580.85114897392,3.449984634993598,0.5190378108993172,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2000,NA,23.760216035085854,NA,57299.76950196433,16.119443107862025,0.6833461523987353,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2007,NA,25.54743595311475,NA,12240.564328793902,12.954982902854681,0.7515116830822082,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2007,NA,25.766336299316933,NA,17319.480408166535,10.998288526432589,0.4853633411228657,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2009,NA,37.958074972305965,NA,36841.20727158594,13.893086114665493,0.5389538152143359,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2010,NA,21.183275908331385,NA,74005.13784540654,10.36373128532432,0.6442973451688886,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2015,NA,31.721809270669024,NA,615.1395826456137,12.971429525408894,0.7900613334495574,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2012,NA,23.116485567922293,NA,56820.51823548181,15.65640234039165,0.5247340630274266,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2005,NA,18.095187124795636,NA,793.1817190279253,16.52851130790077,0.7396739282179625,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2008,NA,21.71552573732578,NA,63594.46957271127,9.94046360696666,0.8610042412765324,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2008,NA,25.87011275724184,NA,59482.49656495731,7.0365527221001685,0.42521393350325526,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2011,NA,30.640138809738282,NA,53417.904117561644,5.604625796666369,0.3382170789409429,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2011,NA,24.65583712056463,NA,33191.893299815245,11.133437904762104,0.713022675504908,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2010,NA,28.117112402787072,NA,62508.723571469076,16.187061273958534,0.6850851054769009,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2010,NA,28.523324838191545,NA,84277.59606364649,4.801043211016804,0.7773012556135654,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2014,NA,20.685433784879628,NA,14409.16101804562,16.1922802797053,0.5865674078464509,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2000,NA,23.306839591565105,NA,15360.892577640712,9.778907584259287,0.6655012182891369,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2002,NA,24.112137865071325,NA,12334.598865816602,2.225721199763939,0.303258789377287,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2011,NA,17.894329441687972,NA,14507.138316326076,6.148824445670471,0.6812022039201111,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2011,NA,24.59956830793723,NA,602.8590065869503,2.1899108595680445,0.41122386027127505,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2001,NA,16.718509956404763,NA,68700.4693360182,16.73051450238563,0.436584306601435,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2002,NA,24.484755562440007,NA,64350.263765040785,8.817394473357126,0.45046029542572796,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2004,NA,28.971533921922166,NA,76810.59385355795,6.865688818274066,0.31782647310756146,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2013,NA,28.658266639385808,NA,13778.650973871117,12.923517566174269,0.8152290845755488,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2014,NA,25.180440527928386,NA,73623.7678355244,9.387153895338997,0.6870921407360584,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2002,NA,19.94489687036689,NA,42750.70770247141,8.994189470307902,0.7212669310625643,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2009,NA,27.10795709232109,NA,39492.71605677088,7.735399073921144,0.3317255672067404,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2004,NA,30.874315774535923,NA,27033.88258866477,5.089650670764968,0.8005265076644719,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2012,NA,16.053426222446994,NA,7217.417522665113,9.837314365198836,0.7997165431268514,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2010,NA,25.225456299455743,NA,75605.38364371099,16.483242753194645,0.7450830086600035,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2000,NA,19.097543242090833,NA,9828.503936295165,7.181889739120379,0.44342884900979695,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2000,NA,30.462246633183653,NA,38445.20118667651,3.110460012452677,0.32749722730368375,NA
-"c(""Canada"", ""Australia"", ""Argentina"", ""Brazil"", ""United States of America"", ""Portugal"", ""Qatar"", ""Republic of Korea"")",NA,2010,NA,28.638302569309843,NA,48518.06123148301,18.26793708349578,0.8180338536389173,NA
-"c(""Developing"", ""Developed"", ""Developing"", ""Developing"", ""Developed"", ""Developed"", ""Developing"", ""Developing"")",NA,2011,NA,28.76651484663804,NA,74371.40230343142,4.706830810056999,0.6170373623259366,NA
+Country,Gender,Period,Value
+country_A,Male,2015,65.71969738928601
+country_A,Male,2015,81.42355555668473
+country_A,Male,2015,47.80016399221495
+country_A,Male,2015,73.22491350118071
+country_A,Male,2015,73.16691836807877
+country_A,Male,2016,48.56440117349848
+country_A,Male,2016,83.99876303505152
+country_A,Male,2016,83.36831063264981
+country_A,Male,2016,41.83910329360515
+country_A,Male,2016,80.073782147374
+country_A,Male,2017,65.89913593837991
+country_A,Male,2017,54.4584032590501
+country_A,Male,2017,45.94512119423598
+country_A,Male,2017,50.63014705432579
+country_A,Male,2017,83.13410862814635
+country_A,Male,2018,59.1235821810551
+country_A,Male,2018,78.329464267008
+country_A,Male,2018,56.20839461684227
+country_A,Male,2018,78.7183029903099
+country_A,Male,2018,67.80418358743191
+country_A,Male,2019,57.73015797371045
+country_A,Male,2019,76.59348759101704
+country_A,Male,2019,80.0066418806091
+country_A,Male,2019,54.46647740667686
+country_A,Male,2019,73.35148059995845
+country_A,Male,2020,82.32526974519715
+country_A,Male,2020,59.6046156459488
+country_A,Male,2020,52.40384404081851
+country_A,Male,2020,55.61320759356022
+country_A,Male,2020,66.34587549837306
+country_A,Female,2015,66.29127418622375
+country_A,Female,2015,50.865751607343554
+country_A,Female,2015,78.5053655714728
+country_A,Female,2015,55.23603959940374
+country_A,Female,2015,76.46436703857034
+country_A,Female,2016,89.36341753927991
+country_A,Female,2016,69.29021847667173
+country_A,Female,2016,68.64967124769464
+country_A,Female,2016,46.11984336283058
+country_A,Female,2016,48.65932679735124
+country_A,Female,2017,58.420287838671356
+country_A,Female,2017,77.00243894709274
+country_A,Female,2017,40.30707286205143
+country_A,Female,2017,68.41004321817309
+country_A,Female,2017,40.39609482046217
+country_A,Female,2018,71.7970527568832
+country_A,Female,2018,69.74104569293559
+country_A,Female,2018,66.70871914597228
+country_A,Female,2018,56.59561260603368
+country_A,Female,2018,71.25417432747781
+country_A,Female,2019,82.13871941901743
+country_A,Female,2019,47.204152550548315
+country_A,Female,2019,47.68002308905125
+country_A,Female,2019,46.166861101519316
+country_A,Female,2019,47.253141689579934
+country_A,Female,2020,40.3009325126186
+country_A,Female,2020,74.35007816879079
+country_A,Female,2020,72.17495363205671
+country_A,Female,2020,78.40518097858876
+country_A,Female,2020,46.88889437587932
+country_B,Male,2015,76.81175203528255
+country_B,Male,2015,61.375067601911724
+country_B,Male,2015,59.74605548894033
+country_B,Male,2015,53.516576460096985
+country_B,Male,2015,43.608244843780994
+country_B,Male,2016,77.80256984755397
+country_B,Male,2016,44.913801106158644
+country_B,Male,2016,59.22229281626642
+country_B,Male,2016,64.25877320347354
+country_B,Male,2016,77.18557300744578
+country_B,Male,2017,78.50700818002224
+country_B,Male,2017,87.26162425940856
+country_B,Male,2017,65.45992698287591
+country_B,Male,2017,73.55199800571427
+country_B,Male,2017,66.42967075807974
+country_B,Male,2018,55.79520187806338
+country_B,Male,2018,46.61288195988163
+country_B,Male,2018,47.66201063524932
+country_B,Male,2018,70.09617257630453
+country_B,Male,2018,80.66247128648683
+country_B,Male,2019,71.20328652439639
+country_B,Male,2019,83.8665161607787
+country_B,Male,2019,53.280026137363166
+country_B,Male,2019,87.40859884768724
+country_B,Male,2019,80.16626910306513
+country_B,Male,2020,56.47798421327025
+country_B,Male,2020,46.44732798682526
+country_B,Male,2020,79.78800817858428
+country_B,Male,2020,71.46048132330179
+country_B,Male,2020,66.31128559587523
+country_B,Female,2015,73.92917398596182
+country_B,Female,2015,64.64139811927453
+country_B,Female,2015,71.50376190897077
+country_B,Female,2015,78.56947984313592
+country_B,Female,2015,80.86450344184414
+country_B,Female,2016,63.527535807807
+country_B,Female,2016,55.88566505815834
+country_B,Female,2016,52.11743630701676
+country_B,Female,2016,66.66694185463712
+country_B,Female,2016,79.96595072094351
+country_B,Female,2017,50.002745292149484
+country_B,Female,2017,79.9796849465929
+country_B,Female,2017,63.1023883796297
+country_B,Female,2017,43.225582104641944
+country_B,Female,2017,53.54953801492229
+country_B,Female,2018,43.13134436728433
+country_B,Female,2018,81.39609079575166
+country_B,Female,2018,60.57209071936086
+country_B,Female,2018,55.436023205984384
+country_B,Female,2018,71.37767780572176
+country_B,Female,2019,62.07145761931315
+country_B,Female,2019,61.03734071133658
+country_B,Female,2019,57.72473440505564
+country_B,Female,2019,50.76223860727623
+country_B,Female,2019,63.25609043473378
+country_B,Female,2020,80.7453756663017
+country_B,Female,2020,56.26813089242205
+country_B,Female,2020,45.55384213803336
+country_B,Female,2020,85.44193969340995
+country_B,Female,2020,49.75481792120263
+country_C,Male,2015,49.77430591592565
+country_C,Male,2015,65.42031413177028
+country_C,Male,2015,51.73738205106929
+country_C,Male,2015,72.14202002855018
+country_C,Male,2015,76.84006379917264
+country_C,Male,2016,70.58495912700891
+country_C,Male,2016,64.3087726063095
+country_C,Male,2016,51.387505976017565
+country_C,Male,2016,65.074417097494
+country_C,Male,2016,45.94029782805592
+country_C,Male,2017,68.08581398567185
+country_C,Male,2017,40.13525718823075
+country_C,Male,2017,64.17033081874251
+country_C,Male,2017,78.73112336732447
+country_C,Male,2017,63.425270325969905
+country_C,Male,2018,86.31371747236699
+country_C,Male,2018,58.25315090827644
+country_C,Male,2018,71.9455126998946
+country_C,Male,2018,77.625973590184
+country_C,Male,2018,55.44694509357214
+country_C,Male,2019,59.91281793452799
+country_C,Male,2019,68.69144543074071
+country_C,Male,2019,80.83844445412979
+country_C,Male,2019,58.72783858561888
+country_C,Male,2019,76.63949401816353
+country_C,Male,2020,86.75035343971103
+country_C,Male,2020,50.434494458604604
+country_C,Male,2020,43.18475657841191
+country_C,Male,2020,74.41855629207566
+country_C,Male,2020,72.09042545640841
+country_C,Female,2015,79.77510463446379
+country_C,Female,2015,63.88061732053757
+country_C,Female,2015,70.45843485742807
+country_C,Female,2015,40.271565781440586
+country_C,Female,2015,71.76685032667592
+country_C,Female,2016,49.268655022606254
+country_C,Female,2016,51.38202555011958
+country_C,Female,2016,52.538357952144
+country_C,Female,2016,41.48553942563012
+country_C,Female,2016,82.9357570479624
+country_C,Female,2017,72.25767839467153
+country_C,Female,2017,75.10557758854702
+country_C,Female,2017,42.643797267228365
+country_C,Female,2017,81.71054230537266
+country_C,Female,2017,81.64304526057094
+country_C,Female,2018,77.09025072166696
+country_C,Female,2018,51.95240408414975
+country_C,Female,2018,42.29143560864031
+country_C,Female,2018,83.1694878032431
+country_C,Female,2018,66.41978019382805
+country_C,Female,2019,64.80419741477817
+country_C,Female,2019,70.4368368932046
+country_C,Female,2019,44.253183014225215
+country_C,Female,2019,79.89111896371469
+country_C,Female,2019,86.54185904655606
+country_C,Female,2020,78.21863305056468
+country_C,Female,2020,71.82949241017923
+country_C,Female,2020,51.97297147009522
+country_C,Female,2020,59.60133798420429
+country_C,Female,2020,63.84135645115748

@@ -12,68 +12,52 @@
 #### Workspace setup ####
 library(tidyverse)
 library(dplyr)
-library(countrycode)
+
+# Set seed for reproducibility
 set.seed(853)
 
-
 #### Define data columns ####
-# Set numbers of rows in simulated data
-n<-50
 
-# Create a mapping of countries to status
-country_status_map <- tibble(
-  country = c(
-  "Canada", "Australia", "Argentina", "Brazil", "United States of America", "Portugal", "Qatar", "Republic of Korea"),
-  status = c(
-    'Developing', 'Developed', 'Developing', 'Developing', 'Developed', 'Developed', 'Developing', 'Developing')
-  )
+# Define the list of countries
+countries <- c("country_A", "country_B","country_C")
 
-# Define Year 
-year <- 2000:2015
+# Define number of rows
+n <- 100
 
+# Define gender
+genders <- c("Male", "Female")
 
-#### Simulate data
-simulated_expectancy <- tibble(
-  #randomly select countries from the 10 countries above
-  country = as.character(sample(country_status_map, n, replace = TRUE)) )%>%
-  
-  # Add the fixed status based on the country
-  left_join(country_status_map, by = "country") %>%  
-  
-  mutate(
-  #randomly select years from 2000 to 2015
-  year = sample(year, n, replace = TRUE),
-  
-  life_expectancy = ifelse(status == "Developed",
-                           #for developed countries, draw normal distribution with mean 80 and standard deviation of 5
-                           rnorm(n, mean = 80, sd = 5),
-                           #for developing countries, draw normal distribution with mean 65 and standard deviation of 10
-                           rnorm(n, mean = 65, sd = 10)),
-  
-  #random value between 1 to 100,000 of Expenditure on health as a percentage of Gross Domestic Product per capita(%)
-  percentage_expenditure = runif(n, min = 1, max = 100000),
-  
-  #uniform distribution of value of general government expenditure as a  between 1 and 20
-  total_expenditure = runif(n, min = 1, max = 20),
-  
-  #uniform distribution of random values of human development index of income composition between 0.3 and 0.9
-  income_composition_resources = runif(n, min = 0.3, max = 0.9),
-  
-  schooling = ifelse(status == "Developed",
-                     #for developed countries, draw normal distribution with mean 15 and standard deviation of 2
-                     rnorm(n, mean = 15, sd = 2),
-                     #for developing countries, draw normal distribution with mean 8 and standard deviation of 3
-                     rnorm(n, mean = 8, sd = 3))
-)
+#Define period
+periods <- 2015:2020
 
-# Ensure no negative values exist for life expectancy, BMI, GDP or Schooling
-simulated_expectancy <- simulated_expectancy %>%
-  mutate(
-    life_expectancy = ifelse(life_expectancy < 0, 0, life_expectancy),
-    schooling = ifelse(schooling < 0, 0, schooling)
-  )
+# Initialize an empty list to store simulated data
+simulated_data <- list()
+
+# Simulate data for each country, gender, and age group
+for (country in countries) {
+  for (gender in genders) {
+    for (period in periods) {
+      # Create a small dataset for the current combination
+      data <- tibble(
+        Country = country,
+        Gender = gender,
+        Period = period,
+        `Life Expectancy` = runif(5, 40, 90) # Random values between 50 and 100
+      )
+      
+      # Append the data to the list
+      simulated_data <- append(simulated_data, list(data))
+      
+    }
+    }
+  }
 
 
+# Combine the data frames in the list into a single data frame
+simulated_data <- bind_rows(simulated_data)
 
-#### Save data ####
-write_csv(simulated_expectancy, "data/00-simulated_data/simulated_data.csv")
+# View the first few rows of the simulated data
+head(simulated_data)
+
+# Write the simulated data in the csv file
+write_csv(simulated_data, "data/00-simulated_data/simulated_data.csv")
