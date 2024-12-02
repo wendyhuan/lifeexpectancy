@@ -142,8 +142,8 @@ Europe <- c("Albania", "Andorra", "Armenia", "Austria", "Azerbaijan", "Belarus",
 North_America <- c("Antigua and Barbuda", "Bahamas", "Barbados", "Belize", "Canada", 
                    "Costa Rica", "Cuba", "Dominica", "Dominican Republic", "El Salvador", 
                    "Grenada", "Guatemala", "Haiti", "Honduras", "Jamaica", "Mexico", 
-                   "Nicaragua", "Panama", "Saint Kitts and Nevis", "Saint Lucia", 
-                   "Saint Vincent and the Grenadines", "Trinidad and Tobago", 
+                   "Nicaragua", "Panama","Puerto Rico", "Saint Kitts and Nevis", "Saint Lucia", 
+                   "Saint Vincent and the Grenadines", "Trinidad and Tobago",
                    "United States of America")
 
 # Make a mapping for countries in Oceania
