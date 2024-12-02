@@ -12,91 +12,69 @@
 
 #### Workspace setup ####
 library(tidyverse)
-library(countrycode)
+library(testthat)
+library(arrow)
 
-simulated_expectancy <- read_csv("data/00-simulated_data/simulated_data.csv")
+# load data 
+simulated_data <- read_csv("~/lifeexpectancy/data/00-simulated_data/simulated_data.csv")
+
+#### Test data ####
 
 # Test if the data was successfully loaded
-if (exists("simulated_expectancy")) {
+test_that("Simulated data has correct structure", {
+  if (exists("simulated_data")) {
   message("Test Passed: The dataset was successfully loaded.")
 } else {
   stop("Test Failed: The dataset could not be loaded.")
 }
 
+# Test that the data has 4 columns
+expect_equal(ncol(simulated_data), 4)
 
-#### Test data ####
+# Test that the data has the correct column names
+expected_columns <- c(
+  "Country", "Gender", "Period", "Life Expectancy")
+expect_equal(colnames(simulated_data), expected_columns)
+})
 
-# Check if the dataset has 50 rows
-if (nrow(analysis_data) == 50) {
-  message("Test Passed: The dataset has 50 rows.")
-} else {
-  stop("Test Failed: The dataset does not have 50 rows.")
+# Define a smaller test set of predictors for simplicity
+test_countries <- c("USA", "Canada")
+test_genders <- c("Male", "Female")
+test_periods <- 2020:2022
+
+# Initialize an empty list to store test simulated data
+test_simulated_data <- list()
+
+# Simulate test data for each combination of country, gender, and period
+for (country in test_countries) {
+  for (gender in test_genders) {
+    for (period in test_periods) {
+      # Create a small test dataset for the current combination
+      data <- tibble(
+        Country = country,
+        Gender = gender,
+        Period = period,
+        `Life Expectancy` = runif(3, 60, 80) # Random values between 60 and 90
+      )
+      
+      # Append the data to the list
+      test_simulated_data <- append(test_simulated_data, list(data))
+    }
+  }
 }
 
+# Combine the list into a single data frame
+test_final_data <- bind_rows(test_simulated_data)
 
+# Display a preview of the test data
+print(test_final_data)
 
-
-
-
-
-
-
-
-
-
-
-
-# Check if the dataset has 3 columns
-if (ncol(analysis_data) == 3) {
-  message("Test Passed: The dataset has 3 columns.")
-} else {
-  stop("Test Failed: The dataset does not have 3 columns.")
-}
-
-# Check if all values in the 'division' column are unique
-if (n_distinct(analysis_data$division) == nrow(analysis_data)) {
-  message("Test Passed: All values in 'division' are unique.")
-} else {
-  stop("Test Failed: The 'division' column contains duplicate values.")
-}
-
-# Check if the 'state' column contains only valid Australian state names
-valid_states <- c("New South Wales", "Victoria", "Queensland", "South Australia", 
-                  "Western Australia", "Tasmania", "Northern Territory", 
-                  "Australian Capital Territory")
-
-if (all(analysis_data$state %in% valid_states)) {
-  message("Test Passed: The 'state' column contains only valid Australian state names.")
-} else {
-  stop("Test Failed: The 'state' column contains invalid state names.")
-}
-
-# Check if the 'party' column contains only valid party names
-valid_parties <- c("Labor", "Liberal", "Greens", "National", "Other")
-
-if (all(analysis_data$party %in% valid_parties)) {
-  message("Test Passed: The 'party' column contains only valid party names.")
-} else {
-  stop("Test Failed: The 'party' column contains invalid party names.")
-}
-
-# Check if there are any missing values in the dataset
-if (all(!is.na(analysis_data))) {
-  message("Test Passed: The dataset contains no missing values.")
-} else {
-  stop("Test Failed: The dataset contains missing values.")
-}
-
-# Check if there are no empty strings in 'division', 'state', and 'party' columns
-if (all(analysis_data$division != "" & analysis_data$state != "" & analysis_data$party != "")) {
-  message("Test Passed: There are no empty strings in 'division', 'state', or 'party'.")
-} else {
-  stop("Test Failed: There are empty strings in one or more columns.")
-}
-
-# Check if the 'party' column has at least two unique values
-if (n_distinct(analysis_data$party) >= 2) {
-  message("Test Passed: The 'party' column contains at least two unique values.")
-} else {
-  stop("Test Failed: The 'party' column contains less than two unique values.")
-}
+# Check basic statistics to validate the simulation
+test_stats <- test_final_data %>%
+  summarise(
+    Mean = mean(`Life Expectancy`),
+    Median = median(`Life Expectancy`),
+    SD = sd(`Life Expectancy`),
+    Variance = var(`Life Expectancy`),
+    Count = n()
+  )

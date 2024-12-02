@@ -21,9 +21,6 @@ set.seed(853)
 # Define the list of countries
 countries <- c("country_A", "country_B","country_C")
 
-# Define number of rows
-n <- 100
-
 # Define gender
 genders <- c("Male", "Female")
 
@@ -61,3 +58,4 @@ head(simulated_data)
 
 # Write the simulated data in the csv file
 write_csv(simulated_data, "data/00-simulated_data/simulated_data.csv")
+
