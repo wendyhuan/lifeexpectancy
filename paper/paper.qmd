@@ -93,26 +93,16 @@ The raw life expectancy data underwent a several cleaning steps to ensure it was
 
 To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. 
 
-@fig-cleaned shows the average of life expectancy under male, female, 6 different regions and 4 income groups. 
+shows the average of life expectancy under male, female, 6 different regions and 4 income groups. 
 
 The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
-```{r}
-#| label: fig-cleaned
-#| fig-cap: ""
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
-
-
-
-```
 More information on the data cleaning process can be found in @sec-appx.
+
 
 ## Outcome Variables
 
-The outcome variable is **`Life Expendency`**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. 
+The outcome variable is **Life Expectancy**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average. 
 
 @fig-expectancy visualizes the distribution of life expectancy from 2015 to 2020 as percentages, combining a histogram and a density plot. A large concentration of observations is observed range of 0% to 25%, reflecting a significant proportion of countries with lower life expectancy relative to others in the dataset. Another visible concentration is around 75% to 100%, indicating a group of countries with relatively high life expectancy. The blue density curve overlays the histogram, providing a smoothed representation of the distribution. Peaks in the curve correspond to high frequency within the histogram. The density plot emphasized the bimodal nature of the distribution with two distinct peaks: one around 12 as low life expectancy percentages; another peak around 87as high life expectancy percentage. 
 
@@ -124,33 +114,37 @@ The outcome variable is **`Life Expendency`**. This is the primary dependent var
 #| warning: false
 #| message: false
 
-# Create 10-year bins for Life Expectancy
-lerange <- lelecleaned_data %>%
-  mutate(LifeExpectancyRange = cut(`Life Expectancy`, 
-                                   breaks = seq(floor(min(`Life Expectancy`, na.rm = TRUE)), 
-                                   ceiling(max(`Life Expectancy`, na.rm = TRUE)), by = 10), 
-                                   include.lowest = TRUE))
+# Normalize Life Expectancy to percentages
+life_expectancy_percentage <- lelecleaned_data %>%
+  mutate(
+    LifeExpectancyPercentage = 100 * (`Life Expectancy` - min(`Life Expectancy`, na.rm = TRUE)) / 
+                                  (max(`Life Expectancy`, na.rm = TRUE) - min(`Life Expectancy`, na.rm = TRUE))
+  )
 
-# Calculate percentages for each bin
-life_expectancy_distribution <- lerange %>%
-  count(LifeExpectancyRange) %>%
-  mutate(Percentage = 100 * n / sum(n))
-
-# Plot the histogram with percentages
-ggplot(life_expectancy_distribution, aes(x = LifeExpectancyRange, y = Percentage, fill = LifeExpectancyRange)) +
-  geom_bar(stat = "identity", color = "white", alpha = 0.8) +
+# Plot the distribution
+ggplot(life_expectancy_percentage, aes(x = LifeExpectancyPercentage)) +
+  geom_histogram(
+    bins = 20, 
+    fill = "skyblue", 
+    color = "white", 
+    alpha = 0.8
+  ) +
+  geom_density(
+    aes(y = ..scaled.. * max(..count..)),  # Align density with histogram
+    color = "blue", 
+    size = 1
+  ) +
   labs(
-    title = "Distribution of Life Expectancy by Age Range",
-    x = "Life Expectancy (10-Year Ranges)",
-    y = "Percentage"
+    title = "Distribution of Life Expectancy as Percentages",
+    x = "Life Expectancy (%)",
+    y = "Count"
   ) +
   theme_minimal() +
-  scale_fill_viridis_d(option = "C") +
   theme(
     plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
-    axis.text.x = element_text(angle = 45, hjust = 1),
-    legend.position = "none"
+    axis.text.x = element_text(angle = 45, hjust = 1)
   )
+
 
 ```
 
@@ -348,9 +342,8 @@ We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use
 
 ### Model justification
 
-We expect a positive relationship between the size of the wings and time spent aloft. In particular...
+The GAM was chosen for this analysis due to its ability to capture non-linear relationships between predictors and the outcome variable, which is essential when dealing with categorical predictors like income group and the
 
-We can use maths by including latex between dollar signs, for instance $\theta$.
 
 #### Model Validation
 
@@ -361,12 +354,10 @@ Out-of- Sample testing
 
 # Results
 
-Our results are summarized in @tbl-modelresults.
+## Overview of model results
+Our results are summarized in @tbl-modelresults. We are primarily interest in the 
 
-1.  check different continent has its different life expectancy.
-2.  compare the develop country with
-3.  check the shcooling year of develop countries to developing country, showing a relationship between shcooling with the life expenctancy.
-4.  
+
 
 ```{r}
 #| echo: false
@@ -396,9 +387,14 @@ library(rstanarm)
 #)
 ```
 
+## Multiple linear regression results
+
+
+
+
 # Discussion
 
-## First discussion point {#sec-first-point}
+## Insights into different gender
 
 If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
 
@@ -446,117 +442,117 @@ After completing the cleaning, we saved the final dataset in both Parquet and CS
 
 ## Data Cleaning Table
 
+```{r}
+#| label: tbl-cleaned_leab
+#| tbl-cap: "Life expectancy over countries and years"
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+#Show the whole graph of cleaned table leab
+kable(leab, 
+      col.names = names(leab), 
+      align = "l", 
+      caption = "Life Expectancy over countries and years") 
+
+```
+
+
 ### Idealized Survey
 
-**Survey: Understanding Life Expectancy and Influencing Factor**
+**Survey: Life Expectancy and Lifestyle Survey**
 
-Thank you for participating in this survey. This survey aims to gather insights into the factors influencing life expectancy, including health expenditure, education, ethnicity, government spending on healthcare, and income levels. Your responses will help us understand individual perspectives and experiences towards national policy. Participation is voluntary, and your answers will remain anonymous.
+Thank you for participating in this survey. This survey aims to gather insights into the factors influencing life expectancy, including gender, region and income group. Your responses will help us understand individual perspectives and experience towards national policy. Participation is voluntary, and your answers will remain anonymous.
 
 **Contact Information:** If you have any questions about the survey or the data collection process, please contact
 
 **Survey Coordinator**: Yanfei Huang\
 **Email**: yanfei.huang\@mail.utoronto.ca
 
-**Section 1: Personal Health Expenditure**
+**Section 1: Demographics**
 
-**1.What percentage of your monthly income do you spend on healthcare (e.g., insurance, medications, doctor visits)?**
+**1. Gender**
 
--   Less than 5%
--   5%–10%
--   10%–20%
--   More than 20%
+-   Male
+-   Female
+-   Non-binary
+-   Prefer not to say
 
-**2.Do you or your household have health insurance coverage?**
+**2. Age (in years)**
 
+Please write the number: \_\_\_\_\_\_
+
+**3. Region of Residence**
+
+-   Africa
+-   Asia
+-   Europe
+-   North America
+-   South America
+-   Oceania
+
+**4. Income Level**
+
+Annual Income (Optional): \_\_\_\_\_\_ USD
+
+Income Group:
+-   Low Income (Less than $1,000/year)
+-   Lower-Middle Income (\$1,001 - \$10,000/year)
+-   Upper-Middle Income (\$10,001 - \$50,000/year)
+-   High Income (More than \$50,000/year)
+
+**Section 2: Health and Lifestyle**
+
+**5. Current Life Expectancy Perception**
+
+How many years do you expect to live?
+
+Please write the number: \_\_\_\_\_\_
+
+**6. Healthcare Access**
+
+How often do you visit healthcare professionals
+-   Regularly (e.g., annual checkups)
+-   Occasionally (e.g., only when unwell)
+-   Rarely or Never
+
+**7. Dietary Habits**
+
+How would you describe your diet?
+
+-   Balanced and healthy
+-   Somewhat balanced
+-   Unhealthy
+
+**8. Physical Activity**
+
+How many hours of physical activity do you engage in per week?
+-   Less than 1 hour
+-   1-3 hours
+-   More than 3 hours
+
+**9. Smoking Habits**
+
+Do you smoke?
 -   Yes
 -   No
 
-**3. How frequently do you visit a healthcare professional(eg.doctors, nurse) in a year?**
+**10. Alcohol Consumption**
 
--   0-1 times
--   2-5 times
--   6-10 times
--   More than 10 times
-
-**Section 2: Education Background**
-
-**4.What is the highest level of education you have completed?**
-
--   No formal education
--   Primary school
--   Secondary school
--   College or university degree
--   Postgraduate degree
-
-**5.How many years of formal schooling have you completed?**
-
-Please write the number: \_\_\_\_\_\_\_
-
-**Section 3: Ethnicity and Geographic Factors**
-
-**6.Which of the following best describes your ethnicity?**
-
--   African
--   Asian
--   European
--   Hispanic or Latino
--   Middle Eastern
--   Indigenous
--   Other (please specify): \_\_\_\_\_\_\_
-
-**7.What's the distance to the nearest healthcare facility from your residence?**
-
--   Less than 1 km
--   1-5 km
--   More than 5 km
-
-**Section 4: Government Expenditure on Healthcare**
-
-**8.Are health services in your country subsidized by the govenment?**
-
--   Yes, fully subsidized
--   Yes, partially subsidized
--   No
-
-**9. What is the approximate cost of your most recent healthcare visit (in local currency)?**
-
-Please write the amount \_\_\_\_\_\_\_
-
-**10.Do public healthcare facilities in your area provide all the services you need?**
-
--   Yes
--   No
--   Not applicable
-
-**Section 5: Income and Development Factor**
-
-**11.What is your approximate monthly household income after taxes?(in local currency)**
-
--   Less than 1,000
--   1,000 - 2,999
--   3,000 - 4,999
--   5,000 - 7,999
--   8,000 - 10,999
--   More than 11,000
--   Prefer not to say
-
-**12.How would you describe your current financial situation?**
-
--   Struggling to make ends meet
--   Just getting by
--   Comfortable, but not wealthy
--   Financially secure
--   Wealthy
--   Prefer not to say
-
-**13.How often do you have difficulty affording basic healthcare (medical visits, medications, etc.)?**
-
+How often do you consume alcoholic beverages?
 -   Never
--   Rarely
--   Sometimes
--   Often
--   Always
--   Prefer not to say
+-   Occasionally (e.g., social drinking)
+-   Frequently
+
+**Section 3: Environmental and Social Factors**
+
+**11.Living Environment**
+
+How would you describe your living area?
+-   Urban
+-   Suburban
+-   Rural
 
 **Final Section**
 
