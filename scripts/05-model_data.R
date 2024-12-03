@@ -14,42 +14,31 @@ library(rstanarm)
 library(car)
 library(arrow)
 library(dplyr)
-library(countrycode)
+library(modelsummary) # for summarizing the model
 
 #### Read data ####
-cleaned_expectancy <- read_csv("data/02-analysis_data/analysis_data.parquet")
+lea60 <- read_parquet("data/02-analysis_data/lea60.parquet")
+leab <- read_parquet ("data/02-analysis_data/leab.parquet")
 
-#Convert the columns into appropriate data types
-cleaned_expectancy <- cleaned_expectancy %>%
-  mutate(
-    LifeExpectancy = as.numeric(LifeExpectancy),
-    Status = as.factor(Status),
-    PercentageExpenditure = as.numeric(PercentageExpenditure),
-    TotalExpenditure = as.numeric(TotalExpenditure),
-    IncomeComposition = as.numeric(IncomeComposition),
-    Schooling = as.numeric(Schooling)
-  )
+# Fit the Bayesian linear regression model using stan_glm
+ledata_normal_model <- stan_glm(
+  `Life Expectancy` ~ Region + Country + Income_Group + Gender, 
+  data = leab, 
+  family = gaussian(link = "identity"), 
+  prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
+  prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
+  seed = 123
+)
 
+# Create a model summary with median absolute deviation (mad) for statistics
+modelsummary(
+  list("Gaussian(Normal)" = ledata_normal_model),
+  statistic = "mad",  # Median absolute deviation
+  fmt = 2             # Format results to 2 decimal places
+)
 
-### Model for developing country based on various predictors ###
-lm_model_developing <-
-  lm(LifeExpectancy ~ PercentageExpenditure + TotalExpenditure + IncomeComposition + Schooling,
-     data = cleaned_expectancy %>% filter (Status == 'Developing'))
-
-### Model for developed country based on various predictors###
-lm_model_developed <-
-  lm(LifeExpectancy ~ PercentageExpenditure + TotalExpenditure + IncomeComposition + Schooling,
-     data = cleaned_expectancy %>% filter (Status == 'Developed') )
-
-
-#### Save modified data for model as a CSV + parquet and save model as RDS ####
-write_csv(cleaned_expectancy, "data/02-analysis_data/analysis_data.csv")
-write_parquet(cleaned_expectancy, 'data/02-analysis_data/analysis_data.parquet')
-saveRDS(lm_model_developing, file = "models/lm_model_developing.rds")
-saveRDS(lm_model_developed, file = "models/lm_model_developed.rds")
-
-
-
-
-
-
+# Save the linear model
+saveRDS(
+  ledata_normal_model,
+  file = "~/Lifeexpectancy/models/ledata_normal_model.rds"
+)
