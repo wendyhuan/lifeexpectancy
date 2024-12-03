@@ -44,6 +44,7 @@ library(ggcorrplot)
 library(modelsummary)
 library(countrycode)
 library(gridExtra)
+library(caret)
 
 # load data
 lelecleaned_data <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lelecleaned.parquet")
@@ -305,35 +306,28 @@ life_expectancy_stats %>%
 
 ## Model set-up {#sec-modset}
 
-The goal of the Bayesian model is to incorporate prior knowledge, such as insights from previous studies or analyses, into the selection of the model. To predict the outcome of the life expectancy of people from different regions, in this paper, we developed a linear regression models using R [@citeR]. The outcome variable, **`Life Expectancy`**, is a continuous and represents the average number of years a person is expected to live, assuming all related resources remain constant throughout their lifetime. The model aim to estimate and predict the life expectancy of people under different gender, region and income group. The normal Gaussian distribution is effective when used for modeling scenarios where the residuals of the data aare assumed to be independent nd normally distributed around the regression line. The GAM allows for capturing potential non-linear relationships between the predictors and the outcome.
+The goal of the Bayesian model is to incorporate prior knowledge, such as insights from previous studies or analyses, into the selection of the model. To predict the outcome of the life expectancy of people from different regions, in this paper, we developed a linear regression models using R [@citeR]. The outcome variable, **`Life Expectancy`**, is a continuous and represents the average number of years a person is expected to live, assuming all related resources remain constant throughout their lifetime. The model aim to estimate and predict the life expectancy of people under different gender, region and income group. The normal Gaussian distribution is effective when used for modeling scenarios where the residuals of the data are assumed to be independent nd normally distributed around the regression line. The GAM allows for capturing potential non-linear relationships between the predictors and the outcome.
 
 The model is specified as follows:
 
 \begin{align} 
-y_i|\mu_i, \sigma &\sim \mbox{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_i + \gamma_i\\
-\alpha &\sim \mbox{Normal}(0, 2.5) \\
-\beta &\sim \mbox{Normal}(0, 2.5) \\
-\gamma &\sim \mbox{Normal}(0, 2.5) \\
-\sigma &\sim \mbox{Exponential}(1)
+y_i|\mu_i, \sigma &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_1 \text{Region}_i + \beta_2 \text{Gender}_i + \beta_3 \text{Income_Group}_i \\
+\alpha &\sim \text{Normal}(0, 2.5) \\
+\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, 2.5) \\
+\sigma &\sim \text{Exponential}(1)
 \end{align}
+
 
 Where:
 
--   $yi$ is the outcome variable (Life Expectancy)for the i-th country.
+-   $yi$ is the outcome variable (Life Expectancy)for the i-th observation.
 
--   $_i$ represents the expected value of $yi$, modeled as a linear combination of the predictors: Gender, Region, and Income Group.
+-   $\mu_i$: the linear predictor for life expectancy, including the intercept ($\alpha$) and the coefficients for the predictors Region, Country, Income Group, and Gender.
 
--   $Gender$ is the gender of the individual. 
+-   Priors for the intercept($\alpha$) and the coefficients($\beta_1, \beta_2, \beta_3$) are normal with mean 0 and standard deviation 2.5
 
--   $Income Group$ is the income group of the country.
-
--   $\epsilon_i$ is the error term, assumed to be normally distributed with a mean of 0 and constant variance $ϵ_i​∼N(0,\sigma^2)$
-
-
-
-
-This GAM model allows for smooth, non-linear effects of continuous predictors (**`age`** and **`races_count`**) while keeping the categorical predictors (**`Income_Group`** and **`iaaf_category`**) in a linear framework.
+-   $\sigma$: the residual standard deviation, modeled as an exponential distribution with rate 1.
 
 
 [Appendix -@sec-model-details].
@@ -342,15 +336,70 @@ We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use
 
 ### Model justification
 
-The GAM was chosen for this analysis due to its ability to capture non-linear relationships between predictors and the outcome variable, which is essential when dealing with categorical predictors like income group and the
+The linear regression model with Gaussian likelihood was chosen for this analysis due to its simplicity and effectiveness in modeling continuous outcome variables, such as life expectancy. Life expectancy is influenced by multiple factors, including region, income group, and gender. The linear model allows us to examine the average effect of each predictor on the outcome, assuming that the relationships between these predictors and life expectancy are linear.
 
+The use of normal priors for the model coefficients $\alpha$ and $\beta$ reflects a belief in prior knowledge that the true values of these parameters are centered around zero, with some uncertainty, which is consistent with standard Bayesian modeling practices. The prior scale of 2.5 was chosen to reflect a reasonable level of uncertainty around the estimates without being overly restrictive.
+
+The Gaussian distribution was selected because life expectancy data, by nature, is continuous and expected to follow a normal distribution. The assumption of normal residuals is consistent with the idea that deviations from the regression line are random and normally distributed, allowing the model to make accurate inferences about the relationship between predictors and the outcome.
+
+Additionally, the exponential prior on the standard deviation $\alpha$ captures the residual variability in life expectancy across countries and regions. The exponential distribution was chosen because it provides a simple and interpretable way of modeling the variability, assuming that the data are not heavily skewed.
+
+This approach is appropriate given the data structure and the goal of the analysis, which is to estimate and predict life expectancy across different countries, regions, income groups, and genders. The model's assumptions about the data, along with its priors, allow for robust inference in the context of population health predictions.
 
 #### Model Validation
 
-RMSE 
- 
-Out-of- Sample testing
+To assess the performance of the life expectancy prediction model, two critical metrics were used: Root Mean Squared Error (RMSE) and Out-of-Sample Testing. These methods help ensure that the model generalizes well to unseen data and provides reliable predictions for life expectancy across different regions, income groups, and genders.
 
+RMSE measures the square root of the average squared differences between the predicted and observed values. In the context of this model, RMSE quantifies how closely the predicted life expectancy values align with the actual observed values. Lower RMSE values indicate better model performance, suggesting that the model’s predictions are close to the true values.
+
+By calculating RMSE, we can assess the goodness-of-fit of the model, with lower values indicating less error and higher precision in predicting life expectancy. It is particularly useful in comparing different models or iterations to select the best-performing one.
+ 
+Out-of-Sample testing is a critical component of model evaluation. In this approach, the data is split into a training set and a test set (or holdout set). The training set is used to fit the model, while the test set is used to evaluate how well the model performs on new, unseen data. For this analysis, the model was trained using a portion of the data (80% of the dataset) and then evaluated on the remaining data (20% of the dataset) that was not used during training. This method allows us to check whether the model overfits the training data or if it can generalize well to unseen observations.
+
+Together, RMSE and out-of-sample testing offer a robust framework for model validation, ensuring that the predictions made by the life expectancy model are both accurate and generalizable.
+
+```{r}
+
+model_developed <-
+  readRDS(file = "~/lifeexpectancy/models/ledata_normal_model.rds")
+
+# Split the dataset into training and testing sets (80% train, 20% test)
+set.seed(123)  # Setting seed for reproducibility
+train_index <- createDataPartition(leab$`Life Expectancy`, p = 0.8, list = FALSE)
+
+train_data <- leab[train_index, ]
+test_data <- leab[-train_index, ]
+
+# Predict life expectancy using the test data
+predictions <- predict(ledata_normal_model, newdata = test_data)
+```
+
+```{r}
+#| label: tbl-modelpredict
+#| tbl-cap: Summary of the life expectancy model, which includes gender, region and income group. The table presents the model RSME and out-of sample testing.
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# Calculate RMSE
+actual_values <- test_data$`Life Expectancy`
+rmse <- sqrt(mean((predictions - actual_values)^2))
+print(paste("RMSE: ", round(rmse, 2)))
+
+# Calculate RMSE for the training set (in-sample testing)
+train_predictions <- predict(ledata_normal_model, newdata = train_data)
+train_rmse <- sqrt(mean((train_predictions - train_data$`Life Expectancy`)^2))
+print(paste("Training RMSE: ", round(train_rmse, 2)))
+
+# Compare RMSE results
+if (rmse < train_rmse) {
+  print("The model generalizes well to the test data (out-of-sample).")
+} else {
+  print("The model may be overfitting the training data (higher RMSE on test data).")
+}
+
+```
 
 # Results
 
@@ -359,17 +408,7 @@ Our results are summarized in @tbl-modelresults. We are primarily interest in th
 
 
 
-```{r}
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
 
-library(rstanarm)
-
-#model_developed <-
-  #readRDS(file = here::here("models/lm_model_developed.rds"))
-```
 
 ```{r}
 #| echo: false
@@ -380,7 +419,7 @@ library(rstanarm)
 
 #modelsummary::modelsummary(
   #list(
-    #"developed model" = #model_developed
+    #"developed model" = model_developed
   #),
   #statistic = "mad",
   #fmt = 2
@@ -450,11 +489,13 @@ After completing the cleaning, we saved the final dataset in both Parquet and CS
 #| warning: false
 #| message: false
 
-#Show the whole graph of cleaned table leab
-kable(leab, 
+#Show the first 200 lines of the  graph of cleaned table leab
+leab_first_200 <- head(leab, 200)
+
+kable(leab_first_200, 
       col.names = names(leab), 
       align = "l", 
-      caption = "Life Expectancy over countries and years") 
+      caption = "Life Expectancy over countries and years (first 200 rows)") 
 
 ```
 
@@ -560,58 +601,72 @@ Thank you for completing this survey! Your responses will help capture informati
 
 # Additional data details
 
+
 # Model details {#sec-model-details}
 
-## Additional graph for analysis
+The model developed for predicting life expectancy is a linear regression model, where the goal is to estimate the outcome variable, Life Expectancy, based on multiple predictors: Region, Income Group, and Gender. Here's a more detailed breakdown of the components and structure of the model:
 
+**1. Outcome variable (yi)**
 
-## Posterior predictive check
+The outcome variable $y_i$ represents the life expectancy of an country. This is a continuous variable representing the number of years a person is expected to live, assuming all conditions remain constant.
 
-In @fig-ppcheckandposteriorvsprior-1 we implement a posterior predictive check. This shows...
+**2. Linear Predictor (μi)**
 
-In @fig-ppcheckandposteriorvsprior-2 we compare the posterior with the prior. This shows...
+The linear predictor $μ_i$ is a linear combination of the predictors, which includes an intercept term $α$ and the coefficients $β_1$, $β_2$, $β_3$, corresponding to Region, Income Group, and Gender, respectively. This linear equation models the relationship between life expectancy and the predictors 
+$\mu_i = \alpha + \beta_1(Region) + \beta_2(Income Group) + \beta_3 (Gender)$
+The values for these coefficients (betas) represent the expected change in life expectancy for a one-unit change in each respective predictor.
 
-```{r}
-#| eval: true
-#| echo: false
-#| message: false
-#| warning: false
-#| label: fig-ppcheckandposteriorvsprior
-#| layout-ncol: 2
-#| fig-cap: "Examining how the model fits, and is affected by, the data"
-#| fig-subcap: ["Posterior prediction check", "Comparing the posterior with the prior"]
+**3. Priors**
 
-#pp_check(model_developed) +
-  #theme_classic() +
-  #theme(legend.position = "bottom")
+The prior distribution for the intercept $α$ and the coefficients $β_1$, $β_2$, $β_3$ is assumed to be normal with a mean of 0 and a standard deviation of 2.5. This reflects our belief that, prior to seeing the data, the intercept and coefficients are most likely close to 0, with a reasonable range of variability (the scale of 2.5 is relatively broad, allowing flexibility in fitting the model).
 
-#posterior_vs_prior(model_developed) +
-  #theme_minimal() +
-  #scale_color_brewer(palette = "Set1") +
-  #theme(legend.position = "bottom") +
-  #coord_flip()
-```
+The prior for $σ$ (residual standard deviation) is assumed to follow an exponential distribution with a rate of 1. This prior reflects the assumption that the variance of the residuals (i.e., the deviation of the actual observations from the predicted values) is positive and that it could reasonably be spread across a wide range of values.
 
-## Diagnostics
+**4. Residual Standard Deviation (σ)**
+The model also estimates $σ$, which represents the standard deviation of the residuals — the errors between the observed life expectancy values and those predicted by the model. The prior for $σ$ is assumed to follow an exponential distribution with a rate of 1, meaning that smaller values of $σ$ (indicating less variation) are somewhat more likely than larger ones.
 
-@fig-stanareyouokay-1 is a trace plot. It shows... This suggests...
+**5. Gaussian Likelihood**
+The outcome variable Life Expectancy is modeled using a normal distribution with mean μi (the linear predictor) and standard deviation σ. This means that the residuals (the differences between the observed and predicted values) are assumed to be normally distributed:
+$y_i| \mu_i, \sigma ~ Normal(\mu_i, \sigma)$
+This is a typical assumption in regression models when the data is continuous, and the relationship between the predictors and the outcome is linear.
 
-@fig-stanareyouokay-2 is a Rhat plot. It shows... This suggests...
+## RMSE table
 
 ```{r}
+#| label: tbl-testpredicted
+#| tbl-cap: "Life expectancy over countries and years"
 #| echo: false
 #| eval: true
-#| message: false
 #| warning: false
-#| label: fig-stanareyouokay
-#| fig-cap: "Checking the convergence of the MCMC algorithm"
-#| fig-subcap: ["Trace plot", "Rhat plot"]
-#| layout-ncol: 2
+#| message: false
 
-#plot(model_developed, "trace")
+# Create a data frame for the predicted values and actual values in the test set
+results_df <- data.frame(
+  Country = test_data$Country,
+  Actual_Life_Expectancy = actual_values,
+  Predicted_Life_Expectancy = predictions,
+  RMSE_Test = rmse,
+  RMSE_Train = train_rmse
+)
 
-#plot(model_developed, "rhat")
+# Create an indication column based on the RMSE comparison
+results_df$Indication <- ifelse(results_df$RMSE_Test < results_df$RMSE_Train, 
+                                 "Model generalizes well (out-of-sample)", 
+                                 "Model may be overfitting the training data")
+
+# Format the table using kable
+kable(
+  results_df,
+  col.names = c("Country", "Actual Life Expectancy", "Predicted Life Expectancy", "RMSE (Test)", "RMSE (Train)", "Indication"),
+  align = c("l", "r", "r", "r", "r", "l"),
+  digits = 2,
+  booktabs = TRUE
+)
+
 ```
+
+### Additional graph for analysis
+
 
 \newpage
 
