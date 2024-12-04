@@ -1,0 +1,553 @@
+Country,Gender,Income_Group,Region,Average_Life_Expectancy
+Afghanistan,Both sexes,lower_income,Asia,60.63333333333333
+Afghanistan,Female,lower_income,Asia,61.93333333333334
+Afghanistan,Male,lower_income,Asia,59.43333333333333
+Albania,Both sexes,upper_middle,Europe,77.65
+Albania,Female,upper_middle,Europe,79.7
+Albania,Male,upper_middle,Europe,75.8
+Algeria,Both sexes,lower_middle,Africa,75.95
+Algeria,Female,lower_middle,Africa,76.61666666666666
+Algeria,Male,lower_middle,Africa,75.5
+Angola,Both sexes,lower_middle,Africa,62.13333333333333
+Angola,Female,lower_middle,Africa,64.45
+Angola,Male,lower_middle,Africa,59.86666666666667
+Antigua and Barbuda,Both sexes,high_income,North America,75.93333333333334
+Antigua and Barbuda,Female,high_income,North America,77.46666666666667
+Antigua and Barbuda,Male,high_income,North America,74.18333333333334
+Argentina,Both sexes,upper_middle,South America,76.55
+Argentina,Female,upper_middle,South America,79.6
+Argentina,Male,upper_middle,South America,73.45
+Armenia,Both sexes,upper_middle,Europe,74.08333333333333
+Armenia,Female,upper_middle,Europe,78.56666666666666
+Armenia,Male,upper_middle,Europe,69.11666666666666
+Australia,Both sexes,high_income,Oceania,82.76666666666667
+Australia,Female,high_income,Oceania,84.65
+Australia,Male,high_income,Oceania,80.88333333333334
+Austria,Both sexes,high_income,Europe,81.31666666666666
+Austria,Female,high_income,Europe,83.51666666666667
+Austria,Male,high_income,Europe,79.05
+Azerbaijan,Both sexes,upper_middle,Europe,74.08333333333333
+Azerbaijan,Female,upper_middle,Europe,76.58333333333333
+Azerbaijan,Male,upper_middle,Europe,71.53333333333333
+Bahamas,Both sexes,high_income,North America,72.61666666666667
+Bahamas,Female,high_income,North America,75.7
+Bahamas,Male,high_income,North America,69.5
+Bahrain,Both sexes,high_income,Asia,75.66666666666667
+Bahrain,Female,high_income,Asia,76.75
+Bahrain,Male,high_income,Asia,74.86666666666667
+Bangladesh,Both sexes,lower_middle,Asia,73.48333333333333
+Bangladesh,Female,lower_middle,Asia,74.81666666666666
+Bangladesh,Male,lower_middle,Asia,72.2
+Barbados,Both sexes,high_income,North America,76.35
+Barbados,Female,high_income,North America,77.66666666666667
+Barbados,Male,high_income,North America,74.93333333333334
+Belarus,Both sexes,upper_middle,Europe,73.98333333333333
+Belarus,Female,upper_middle,Europe,79.03333333333333
+Belarus,Male,upper_middle,Europe,68.83333333333333
+Belgium,Both sexes,high_income,Europe,81.1
+Belgium,Female,high_income,Europe,83.25
+Belgium,Male,high_income,Europe,78.9
+Belize,Both sexes,upper_middle,North America,74.58333333333333
+Belize,Female,upper_middle,North America,77.3
+Belize,Male,upper_middle,North America,72.08333333333333
+Benin,Both sexes,lower_middle,Africa,63.516666666666666
+Benin,Female,lower_middle,Africa,66
+Benin,Male,lower_middle,Africa,61.166666666666664
+Bhutan,Both sexes,lower_middle,Asia,73.68333333333334
+Bhutan,Female,lower_middle,Asia,74.86666666666667
+Bhutan,Male,lower_middle,Asia,72.61666666666667
+Bolivia (Plurinational State of),Both sexes,lower_middle,South America,71.53333333333333
+Bolivia (Plurinational State of),Female,lower_middle,South America,72.83333333333333
+Bolivia (Plurinational State of),Male,lower_middle,South America,70.33333333333333
+Bosnia and Herzegovina,Both sexes,upper_middle,Europe,76.9
+Bosnia and Herzegovina,Female,upper_middle,Europe,79.4
+Bosnia and Herzegovina,Male,upper_middle,Europe,74.41666666666667
+Botswana,Both sexes,upper_middle,Africa,63.93333333333334
+Botswana,Female,upper_middle,Africa,66.01666666666667
+Botswana,Male,upper_middle,Africa,61.75
+Brazil,Both sexes,upper_middle,South America,74.86666666666666
+Brazil,Female,upper_middle,South America,78.28333333333333
+Brazil,Male,upper_middle,South America,71.45
+Brunei Darussalam,Both sexes,high_income,Asia,76.55
+Brunei Darussalam,Female,high_income,Asia,77.91666666666667
+Brunei Darussalam,Male,high_income,Asia,75.21666666666667
+Bulgaria,Both sexes,upper_middle,Europe,74.58333333333333
+Bulgaria,Female,upper_middle,Europe,78.16666666666667
+Bulgaria,Male,upper_middle,Europe,71.1
+Burkina Faso,Both sexes,lower_income,Africa,62.016666666666666
+Burkina Faso,Female,lower_income,Africa,64.43333333333334
+Burkina Faso,Male,lower_income,Africa,59.5
+Burundi,Both sexes,lower_income,Africa,63.75
+Burundi,Female,lower_income,Africa,65.7
+Burundi,Male,lower_income,Africa,61.8
+Cabo Verde,Both sexes,lower_middle,Africa,74.38333333333334
+Cabo Verde,Female,lower_middle,Africa,77.91666666666667
+Cabo Verde,Male,lower_middle,Africa,70.73333333333333
+Cambodia,Both sexes,lower_middle,Asia,69.25
+Cambodia,Female,lower_middle,Asia,71.91666666666667
+Cambodia,Male,lower_middle,Asia,66.48333333333333
+Cameroon,Both sexes,lower_middle,Africa,60.833333333333336
+Cameroon,Female,lower_middle,Africa,62.8
+Cameroon,Male,lower_middle,Africa,58.95
+Canada,Both sexes,high_income,North America,81.66666666666667
+Canada,Female,high_income,North America,83.58333333333333
+Canada,Male,high_income,North America,79.78333333333333
+Central African Republic,Both sexes,lower_income,Africa,51.983333333333334
+Central African Republic,Female,lower_income,Africa,54.9
+Central African Republic,Male,lower_income,Africa,49.416666666666664
+Chad,Both sexes,lower_income,Africa,58.71666666666667
+Chad,Female,lower_income,Africa,60.25
+Chad,Male,lower_income,Africa,57.233333333333334
+Chile,Both sexes,high_income,South America,80.53333333333333
+Chile,Female,high_income,South America,82.93333333333334
+Chile,Male,high_income,South America,78.05
+China,Both sexes,upper_middle,Asia,77
+China,Female,upper_middle,Asia,80.18333333333334
+China,Male,upper_middle,Asia,74.23333333333333
+Colombia,Both sexes,upper_middle,South America,77.45
+Colombia,Female,upper_middle,South America,80.16666666666667
+Colombia,Male,upper_middle,South America,74.75
+Comoros,Both sexes,lower_middle,Africa,67.91666666666667
+Comoros,Female,lower_middle,Africa,69.11666666666667
+Comoros,Male,lower_middle,Africa,66.76666666666667
+Congo,Both sexes,lower_middle,Africa,62.8
+Congo,Female,lower_middle,Africa,63.13333333333333
+Congo,Male,lower_middle,Africa,62.4
+Costa Rica,Both sexes,upper_middle,North America,80.25
+Costa Rica,Female,upper_middle,North America,82.86666666666667
+Costa Rica,Male,upper_middle,North America,77.7
+Cote d'Ivoire,Both sexes,lower_middle,Africa,62.416666666666664
+Cote d'Ivoire,Female,lower_middle,Africa,65.18333333333334
+Cote d'Ivoire,Male,lower_middle,Africa,60.15
+Croatia,Both sexes,high_income,Europe,78.13333333333333
+Croatia,Female,high_income,Europe,81.13333333333333
+Croatia,Male,high_income,Europe,75.08333333333333
+Cuba,Both sexes,upper_middle,North America,77.81666666666666
+Cuba,Female,upper_middle,North America,80.15
+Cuba,Male,upper_middle,North America,75.55
+Cyprus,Both sexes,high_income,Europe,81.96666666666667
+Cyprus,Female,high_income,Europe,84
+Cyprus,Male,high_income,Europe,79.93333333333334
+Czechia,Both sexes,high_income,Europe,78.73333333333333
+Czechia,Female,high_income,Europe,81.58333333333333
+Czechia,Male,high_income,Europe,75.85
+Democratic People's Republic of Korea,Both sexes,lower_income,Asia,71.95
+Democratic People's Republic of Korea,Female,lower_income,Asia,74.93333333333334
+Democratic People's Republic of Korea,Male,lower_income,Asia,68.93333333333334
+Democratic Republic of the Congo,Both sexes,lower_income,Africa,61.06666666666666
+Democratic Republic of the Congo,Female,lower_income,Africa,63.25
+Democratic Republic of the Congo,Male,lower_income,Africa,59.016666666666666
+Denmark,Both sexes,high_income,Europe,80.95
+Denmark,Female,high_income,Europe,82.73333333333333
+Denmark,Male,high_income,Europe,79.16666666666666
+Djibouti,Both sexes,lower_middle,Africa,64.78333333333333
+Djibouti,Female,lower_middle,Africa,66.56666666666666
+Djibouti,Male,lower_middle,Africa,63.05
+Dominican Republic,Both sexes,upper_middle,North America,73.5
+Dominican Republic,Female,upper_middle,North America,77.08333333333334
+Dominican Republic,Male,upper_middle,North America,70.25
+Ecuador,Both sexes,upper_middle,South America,76.61666666666667
+Ecuador,Female,upper_middle,South America,79.26666666666667
+Ecuador,Male,upper_middle,South America,74.03333333333333
+Egypt,Both sexes,lower_middle,Africa,70.86666666666666
+Egypt,Female,lower_middle,Africa,73.51666666666667
+Egypt,Male,lower_middle,Africa,68.26666666666667
+El Salvador,Both sexes,upper_middle,North America,73.51666666666667
+El Salvador,Female,upper_middle,North America,78.05
+El Salvador,Male,upper_middle,North America,68.63333333333333
+Equatorial Guinea,Both sexes,upper_middle,Africa,61.2
+Equatorial Guinea,Female,upper_middle,Africa,62.68333333333334
+Equatorial Guinea,Male,upper_middle,Africa,59.78333333333333
+Eritrea,Both sexes,lower_income,Africa,63.28333333333333
+Eritrea,Female,lower_income,Africa,66.13333333333333
+Eritrea,Male,lower_income,Africa,60.45
+Estonia,Both sexes,high_income,Europe,78.21666666666667
+Estonia,Female,high_income,Europe,82.18333333333334
+Estonia,Male,high_income,Europe,73.83333333333333
+Eswatini,Both sexes,lower_middle,Africa,54.233333333333334
+Eswatini,Female,lower_middle,Africa,57.833333333333336
+Eswatini,Male,lower_middle,Africa,51.083333333333336
+Ethiopia,Both sexes,lower_income,Africa,68.14999999999999
+Ethiopia,Female,lower_income,Africa,69.88333333333333
+Ethiopia,Male,lower_income,Africa,66.43333333333334
+Fiji,Both sexes,upper_middle,Oceania,67.81666666666666
+Fiji,Female,upper_middle,Oceania,70.05
+Fiji,Male,upper_middle,Oceania,65.71666666666667
+Finland,Both sexes,high_income,Europe,81.35
+Finland,Female,high_income,Europe,84
+Finland,Male,high_income,Europe,78.73333333333333
+France,Both sexes,high_income,Europe,82.16666666666667
+France,Female,high_income,Europe,84.86666666666667
+France,Male,high_income,Europe,79.35
+Gabon,Both sexes,upper_middle,Africa,64.6
+Gabon,Female,upper_middle,Africa,67.46666666666667
+Gabon,Male,upper_middle,Africa,62.18333333333334
+Gambia,Both sexes,lower_income,Africa,64.41666666666666
+Gambia,Female,lower_income,Africa,66.48333333333333
+Gambia,Male,lower_income,Africa,62.416666666666664
+Georgia,Both sexes,upper_middle,Europe,73.3
+Georgia,Female,upper_middle,Europe,77.81666666666666
+Georgia,Male,upper_middle,Europe,68.61666666666666
+Germany,Both sexes,high_income,Europe,80.71666666666667
+Germany,Female,high_income,Europe,82.98333333333333
+Germany,Male,high_income,Europe,78.43333333333334
+Ghana,Both sexes,lower_middle,Africa,65.3
+Ghana,Female,lower_middle,Africa,67.98333333333333
+Ghana,Male,lower_middle,Africa,62.78333333333333
+Greece,Both sexes,high_income,Europe,80.73333333333333
+Greece,Female,high_income,Europe,82.91666666666667
+Greece,Male,high_income,Europe,78.56666666666666
+Grenada,Both sexes,upper_middle,North America,73.08333333333333
+Grenada,Female,upper_middle,North America,75.88333333333333
+Grenada,Male,upper_middle,North America,70.7
+Guatemala,Both sexes,upper_middle,North America,72.21666666666667
+Guatemala,Female,upper_middle,North America,74.95
+Guatemala,Male,upper_middle,North America,69.5
+Guinea,Both sexes,lower_middle,Africa,60.38333333333333
+Guinea,Female,lower_middle,Africa,61.61666666666667
+Guinea,Male,lower_middle,Africa,59.03333333333333
+Guinea-Bissau,Both sexes,lower_income,Africa,58.333333333333336
+Guinea-Bissau,Female,lower_income,Africa,60.68333333333333
+Guinea-Bissau,Male,lower_income,Africa,55.833333333333336
+Guyana,Both sexes,high_income,South America,67.85
+Guyana,Female,high_income,South America,71.16666666666667
+Guyana,Male,high_income,South America,64.66666666666666
+Haiti,Both sexes,lower_middle,North America,63.18333333333334
+Haiti,Female,lower_middle,North America,63.63333333333333
+Haiti,Male,lower_middle,North America,62.75
+Honduras,Both sexes,lower_middle,North America,70.81666666666666
+Honduras,Female,lower_middle,North America,72.43333333333334
+Honduras,Male,lower_middle,North America,69.26666666666667
+Hungary,Both sexes,high_income,Europe,75.96666666666667
+Hungary,Female,high_income,Europe,79.2
+Hungary,Male,high_income,Europe,72.53333333333333
+Iceland,Both sexes,high_income,Europe,82.35
+Iceland,Female,high_income,Europe,83.76666666666667
+Iceland,Male,high_income,Europe,80.93333333333334
+India,Both sexes,lower_middle,Asia,70.1
+India,Female,lower_middle,Asia,71.75
+India,Male,lower_middle,Asia,68.58333333333334
+Indonesia,Both sexes,upper_middle,Asia,70.76666666666667
+Indonesia,Female,upper_middle,Asia,72.65
+Indonesia,Male,upper_middle,Asia,68.91666666666667
+Iran (Islamic Republic of),Both sexes,lower_middle,Asia,77.15
+Iran (Islamic Republic of),Female,lower_middle,Asia,78.81666666666666
+Iran (Islamic Republic of),Male,lower_middle,Asia,75.63333333333333
+Iraq,Both sexes,upper_middle,Asia,71.68333333333334
+Iraq,Female,upper_middle,Asia,74.81666666666666
+Iraq,Male,upper_middle,Asia,68.5
+Ireland,Both sexes,high_income,Europe,81.56666666666666
+Ireland,Female,high_income,Europe,83.31666666666666
+Ireland,Male,high_income,Europe,79.81666666666666
+Israel,Both sexes,high_income,Asia,82.35
+Israel,Female,high_income,Asia,84.15
+Israel,Male,high_income,Asia,80.41666666666667
+Italy,Both sexes,high_income,Europe,82.55
+Italy,Female,high_income,Europe,84.58333333333333
+Italy,Male,high_income,Europe,80.41666666666667
+Jamaica,Both sexes,upper_middle,North America,72.36666666666666
+Jamaica,Female,upper_middle,North America,75.26666666666667
+Jamaica,Male,upper_middle,North America,69.65
+Japan,Both sexes,high_income,Asia,84.35
+Japan,Female,high_income,Asia,87.06666666666666
+Japan,Male,high_income,Asia,81.5
+Jordan,Both sexes,lower_middle,Asia,78.89999999999999
+Jordan,Female,lower_middle,Asia,79.5
+Jordan,Male,lower_middle,Asia,78.83333333333333
+Kazakhstan,Both sexes,upper_middle,Europe,72.51666666666667
+Kazakhstan,Female,upper_middle,Europe,76.53333333333333
+Kazakhstan,Male,upper_middle,Europe,68.11666666666667
+Kenya,Both sexes,lower_middle,Africa,65.71666666666667
+Kenya,Female,lower_middle,Africa,68.28333333333333
+Kenya,Male,lower_middle,Africa,63.233333333333334
+Kiribati,Both sexes,lower_middle,Oceania,61.666666666666664
+Kiribati,Female,lower_middle,Oceania,65.03333333333333
+Kiribati,Male,lower_middle,Oceania,58.3
+Kuwait,Both sexes,high_income,Asia,81.78333333333333
+Kuwait,Female,high_income,Asia,85.46666666666667
+Kuwait,Male,high_income,Asia,79.63333333333333
+Kyrgyzstan,Both sexes,lower_middle,Asia,72.56666666666666
+Kyrgyzstan,Female,lower_middle,Asia,76.11666666666666
+Kyrgyzstan,Male,lower_middle,Asia,68.9
+Lao People's Democratic Republic,Both sexes,lower_middle,Asia,67.85
+Lao People's Democratic Republic,Female,lower_middle,Asia,70.3
+Lao People's Democratic Republic,Male,lower_middle,Asia,65.58333333333333
+Latvia,Both sexes,high_income,Europe,75.18333333333334
+Latvia,Female,high_income,Europe,79.61666666666667
+Latvia,Male,high_income,Europe,70.4
+Lebanon,Both sexes,lower_middle,Asia,78.76666666666667
+Lebanon,Female,lower_middle,Asia,81.1
+Lebanon,Male,lower_middle,Asia,76.26666666666667
+Lesotho,Both sexes,lower_middle,Africa,50.85
+Lesotho,Female,lower_middle,Africa,53.88333333333333
+Lesotho,Male,lower_middle,Africa,48.13333333333333
+Liberia,Both sexes,lower_income,Africa,62.53333333333333
+Liberia,Female,lower_income,Africa,63.21666666666667
+Liberia,Male,lower_income,Africa,61.86666666666667
+Libya,Both sexes,upper_middle,Africa,73.01666666666667
+Libya,Female,upper_middle,Africa,75.36666666666667
+Libya,Male,upper_middle,Africa,70.8
+Lithuania,Both sexes,high_income,Europe,75.25
+Lithuania,Female,high_income,Europe,80.08333333333333
+Lithuania,Male,high_income,Europe,70.25
+Luxembourg,Both sexes,high_income,Europe,82.68333333333334
+Luxembourg,Female,high_income,Europe,84.6
+Luxembourg,Male,high_income,Europe,80.71666666666667
+Madagascar,Both sexes,lower_income,Africa,63.516666666666666
+Madagascar,Female,lower_income,Africa,64.55
+Madagascar,Male,lower_income,Africa,62.45
+Malawi,Both sexes,lower_income,Africa,62.7
+Malawi,Female,lower_income,Africa,65.61666666666667
+Malawi,Male,lower_income,Africa,59.81666666666667
+Malaysia,Both sexes,upper_middle,Asia,74.85
+Malaysia,Female,upper_middle,Asia,77
+Malaysia,Male,upper_middle,Asia,73.1
+Maldives,Both sexes,upper_middle,Asia,77.25
+Maldives,Female,upper_middle,Asia,79.13333333333334
+Maldives,Male,upper_middle,Asia,75.81666666666666
+Mali,Both sexes,lower_income,Africa,61.05
+Mali,Female,lower_income,Africa,61.63333333333333
+Mali,Male,lower_income,Africa,60.53333333333333
+Malta,Both sexes,high_income,Europe,82.01666666666667
+Malta,Female,high_income,Europe,83.85
+Malta,Male,high_income,Europe,80.15
+Mauritania,Both sexes,lower_middle,Africa,69.68333333333334
+Mauritania,Female,lower_middle,Africa,69.88333333333334
+Mauritania,Male,lower_middle,Africa,69.48333333333333
+Mauritius,Both sexes,upper_middle,Africa,74.01666666666667
+Mauritius,Female,upper_middle,Africa,77.35
+Mauritius,Male,upper_middle,Africa,70.8
+Mexico,Both sexes,upper_middle,North America,75.03333333333333
+Mexico,Female,upper_middle,North America,78.11666666666667
+Mexico,Male,upper_middle,North America,72.01666666666667
+Micronesia (Federated States of),Both sexes,lower_middle,Oceania,65.65
+Micronesia (Federated States of),Female,lower_middle,Oceania,68.56666666666666
+Micronesia (Federated States of),Male,lower_middle,Oceania,62.983333333333334
+Mongolia,Both sexes,lower_middle,Asia,70.48333333333333
+Mongolia,Female,lower_middle,Asia,74.96666666666667
+Mongolia,Male,lower_middle,Asia,66.25
+Montenegro,Both sexes,upper_middle,Europe,76.76666666666667
+Montenegro,Female,upper_middle,Europe,79.58333333333333
+Montenegro,Male,upper_middle,Europe,73.86666666666667
+Morocco,Both sexes,lower_middle,Africa,73.33333333333333
+Morocco,Female,lower_middle,Africa,74.3
+Morocco,Male,lower_middle,Africa,72.4
+Mozambique,Both sexes,lower_income,Africa,57.46666666666667
+Mozambique,Female,lower_income,Africa,60.61666666666667
+Mozambique,Male,lower_income,Africa,54.416666666666664
+Myanmar,Both sexes,lower_middle,Asia,68.26666666666667
+Myanmar,Female,lower_middle,Asia,71.53333333333333
+Myanmar,Male,lower_middle,Asia,65.13333333333333
+Namibia,Both sexes,upper_middle,Africa,62.75
+Namibia,Female,upper_middle,Africa,65.91666666666667
+Namibia,Male,upper_middle,Africa,59.43333333333333
+Nepal,Both sexes,lower_middle,Asia,70.78333333333333
+Nepal,Female,lower_middle,Asia,72.56666666666666
+Nepal,Male,lower_middle,Asia,68.96666666666667
+Netherlands (Kingdom of the),Both sexes,high_income,Europe,81.61666666666667
+Netherlands (Kingdom of the),Female,high_income,Europe,83.1
+Netherlands (Kingdom of the),Male,high_income,Europe,80.08333333333333
+New Zealand,Both sexes,high_income,Oceania,81.71666666666667
+New Zealand,Female,high_income,Oceania,83.35
+New Zealand,Male,high_income,Oceania,80.05
+Nicaragua,Both sexes,lower_middle,North America,77.85
+Nicaragua,Female,lower_middle,North America,80.51666666666667
+Nicaragua,Male,lower_middle,North America,75.05
+Niger,Both sexes,lower_income,Africa,60.166666666666664
+Niger,Female,lower_income,Africa,61.15
+Niger,Male,lower_income,Africa,59.21666666666667
+Nigeria,Both sexes,lower_middle,Africa,62.45
+Nigeria,Female,lower_middle,Africa,63.983333333333334
+Nigeria,Male,lower_middle,Africa,61
+North Macedonia,Both sexes,upper_middle,Europe,75.65
+North Macedonia,Female,upper_middle,Europe,77.5
+North Macedonia,Male,upper_middle,Europe,73.95
+Norway,Both sexes,high_income,Europe,82.38333333333333
+Norway,Female,high_income,Europe,83.96666666666667
+Norway,Male,high_income,Europe,80.81666666666666
+Oman,Both sexes,high_income,Asia,74.3
+Oman,Female,high_income,Asia,77.81666666666666
+Oman,Male,high_income,Asia,72.2
+Pakistan,Both sexes,lower_middle,Asia,66.28333333333333
+Pakistan,Female,lower_middle,Asia,67.15
+Pakistan,Male,lower_middle,Asia,65.46666666666667
+Panama,Both sexes,high_income,North America,78.26666666666667
+Panama,Female,high_income,North America,81.25
+Panama,Male,high_income,North America,75.46666666666667
+Papua New Guinea,Both sexes,lower_middle,Oceania,66.35
+Papua New Guinea,Female,lower_middle,Oceania,67.56666666666666
+Papua New Guinea,Male,lower_middle,Oceania,65.25
+Paraguay,Both sexes,upper_middle,South America,75.15
+Paraguay,Female,upper_middle,South America,78.11666666666667
+Paraguay,Male,upper_middle,South America,72.36666666666667
+Peru,Both sexes,upper_middle,South America,78.33333333333333
+Peru,Female,upper_middle,South America,80.26666666666667
+Peru,Male,upper_middle,South America,76.46666666666667
+Philippines,Both sexes,lower_middle,Asia,69.5
+Philippines,Female,lower_middle,Asia,73.53333333333333
+Philippines,Male,lower_middle,Asia,65.95
+Poland,Both sexes,high_income,Europe,77.38333333333333
+Poland,Female,high_income,Europe,81.23333333333333
+Poland,Male,high_income,Europe,73.46666666666667
+Portugal,Both sexes,high_income,Europe,81.03333333333333
+Portugal,Female,high_income,Europe,83.85
+Portugal,Male,high_income,Europe,78.01666666666667
+Puerto Rico,Both sexes,high_income,North America,80.03333333333333
+Puerto Rico,Female,high_income,North America,83.5
+Puerto Rico,Male,high_income,North America,76.51666666666667
+Qatar,Both sexes,high_income,Asia,78.21666666666667
+Qatar,Female,high_income,Asia,79.26666666666667
+Qatar,Male,high_income,Asia,77.8
+Republic of Korea,Both sexes,high_income,Asia,83.15
+Republic of Korea,Female,high_income,Asia,86.05
+Republic of Korea,Male,high_income,Asia,79.96666666666667
+Republic of Moldova,Both sexes,upper_middle,Europe,72.35
+Republic of Moldova,Female,upper_middle,Europe,76.23333333333333
+Republic of Moldova,Male,upper_middle,Europe,68.41666666666667
+Romania,Both sexes,high_income,Europe,74.96666666666667
+Romania,Female,high_income,Europe,78.7
+Romania,Male,high_income,Europe,71.33333333333333
+Russian Federation,Both sexes,upper_middle,Asia,72.11666666666667
+Russian Federation,Female,upper_middle,Asia,77.11666666666666
+Russian Federation,Male,upper_middle,Asia,66.91666666666667
+Rwanda,Both sexes,lower_income,Africa,67.55
+Rwanda,Female,lower_income,Africa,69.41666666666666
+Rwanda,Male,lower_income,Africa,65.45
+Saint Lucia,Both sexes,upper_middle,North America,76.08333333333333
+Saint Lucia,Female,upper_middle,North America,79.96666666666667
+Saint Lucia,Male,upper_middle,North America,72.46666666666667
+Saint Vincent and the Grenadines,Both sexes,upper_middle,North America,72.98333333333333
+Saint Vincent and the Grenadines,Female,upper_middle,North America,75.55
+Saint Vincent and the Grenadines,Male,upper_middle,North America,70.75
+Samoa,Both sexes,lower_middle,Oceania,70.03333333333333
+Samoa,Female,lower_middle,Oceania,71.4
+Samoa,Male,lower_middle,Oceania,68.76666666666667
+Sao Tome and Principe,Both sexes,lower_middle,Africa,71.2
+Sao Tome and Principe,Female,lower_middle,Africa,72.7
+Sao Tome and Principe,Male,lower_middle,Africa,69.7
+Saudi Arabia,Both sexes,high_income,Asia,76.7
+Saudi Arabia,Female,high_income,Asia,77.6
+Saudi Arabia,Male,high_income,Asia,76.16666666666667
+Senegal,Both sexes,lower_middle,Africa,68.18333333333334
+Senegal,Female,lower_middle,Africa,69.7
+Senegal,Male,lower_middle,Africa,66.46666666666667
+Serbia,Both sexes,upper_middle,Europe,75.46666666666667
+Serbia,Female,upper_middle,Europe,78
+Serbia,Male,upper_middle,Europe,72.83333333333333
+Seychelles,Both sexes,high_income,Africa,73.81666666666666
+Seychelles,Female,high_income,Africa,77.28333333333333
+Seychelles,Male,high_income,Africa,70.91666666666666
+Sierra Leone,Both sexes,lower_income,Africa,59.28333333333333
+Sierra Leone,Female,lower_income,Africa,60.166666666666664
+Sierra Leone,Male,lower_income,Africa,58.36666666666667
+Singapore,Both sexes,high_income,Asia,83.43333333333334
+Singapore,Female,high_income,Asia,85.58333333333333
+Singapore,Male,high_income,Asia,81.28333333333333
+Slovakia,Both sexes,high_income,Europe,77.1
+Slovakia,Female,high_income,Europe,80.4
+Slovakia,Male,high_income,Europe,73.66666666666667
+Slovenia,Both sexes,high_income,Europe,80.78333333333333
+Slovenia,Female,high_income,Europe,83.53333333333333
+Slovenia,Male,high_income,Europe,78
+Solomon Islands,Both sexes,lower_middle,Oceania,65.43333333333334
+Solomon Islands,Female,lower_middle,Oceania,68.08333333333333
+Solomon Islands,Male,lower_middle,Oceania,63.083333333333336
+Somalia,Both sexes,lower_income,Africa,54.43333333333334
+Somalia,Female,lower_income,Africa,56.96666666666667
+Somalia,Male,lower_income,Africa,52.083333333333336
+South Africa,Both sexes,upper_middle,Africa,64.55
+South Africa,Female,upper_middle,Africa,67.41666666666667
+South Africa,Male,upper_middle,Africa,61.4
+South Sudan,Both sexes,lower_income,Africa,59.03333333333333
+South Sudan,Female,lower_income,Africa,61.2
+South Sudan,Male,lower_income,Africa,56.833333333333336
+Spain,Both sexes,high_income,Europe,82.58333333333333
+Spain,Female,high_income,Europe,85.16666666666667
+Spain,Male,high_income,Europe,79.96666666666667
+Sri Lanka,Both sexes,lower_middle,Asia,77.58333333333334
+Sri Lanka,Female,lower_middle,Asia,80.43333333333334
+Sri Lanka,Male,lower_middle,Asia,74.45
+Sudan,Both sexes,lower_income,Africa,68.85
+Sudan,Female,lower_income,Africa,70
+Sudan,Male,lower_income,Africa,67.66666666666667
+Suriname,Both sexes,upper_middle,South America,73.03333333333333
+Suriname,Female,upper_middle,South America,76.11666666666666
+Suriname,Male,upper_middle,South America,69.98333333333333
+Sweden,Both sexes,high_income,Europe,82.13333333333333
+Sweden,Female,high_income,Europe,83.75
+Sweden,Male,high_income,Europe,80.51666666666667
+Switzerland,Both sexes,high_income,Europe,83.06666666666666
+Switzerland,Female,high_income,Europe,84.81666666666666
+Switzerland,Male,high_income,Europe,81.21666666666667
+Syrian Arab Republic,Both sexes,lower_income,Asia,64.13333333333334
+Syrian Arab Republic,Female,lower_income,Asia,71.45
+Syrian Arab Republic,Male,lower_income,Asia,58.36666666666667
+Tajikistan,Both sexes,lower_middle,Asia,72.7
+Tajikistan,Female,lower_middle,Asia,74.43333333333334
+Tajikistan,Male,lower_middle,Asia,71.01666666666667
+Thailand,Both sexes,upper_middle,Asia,76.95
+Thailand,Female,upper_middle,Asia,80.48333333333333
+Thailand,Male,upper_middle,Asia,73.51666666666667
+Timor-Leste,Both sexes,lower_middle,Asia,68.31666666666666
+Timor-Leste,Female,lower_middle,Asia,69.93333333333334
+Timor-Leste,Male,lower_middle,Asia,66.81666666666666
+Togo,Both sexes,lower_income,Africa,62.766666666666666
+Togo,Female,lower_income,Africa,65.48333333333333
+Togo,Male,lower_income,Africa,60.333333333333336
+Tonga,Both sexes,upper_middle,Oceania,72.78333333333333
+Tonga,Female,upper_middle,Oceania,75.51666666666667
+Tonga,Male,upper_middle,Oceania,70.18333333333334
+Trinidad and Tobago,Both sexes,high_income,North America,73.98333333333333
+Trinidad and Tobago,Female,high_income,North America,77.3
+Trinidad and Tobago,Male,high_income,North America,70.7
+Tunisia,Both sexes,lower_middle,Africa,77.08333333333333
+Tunisia,Female,lower_middle,Africa,79.61666666666666
+Tunisia,Male,lower_middle,Africa,74.68333333333334
+Türkiye,Both sexes,upper_middle,Asia,76.98333333333333
+Türkiye,Female,upper_middle,Asia,79.56666666666666
+Türkiye,Male,upper_middle,Asia,74.35
+Turkmenistan,Both sexes,upper_middle,Asia,68.91666666666666
+Turkmenistan,Female,upper_middle,Asia,72.33333333333333
+Turkmenistan,Male,upper_middle,Asia,65.45
+Uganda,Both sexes,lower_income,Africa,65.36666666666667
+Uganda,Female,lower_income,Africa,68.71666666666667
+Uganda,Male,lower_income,Africa,61.983333333333334
+Ukraine,Both sexes,lower_middle,Europe,72.65
+Ukraine,Female,lower_middle,Europe,77.43333333333334
+Ukraine,Male,lower_middle,Europe,67.7
+United Arab Emirates,Both sexes,high_income,Asia,80.85
+United Arab Emirates,Female,high_income,Asia,81.91666666666666
+United Arab Emirates,Male,high_income,Asia,80.33333333333334
+United Kingdom of Great Britain and Northern Ireland,Both sexes,high_income,Europe,80.71666666666667
+United Kingdom of Great Britain and Northern Ireland,Female,high_income,Europe,82.43333333333334
+United Kingdom of Great Britain and Northern Ireland,Male,high_income,Europe,78.98333333333333
+United Republic of Tanzania,Both sexes,lower_middle,Africa,66.23333333333333
+United Republic of Tanzania,Female,lower_middle,Africa,67.85
+United Republic of Tanzania,Male,lower_middle,Africa,64.6
+United States of America,Both sexes,high_income,North America,78.31666666666666
+United States of America,Female,high_income,North America,80.61666666666667
+United States of America,Male,high_income,North America,76.08333333333334
+Uruguay,Both sexes,high_income,South America,77.16666666666666
+Uruguay,Female,high_income,South America,80.73333333333333
+Uruguay,Male,high_income,South America,73.48333333333333
+Uzbekistan,Both sexes,lower_middle,Asia,70.83333333333334
+Uzbekistan,Female,lower_middle,Asia,72.96666666666667
+Uzbekistan,Male,lower_middle,Asia,68.6
+Vanuatu,Both sexes,lower_middle,Oceania,66.98333333333333
+Vanuatu,Female,lower_middle,Oceania,70.56666666666666
+Vanuatu,Male,lower_middle,Oceania,63.949999999999996
+Venezuela (Bolivarian Republic of),Both sexes,upper_middle,South America,72.86666666666667
+Venezuela (Bolivarian Republic of),Female,upper_middle,South America,77.5
+Venezuela (Bolivarian Republic of),Male,upper_middle,South America,68.55
+Viet Nam,Both sexes,lower_middle,Asia,73.61666666666667
+Viet Nam,Female,lower_middle,Asia,77.98333333333333
+Viet Nam,Male,lower_middle,Asia,69.33333333333334
+Yemen,Both sexes,lower_income,Asia,67.25
+Yemen,Female,lower_income,Asia,70.03333333333333
+Yemen,Male,lower_income,Asia,64.53333333333333
+Zambia,Both sexes,lower_middle,Africa,61.28333333333333
+Zambia,Female,lower_middle,Africa,63.416666666666664
+Zambia,Male,lower_middle,Africa,58.983333333333334
+Zimbabwe,Both sexes,lower_middle,Africa,58.46666666666667
+Zimbabwe,Female,lower_middle,Africa,60.43333333333334
+Zimbabwe,Male,lower_middle,Africa,56.31666666666666
