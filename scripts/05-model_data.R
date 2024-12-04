@@ -19,11 +19,12 @@ library(modelsummary) # for summarizing the model
 #### Read data ####
 lea60 <- read_parquet("data/02-analysis_data/lea60.parquet")
 leab <- read_parquet ("data/02-analysis_data/leab.parquet")
+average_life_expectancy <- read_parquet("data/02-analysis_data/average_life_expectancy.parquet")
 
 # Fit the Bayesian linear regression model using stan_glm
 ledata_normal_model <- stan_glm(
   `Life Expectancy` ~ Region + Country + Income_Group + Gender, 
-  data = leab, 
+  data = average_life_expectancy, 
   family = gaussian(link = "identity"), 
   prior = normal(location = 0, scale = 2.5, autoscale = TRUE),
   prior_intercept = normal(location = 0, scale = 2.5, autoscale = TRUE),
