@@ -1,0 +1,185 @@
+Country,Income_Group,Region,Average_Life_Expectancy
+Afghanistan,lower_income,Asia,60.63333333333333
+Albania,upper_middle,Europe,77.65
+Algeria,lower_middle,Africa,75.95
+Angola,lower_middle,Africa,62.13333333333333
+Antigua and Barbuda,high_income,North America,75.93333333333334
+Argentina,upper_middle,South America,76.55
+Armenia,upper_middle,Europe,74.08333333333333
+Australia,high_income,Oceania,82.76666666666667
+Austria,high_income,Europe,81.31666666666666
+Azerbaijan,upper_middle,Europe,74.08333333333333
+Bahamas,high_income,North America,72.61666666666667
+Bahrain,high_income,Asia,75.66666666666667
+Bangladesh,lower_middle,Asia,73.48333333333333
+Barbados,high_income,North America,76.35
+Belarus,upper_middle,Europe,73.98333333333333
+Belgium,high_income,Europe,81.1
+Belize,upper_middle,North America,74.58333333333333
+Benin,lower_middle,Africa,63.516666666666666
+Bhutan,lower_middle,Asia,73.68333333333334
+Bolivia (Plurinational State of),lower_middle,South America,71.53333333333333
+Bosnia and Herzegovina,upper_middle,Europe,76.9
+Botswana,upper_middle,Africa,63.93333333333334
+Brazil,upper_middle,South America,74.86666666666666
+Brunei Darussalam,high_income,Asia,76.55
+Bulgaria,upper_middle,Europe,74.58333333333333
+Burkina Faso,lower_income,Africa,62.016666666666666
+Burundi,lower_income,Africa,63.75
+Cabo Verde,lower_middle,Africa,74.38333333333334
+Cambodia,lower_middle,Asia,69.25
+Cameroon,lower_middle,Africa,60.833333333333336
+Canada,high_income,North America,81.66666666666667
+Central African Republic,lower_income,Africa,51.983333333333334
+Chad,lower_income,Africa,58.71666666666667
+Chile,high_income,South America,80.53333333333333
+China,upper_middle,Asia,77
+Colombia,upper_middle,South America,77.45
+Comoros,lower_middle,Africa,67.91666666666667
+Congo,lower_middle,Africa,62.8
+Costa Rica,upper_middle,North America,80.25
+Cote d'Ivoire,lower_middle,Africa,62.416666666666664
+Croatia,high_income,Europe,78.13333333333333
+Cuba,upper_middle,North America,77.81666666666666
+Cyprus,high_income,Europe,81.96666666666667
+Czechia,high_income,Europe,78.73333333333333
+Democratic People's Republic of Korea,lower_income,Asia,71.95
+Democratic Republic of the Congo,lower_income,Africa,61.06666666666666
+Denmark,high_income,Europe,80.95
+Djibouti,lower_middle,Africa,64.78333333333333
+Dominican Republic,upper_middle,North America,73.5
+Ecuador,upper_middle,South America,76.61666666666667
+Egypt,lower_middle,Africa,70.86666666666666
+El Salvador,upper_middle,North America,73.51666666666667
+Equatorial Guinea,upper_middle,Africa,61.2
+Eritrea,lower_income,Africa,63.28333333333333
+Estonia,high_income,Europe,78.21666666666667
+Eswatini,lower_middle,Africa,54.233333333333334
+Ethiopia,lower_income,Africa,68.14999999999999
+Fiji,upper_middle,Oceania,67.81666666666666
+Finland,high_income,Europe,81.35
+France,high_income,Europe,82.16666666666667
+Gabon,upper_middle,Africa,64.6
+Gambia,lower_income,Africa,64.41666666666666
+Georgia,upper_middle,Europe,73.3
+Germany,high_income,Europe,80.71666666666667
+Ghana,lower_middle,Africa,65.3
+Greece,high_income,Europe,80.73333333333333
+Grenada,upper_middle,North America,73.08333333333333
+Guatemala,upper_middle,North America,72.21666666666667
+Guinea,lower_middle,Africa,60.38333333333333
+Guinea-Bissau,lower_income,Africa,58.333333333333336
+Guyana,high_income,South America,67.85
+Haiti,lower_middle,North America,63.18333333333334
+Honduras,lower_middle,North America,70.81666666666666
+Hungary,high_income,Europe,75.96666666666667
+Iceland,high_income,Europe,82.35
+India,lower_middle,Asia,70.1
+Indonesia,upper_middle,Asia,70.76666666666667
+Iran (Islamic Republic of),lower_middle,Asia,77.15
+Iraq,upper_middle,Asia,71.68333333333334
+Ireland,high_income,Europe,81.56666666666666
+Israel,high_income,Asia,82.35
+Italy,high_income,Europe,82.55
+Jamaica,upper_middle,North America,72.36666666666666
+Japan,high_income,Asia,84.35
+Jordan,lower_middle,Asia,78.89999999999999
+Kazakhstan,upper_middle,Europe,72.51666666666667
+Kenya,lower_middle,Africa,65.71666666666667
+Kiribati,lower_middle,Oceania,61.666666666666664
+Kuwait,high_income,Asia,81.78333333333333
+Kyrgyzstan,lower_middle,Asia,72.56666666666666
+Lao People's Democratic Republic,lower_middle,Asia,67.85
+Latvia,high_income,Europe,75.18333333333334
+Lebanon,lower_middle,Asia,78.76666666666667
+Lesotho,lower_middle,Africa,50.85
+Liberia,lower_income,Africa,62.53333333333333
+Libya,upper_middle,Africa,73.01666666666667
+Lithuania,high_income,Europe,75.25
+Luxembourg,high_income,Europe,82.68333333333334
+Madagascar,lower_income,Africa,63.516666666666666
+Malawi,lower_income,Africa,62.7
+Malaysia,upper_middle,Asia,74.85
+Maldives,upper_middle,Asia,77.25
+Mali,lower_income,Africa,61.05
+Malta,high_income,Europe,82.01666666666667
+Mauritania,lower_middle,Africa,69.68333333333334
+Mauritius,upper_middle,Africa,74.01666666666667
+Mexico,upper_middle,North America,75.03333333333333
+Micronesia (Federated States of),lower_middle,Oceania,65.65
+Mongolia,lower_middle,Asia,70.48333333333333
+Montenegro,upper_middle,Europe,76.76666666666667
+Morocco,lower_middle,Africa,73.33333333333333
+Mozambique,lower_income,Africa,57.46666666666667
+Myanmar,lower_middle,Asia,68.26666666666667
+Namibia,upper_middle,Africa,62.75
+Nepal,lower_middle,Asia,70.78333333333333
+Netherlands (Kingdom of the),high_income,Europe,81.61666666666667
+New Zealand,high_income,Oceania,81.71666666666667
+Nicaragua,lower_middle,North America,77.85
+Niger,lower_income,Africa,60.166666666666664
+Nigeria,lower_middle,Africa,62.45
+North Macedonia,upper_middle,Europe,75.65
+Norway,high_income,Europe,82.38333333333333
+Oman,high_income,Asia,74.3
+Pakistan,lower_middle,Asia,66.28333333333333
+Panama,high_income,North America,78.26666666666667
+Papua New Guinea,lower_middle,Oceania,66.35
+Paraguay,upper_middle,South America,75.15
+Peru,upper_middle,South America,78.33333333333333
+Philippines,lower_middle,Asia,69.5
+Poland,high_income,Europe,77.38333333333333
+Portugal,high_income,Europe,81.03333333333333
+Puerto Rico,high_income,North America,80.03333333333333
+Qatar,high_income,Asia,78.21666666666667
+Republic of Korea,high_income,Asia,83.15
+Republic of Moldova,upper_middle,Europe,72.35
+Romania,high_income,Europe,74.96666666666667
+Russian Federation,upper_middle,Asia,72.11666666666667
+Rwanda,lower_income,Africa,67.55
+Saint Lucia,upper_middle,North America,76.08333333333333
+Saint Vincent and the Grenadines,upper_middle,North America,72.98333333333333
+Samoa,lower_middle,Oceania,70.03333333333333
+Sao Tome and Principe,lower_middle,Africa,71.2
+Saudi Arabia,high_income,Asia,76.7
+Senegal,lower_middle,Africa,68.18333333333334
+Serbia,upper_middle,Europe,75.46666666666667
+Seychelles,high_income,Africa,73.81666666666666
+Sierra Leone,lower_income,Africa,59.28333333333333
+Singapore,high_income,Asia,83.43333333333334
+Slovakia,high_income,Europe,77.1
+Slovenia,high_income,Europe,80.78333333333333
+Solomon Islands,lower_middle,Oceania,65.43333333333334
+Somalia,lower_income,Africa,54.43333333333334
+South Africa,upper_middle,Africa,64.55
+South Sudan,lower_income,Africa,59.03333333333333
+Spain,high_income,Europe,82.58333333333333
+Sri Lanka,lower_middle,Asia,77.58333333333334
+Sudan,lower_income,Africa,68.85
+Suriname,upper_middle,South America,73.03333333333333
+Sweden,high_income,Europe,82.13333333333333
+Switzerland,high_income,Europe,83.06666666666666
+Syrian Arab Republic,lower_income,Asia,64.13333333333334
+Tajikistan,lower_middle,Asia,72.7
+Thailand,upper_middle,Asia,76.95
+Timor-Leste,lower_middle,Asia,68.31666666666666
+Togo,lower_income,Africa,62.766666666666666
+Tonga,upper_middle,Oceania,72.78333333333333
+Trinidad and Tobago,high_income,North America,73.98333333333333
+Tunisia,lower_middle,Africa,77.08333333333333
+Türkiye,upper_middle,Asia,76.98333333333333
+Turkmenistan,upper_middle,Asia,68.91666666666666
+Uganda,lower_income,Africa,65.36666666666667
+Ukraine,lower_middle,Europe,72.65
+United Arab Emirates,high_income,Asia,80.85
+United Kingdom of Great Britain and Northern Ireland,high_income,Europe,80.71666666666667
+United Republic of Tanzania,lower_middle,Africa,66.23333333333333
+United States of America,high_income,North America,78.31666666666666
+Uruguay,high_income,South America,77.16666666666666
+Uzbekistan,lower_middle,Asia,70.83333333333334
+Vanuatu,lower_middle,Oceania,66.98333333333333
+Venezuela (Bolivarian Republic of),upper_middle,South America,72.86666666666667
+Viet Nam,lower_middle,Asia,73.61666666666667
+Yemen,lower_income,Asia,67.25
+Zambia,lower_middle,Africa,61.28333333333333
+Zimbabwe,lower_middle,Africa,58.46666666666667
