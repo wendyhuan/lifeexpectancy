@@ -9,7 +9,13 @@ date-format: long
 abstract: "This paper analyze life expectancy and its determinants through 184 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 62.35, 68.40, 73.38, 79.38. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
+pdf-engine: xelatex
+geometry: landscape
 toc-depth: 3
+keep-tex: true
+output:
+  pdf_document:
+    extra_dependencies: ["longtable"]
 number-sections: true
 bibliography: references.bib
 ---
@@ -162,7 +168,7 @@ life_expectancy_bins <- leab %>%
 # Plot the percentage distribution
 ggplot(life_expectancy_bins, aes(x = AgeRange, y = Percentage, fill = AgeRange)) +
   geom_bar(stat = "identity", color = "white", alpha = 0.8) +
-  geom_text(aes(label = paste0(round(Percentage, 2), "%")), vjust = -0.5, size = 3.5) +
+  geom_text(aes(label = paste0(round(Percentage, 2), "%")), vjust = -0.5, size = 2.5) +
   labs(
     title = "Distribution of Life Expectancy by Age Range",
     x = "Life Expectancy (5-Year Ranges)",
@@ -464,11 +470,11 @@ modelsummary(
   fmt = 2,     # Format results to 2 decimal places
   output = "kableExtra"
 ) %>%
-  kable_styling(font_size = 8.5,
+  kable_styling(
+    font_size = 7.5,
                 full_width = FALSE,  # Keeps the table from spanning the full width
-    position = "center", # Centers the table
-    bootstrap_options = c("striped", "condensed") # Makes rows tighter
-  )
+                position = "center", # Centers the table
+                bootstrap_options = c("striped", "condensed"))
 
 ```
 
@@ -556,7 +562,7 @@ We then renaming columns for clarity. For example, we changed ‘Location’ int
 
 Each column is rounded using the round function, specifying the desired number of decimal places for each. Columns not mentioned in mutate remain unchanged. This ensures a flexible and precise cleaning process tailored to further comparison and graphing. We dropped the potential percentage symbol to contain purely numerical data.
 
-The income group column and the region column was not given in the raw dataset. We created a new variable called "Income_Group" by mapping over country name to four income group (lower_income, lower_middle, upper_middle, high_income) according to the index given by World Bank Income Group. This is a key variable in predicting life expectancy since it is believed that life expectancy is correlated to the income situation. We as well made a mapping to the countries according to its continent and saved as "Region". This is the variable indicates the geographic context to the analysis. Countries are mapped into six continents ("Africa", "Asia", "Europe", "North America", "South America", "Oceania") one by one.
+The income group column and the region column was not given in the raw dataset. We created a new variable called "Income_Group" by mapping over country name to four income group ("lower_income", "lower_middle", "upper_middle", "high_income") according to the index given by World Bank Income Group. This is a key variable in predicting life expectancy since it is believed that life expectancy is correlated to the income situation. We as well made a mapping to the countries according to its continent and saved as "Region". This is the variable indicates the geographic context to the analysis. Countries are mapped into six continents ("Africa", "Asia", "Europe", "North America", "South America", "Oceania") one by one.
 
 We again merge the table, removing repeated columns and rows and mapping the region and the country income under different given names.
 
@@ -572,7 +578,7 @@ After completing the cleaning, we saved the final dataset in both Parquet and CS
 
 ```{r}
 #| label: tbl-cleaned_average
-#| tbl-cap: "Cleaned data of average life expectancy of 6 years by different countries. Full cleaned Average life expectancy by country by gender could be find in https://github.com/wendyhuan/lifeexpectancy/blob/main/data/02-analysis_data/average_life_expectancy.csv"
+#| tbl-cap: "Cleaned data of average life expectancy of 6 years by different countries."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -586,7 +592,7 @@ bothg_average_life_expectancy %>%
     digits = 2,
     output = "kableExtra"
 ) %>%
-  kable_styling(font_size = 8.5,
+  kable_styling(font_size = 5.5,
     full_width = FALSE,
     position = "center",
     bootstrap_options = c("striped", "condensed")
@@ -741,10 +747,11 @@ results_df %>%
   digits = 2,
   output = "kableExtra"
 ) |>
-  kable_styling(font_size = 7.5,
+  kable_styling(font_size = 8.5,
                 full_width = FALSE,  # Keeps the table from spanning the full width
-    position = "center", # Centers the table
-    bootstrap_options = c("striped", "condensed"))
+    bootstrap_options = c("striped", "condensed")) %>%
+  column_spec(1, width = "0.35in") %>%
+  column_spec(3:6, width = "1in") 
 
 ```
 
