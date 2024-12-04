@@ -40,11 +40,13 @@ library(janitor)
 library(purrr)
 library(knitr)
 library(kableExtra)
+library(xtable)
 library(ggcorrplot)
 library(modelsummary)
 library(countrycode)
 library(gridExtra)
 library(caret)
+library(tinytex)
 
 # load data
 lelecleaned_data <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lelecleaned.parquet")
@@ -94,12 +96,140 @@ The raw life expectancy data underwent a several cleaning steps to ensure it was
 
 To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female.
 
-shows the average of life expectancy under male, female, 6 different regions and 4 income groups.
+@fig-sum_sta shows the average of life expectancy under male, female, 6 different regions and 4 income groups.
 
 The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
 More information on the data cleaning process can be found in @sec-appx.
 
+```{r}
+#| label: tbl-sum_sta
+#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy. With a huge gap between 25 and 50, we could indicate that most of the countries has a life expectancy of. There exist large data with low life expectancy less than 25 years.  "
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# find average life expectancy for both sex
+bothsexavg <- leab |>
+  filter(Gender == "Both sexes") |>
+  summarise(
+    "Gender" = "Both sexes",
+    "Average life ex" = mean(`Life Expectancy`))
+
+#find average life expectancy of female
+female_tableavg <- female_table |>
+  summarise(
+    "Gender" = "Female",
+    "Average life ex" = mean(`Life Expectancy`))
+
+#find average life expectancy of male
+male_tableavg <- male_table |>
+  summarise(
+    "Gender" = "Male",
+    "Average life ex" = mean(`Life Expectancy`))
+
+#find average life expectancy of Africa
+africaavg <- leab |>
+  filter(Region == "Africa") |>
+  summarise(
+    "Group" = "Africa",
+    "Average life ex" = mean(`Life Expectancy`, na.rm = TRUE)
+  )
+
+##find average life expectancy of Asia
+asiaavg <- leab |>
+  filter(Region == "Asia") |>
+  summarise(
+    "Region" = "Asia",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of North America
+naavg <- leab |>
+  filter(Region == "North America") |>
+  summarise(
+    "Region" = "North America",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of South America
+saavg <- leab |>
+  filter(Region == "South America") |>
+  summarise(
+    "Region" = "South Amereica",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of Oceania
+oceaniaavg <- leab |>
+  filter(Region == "Oceania") |>
+  summarise(
+    "Region" = "Oceania",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of Europe
+europeavg <- leab |>
+  filter(Region == "Europe") |>
+  summarise(
+    "Region" = "Europe",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of lower_income
+lowavg <- leab |>
+  filter(Income_Group == "lower_income") |>
+  summarise(
+    "Income_Group" = "lower_income",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of lower_middle
+middleavg <- leab |>
+  filter(Income_Group == "lower_middle") |>
+  summarise(
+    "Income_Group" = "lower_middle",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of upper_middle
+upperavg <- leab |>
+  filter(Income_Group == "upper_middle") |>
+  summarise(
+    "Income_Group" = "upper_middle",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+#find average life expectancy of high_income
+highavg <- leab |>
+  filter(Income_Group == "high_income") |>
+  summarise(
+    "Income_Group" = "high_income",
+    "Average life ex" = mean(`Life Expectancy`)
+  )
+
+# create a summary statistic by binding all the subtables into one
+sum_sta <- bind_rows(
+  bothsexavg,
+  male_tableavg,
+  female_tableavg,
+  africaavg,
+  asiaavg,
+  naavg,
+  saavg,
+  oceaniaavg,
+  europeavg,
+  lowavg,
+  middleavg,
+  upperavg,
+  highavg
+)
+
+# View the combined summary table
+sum_sta
+  
+```
 ## Outcome Variables
 
 The outcome variable is **Life Expectancy**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average.
@@ -114,36 +244,39 @@ The outcome variable is **Life Expectancy**. This is the primary dependent varia
 #| warning: false
 #| message: false
 
-# Normalize Life Expectancy to percentages
-life_expectancy_percentage <- lelecleaned_data %>%
-  mutate(
-    LifeExpectancyPercentage = 100 * (`Life Expectancy` - min(`Life Expectancy`, na.rm = TRUE)) / 
-                                  (max(`Life Expectancy`, na.rm = TRUE) - min(`Life Expectancy`, na.rm = TRUE))
-  )
+# Assuming lelecleaned_data is the data frame containing life expectancy
+# Bin Life Expectancy into 5-year ranges
+life_expectancy_bins <- leab %>%
+  
+  mutate(AgeRange = cut(`Life Expectancy`, 
+                        breaks = seq(floor(min(`Life Expectancy`, na.rm = TRUE)), 
+                                     ceiling(max(`Life Expectancy`, na.rm = TRUE)), 
+                                     by = 5), 
+                        include.lowest = TRUE)) %>%
+  # Calculate the percentage in each age range
+  group_by(AgeRange) %>%
+  summarise(Count = n()) %>%
+  mutate(Percentage = 100 * Count / sum(Count))
 
-# Plot the distribution
-ggplot(life_expectancy_percentage, aes(x = LifeExpectancyPercentage)) +
-  geom_histogram(
-    bins = 20, 
-    fill = "skyblue", 
-    color = "white", 
-    alpha = 0.8
-  ) +
-  geom_density(
-    aes(y = ..scaled.. * max(..count..)),  # Align density with histogram
-    color = "blue", 
-    size = 1
-  ) +
+# Print the table showing age ranges and percentages
+print(life_expectancy_bins)
+
+# Plot the percentage distribution
+ggplot(life_expectancy_bins, aes(x = AgeRange, y = Percentage, fill = AgeRange)) +
+  geom_bar(stat = "identity", color = "white", alpha = 0.8) +
+  geom_text(aes(label = paste0(round(Percentage, 2), "%")), vjust = -0.5, size = 3.5) +
   labs(
-    title = "Distribution of Life Expectancy as Percentages",
-    x = "Life Expectancy (%)",
-    y = "Count"
+    title = "Distribution of Life Expectancy by Age Range",
+    x = "Life Expectancy (5-Year Ranges)",
+    y = "Percentage"
   ) +
   theme_minimal() +
   theme(
     plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
-    axis.text.x = element_text(angle = 45, hjust = 1)
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
   )
+
 
 
 ```
@@ -235,12 +368,12 @@ ggplot(region_counts, aes(x = Region, y = n, fill = Region)) +
 #| message: false
 
 # Calculate the average life expectancy per year for males
-male_avg <- male_table %>%
+male_avg <- matable %>%
   group_by(Period) %>%
   summarise(AverageLifeExpectancy = mean(`Life Expectancy`, na.rm = TRUE)) 
 
 # Calculate the average life expectancy per year for females
-female_avg <- female_table %>%
+female_avg <- femaletable %>%
   group_by(Period) %>%
   summarise(AverageLifeExpectancy = mean(`Life Expectancy`, na.rm = TRUE))
 
@@ -269,7 +402,7 @@ ggplot(combined_avg, aes(x = Period, y = AverageLifeExpectancy, color = Gender, 
 
 ## Basic Data Summary
 
-The table below shows the basic summary of the mean, median, max, standard deviation, variance and sample size of life expectancy. We could tell that the average of the life expectancy from the 6 years is 45.9, with a large standard deviation of 26.9. The max of the life expectancy is 87.4, among all 6624 rows of data. The standard deviation and variance are extremely high because of the range of data is large, in other words, because the mean and median are 45.9 and 37.7, compared to the max 87.4, there is likely some outliers in the data creating such a high standard deviation and variance.
+The table below shows the basic summary of the mean, median, max, standard deviation, variance and sample size of life expectancy. We could tell that the average of the life expectancy from the 6 years is 72.2, with a relatively small standard deviation of 7.8. The max of the life expectancy is 87.4, among all 3312 rows of data. The variance is high because of the range of data is large, in other words, because the mean and median are 72.2 and 73.1, compared to the max 87.4, there is likely some outliers in the data creating such a slightly high variance of 60.1.
 
 ```{r}
 #| label: fig-summary
@@ -280,7 +413,7 @@ The table below shows the basic summary of the mean, median, max, standard devia
 #| message: false
 
 # Calculate summary statistics
-life_expectancy_stats <- lelecleaned_data %>%
+life_expectancy_stats <- leab %>%
   summarise(
     Mean = round(mean(`Life Expectancy`, na.rm = TRUE),1),
     Median = median(`Life Expectancy`, na.rm = TRUE),
@@ -290,14 +423,28 @@ life_expectancy_stats <- lelecleaned_data %>%
     N = sum(!is.na(`Life Expectancy`)) # Count of non-missing values
   )
 
-# Create and format the table
+#Create and format the table using kableExtra
 life_expectancy_stats %>%
   kbl(
     caption = "Summary Statistics of Life Expectancy",
-    col.names = c("Mean", "Median","Max", "Standard Deviation", "Variance", "N"),
-    align = "c"
+    col.names = c("Mean", "Median", "Max", "Standard Deviation", "Variance", "N"),
+    align = "c",
+    digits = 2 # Ensure numeric values are rounded to 2 decimal places
   ) %>%
-  kable_styling(full_width = F, bootstrap_options = c("striped", "hover", "condensed"))
+  kable_styling(
+    full_width = FALSE, 
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
+    font_size = 14
+  ) %>%
+  column_spec(1, bold = TRUE, color = "white", background = "darkblue") %>% # Highlight the first column
+  column_spec(2:ncol(life_expectancy_stats), color = "black") %>% # Style the data columns
+  row_spec(0, bold = TRUE, background = "lightgray") %>% # Add a header row styling
+  add_header_above(c(" " = 6)) %>% # Add optional grouping header
+  footnote(
+    general = "This table summarizes the key statistics of life expectancy data.",
+    footnote_as_chunk = TRUE, 
+    general_title = "Note:"
+  )
 
 ```
 
@@ -309,13 +456,15 @@ The goal of the Bayesian model is to incorporate prior knowledge, such as insigh
 
 The model is specified as follows:
 
+```{=tex}
 \begin{align} 
-y_i|\mu_i, \sigma &\sim \text{Normal}(\mu_i, \sigma) \\
-\mu_i &= \alpha + \beta_1 \text{Region}_i + \beta_2 \text{Gender}_i + \beta_3 \text{Income_Group}_i \\
-\alpha &\sim \text{Normal}(0, 2.5) \\
-\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, 2.5) \\
-\sigma &\sim \text{Exponential}(1)
+y_i|\mu_i, \sigma &\sim \text{Normal}(\mu_i, \sigma) \text{(1)} \\
+\mu_i &= \alpha + \beta_1 \text{Region}_i + \beta_2 \text{Gender}_i + \beta_3 \text{Income_Group}_i \\text{(2)} \\
+\alpha &\sim \text{Normal}(0, 2.5) \text{(3)}\\
+\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, 2.5) \text{(4)}\\
+\sigma &\sim \text{Exponential}(1) \text{(5)} \\
 \end{align}
+```
 
 Where:
 
@@ -345,14 +494,17 @@ This approach is appropriate given the data structure and the goal of the analys
 
 To assess the performance of the life expectancy prediction model, two critical metrics were used: Root Mean Squared Error (RMSE) and Out-of-Sample Testing. These methods help ensure that the model generalizes well to unseen data and provides reliable predictions for life expectancy across different regions, income groups, and genders.
 
-RMSE measures the square root of the average squared differences between the predicted and observed values. In the context of this model, RMSE quantifies how closely the predicted life expectancy values align with the actual observed values. Lower RMSE values indicate better model performance, suggesting that the model’s predictions are close to the true values. The generalizability is checked by comparing rmse_test and rmse_train. Seeing the test RMSE is slightly lower than the training RMSE, the model generalizes well.
+RMSE measures the square root of the average squared differences between the predicted and observed values. In the context of this model, RMSE quantifies how closely the predicted life expectancy values align with the actual observed values. Lower RMSE values indicate better model performance, suggesting that the model’s predictions are close to the true values. @tbl-modelpredict gives out the RMSE of both testing data and training data. The generalizability is checked by comparing rmse_test and rmse_train. Seeing the test RMSE is slightly lower than the training RMSE, the model generalizes well.
 
 Out-of-Sample testing is a critical component of model evaluation. In this approach, the data is split into a training set and a test set (or holdout set). The training set is used to fit the model, while the test set is used to evaluate how well the model performs on new, unseen data. For this analysis, the model was trained using a portion of the data (80% of the dataset) and then evaluated on the remaining data (20% of the dataset) that was not used during training. This method allows us to check whether the model overfits the training data or if it can generalize well to unseen observations.
 
 Together, RMSE and out-of-sample testing offer a robust framework for model validation, ensuring that the predictions made by the life expectancy model are both accurate and generalizable.
 
+Extended versions of the table can be found in @tbl-testpredicted.
+
 ```{r}
 
+#read the model developed
 model_developed <-
   readRDS(file = "~/lifeexpectancy/models/ledata_normal_model.rds")
 
@@ -378,19 +530,34 @@ predictions <- predict(ledata_normal_model, newdata = test_data)
 # Calculate RMSE
 actual_values <- test_data$`Life Expectancy`
 rmse <- sqrt(mean((predictions - actual_values)^2))
-print(paste("RMSE: ", round(rmse, 2)))
+
 
 # Calculate RMSE for the training set (in-sample testing)
 train_predictions <- predict(ledata_normal_model, newdata = train_data)
 train_rmse <- sqrt(mean((train_predictions - train_data$`Life Expectancy`)^2))
-print(paste("Training RMSE: ", round(train_rmse, 2)))
 
-# Compare RMSE results
-if (rmse < train_rmse) {
-  print("The model generalizes well to the test data (out-of-sample).")
-} else {
-  print("The model may be overfitting the training data (higher RMSE on test data).")
-}
+# Create the RMSE table
+rmse_table <- data.frame(
+  Dataset = c("Test Data", "Training Data"),
+  RMSE = c(round(rmse, 2), round(train_rmse, 2))
+)
+
+# Create a styled table with kableExtra
+rmse_table %>%
+  kbl(
+    col.names = c("Dataset", "RMSE"), 
+    caption = "RMSE Comparison for Test and Training Data",
+    align = "c", # Center alignment for columns
+    digits = 2   # Display RMSE values with two decimal places
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE,
+    font_size = 14
+  ) %>%
+  column_spec(1, bold = TRUE, color = "white", background = "steelblue") %>%
+  column_spec(2, color = "black") %>%
+  add_header_above(c(" " = 1, "Root Mean Squared Error (RMSE)" = 1))
 
 ```
 
@@ -398,43 +565,101 @@ if (rmse < train_rmse) {
 
 ## Overview of model results
 
-Our results are summarized in @tbl-modelresults. We are primarily interest in the
+Our results are summarized in @tbl-model. We are primarily interest in the
+
 
 ```{r}
+#| label: tbl-model
+#| tbl-cap: Summary of the life expectancy model, which includes gender, region and income group. The table presents the model RSME and out-of sample testing.
 #| echo: false
 #| eval: true
-#| label: tbl-modelresults
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
 #| warning: false
+#| message: false
 
-#modelsummary::modelsummary(
-  #list(
-    #"developed model" = model_developed
-  #),
-  #statistic = "mad",
-  #fmt = 2
-#)
+
+
+
+# Create a model summary with median absolute deviation (mad) for statistics
+modelsummary(
+  list("Gaussian(Normal)" = ledata_normal_model),
+  statistic = "mad",  # Median absolute deviation
+  fmt = 2             # Format results to 2 decimal places
+)
+
 ```
 
 ## Multiple linear regression results
 
+The 
+
+
+```{r}
+#| echo: false
+#| eval: true
+#| label: tbl-regresult
+#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
+#| warning: false
+```
+
 # Discussion
 
-## Insights into different gender
+## Insights into Life Expectancy Differences by Gender
 
-If my paper were 10 pages, then should be be at least 2.5 pages. The discussion is a chance to show off what you know and what you learnt from all this.
+Thought the result part we have noticed that female constantly have higher life expectancy than male. @fig-gender shows that female has around 4 years higher average age than male. Even during the sudden drop of 2020, female kept a more stable trend than male. Through literature research, we found that historically women tend to have longer life than men across most regions and cultures. [@whymandieyounger]These difference can be attributed to a variety of interconnected reasons. Women generally have stronger immune systems and are less prone to certain life-threatening diseases like cardiovascular diseases in early adulthood. Estrogen, a hormone prevalent in women, provides some protection against heart disease by improving cholesterol levels. On the other hand, men are more prone to risk factors such as hypertension and higher levels of LDL cholesterol, which contribute to shorter life spansehavioral patterns [@behaviouralfactor]. What's more, male are more likely to engage in behaviours such as smoking, excessive alcohol consumption and hazardous occupations. These behaviors increase the risk of accidents, chronic diseases, and early mortality. Last but not least, globally, women tend to use healthcare services more frequently than men, which allows for earlier detection and treatment of illnesses. Men often delay seeking medical care, worsening outcomes for preventable or manageable diseases.[@womenhigherhealthcare]
 
-## Second discussion point
+## Insights into Life Expectancy Differences by Income Group
 
-Please don't use these as sub-heading labels - change them to be what your point actually is.
+From the summary and analysis of @tbl-regresult, we have seen that high income group has the significant high life expectancy compared to the lower income group, which indicates that life expectancy is significantly influenced by income groups. It is known that income determines access to resources, healthcare and living conditions. Difference in life expectancy across income groups reflect broader inequalities in socioeconomic factors and highlight disparities in global health outcomes. 
+
+High-income groups have greater access to quality healthcare services, including preventive care, advanced medical treatments, and regular health checkups.Conversely, lower-income groups often face barriers such as cost, lack of infrastructure, and insufficient health insurance coverage, leading to untreated or poorly managed health conditions [@inequalworld]. Other living conditions like access to nutritious food, safe drinking water and sanitary living environments are also linked with high economics. Low-income populations are more likely to experience malnutrition, exposure to environmental toxins, and overcrowded living conditions, all of which negatively impact health and life expectancy. 
+
+What's more, lower-income individuals are often exposed to higher levels of chronic stress due to financial instability and job insecurity. Stress is linked to adverse health outcomes such as hypertension, cardiovascular diseases, and mental health issues [@incomeinequality]. Moreover, low-income workers frequently engage in physically demanding or hazardous jobs, increasing their risk of injury and illness. All these factors together makes the lower income countries disadvantage in life expectancy.
 
 ## Life Expectancy at 60
 
-The life expectancy at 60 means that how long is a person expected to live at 60 instead of at birth.
+The life expectancy at 60 means that how long is a person expected to live at 60 instead of at birth. From the box plot @fig-lea60, we could tell the high-income group tends to have an average life expectancy of approximately 23 years at age 60, whereas the lower-income group averages around 16 years. Notably, the lower-middle-income group exhibits the largest variance, with the most outliers, indicating a wide disparity in life expectancy within this category.
+
+The data also reveal a clear trend: as income levels increase, so does the average life expectancy at age 60. This aligns with findings from analyses of life expectancy at birth, emphasizing the significant correlation between income and life expectancy. Higher-income groups likely benefit from better access to healthcare, nutrition, and living conditions, which collectively contribute to improved longevity.
+
+Life expectancy at 60 provides insights into the additional years a person can expect to live after reaching 60, reflecting the health and living conditions of older populations. Unlike life expectancy at birth, which captures the average years a newborn is expected to live based on current mortality rates across all ages, life expectancy at 60 excludes the impact of child and early-adult mortality. This makes it particularly useful for assessing health outcomes, chronic disease management, and the effectiveness of healthcare systems for aging populations. It highlights longevity and quality of life in later years, crucial for designing age-focused policies and support systems.
+
+```{r}
+#| label: fig-lea60
+#| fig-cap: "Box plot of life expectancy at 60 by different income group. The high income group tend to have 23 years of life expectancy at 60 while the lower income group has an average of 16 years at 60. It is noticable that lower middle has the most outlier showing the largest varaiance."
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
+# Create a boxplot to show life expectancy by income group
+ggplot(lea60, aes(x = Income_Group, y = `Life Expectancy`, fill = Income_Group)) +
+  geom_boxplot(outlier.color = "red", outlier.shape = 16, outlier.size = 2) +
+  labs(
+    title = "Life Expectancy by Income Group",
+    x = "Income Group",
+    y = "Life Expectancy"
+  ) +
+  theme_minimal() +
+  theme(
+    plot.title = element_text(size = 12, face = "bold", hjust = 0.5),
+    axis.text.x = element_text(angle = 45, hjust = 1),
+    legend.position = "none"
+  ) +
+  scale_fill_brewer(palette = "Set3")
+
+```
 
 ## Weaknesses and next steps
 
-Weaknesses and next steps should also be included.
+### Other factors related to income group and region
+
+Income groups, often categorized as low, middle, or high-income, play a significant role in determining access to resources and opportunities that directly and indirectly affect life expectancy. However, income group classifications themselves are shaped by a variety of factors that this analysis may not have accounted for, which introduces limitations to the model. Region would be one key factor that influence the income group. Regions with limited access to stable employment opportunities may fall into lower-income groups, leading to reduced access to healthcare, education, and nutritious food, all of which affect life expectancy. It is reckon that trade imbalances, resource exploitation, and historical colonization have left some countries with weak economies and infrastructure, directly influencing their classification as low or middle-income. Since these factors influence the income groups, their absence in the model creates a gap in understanding how income ultimately impacts life expectancy. A comprehensive model should explore these underlying determinants of income groups alongside traditional predictors of life expectancy.
+
+### Dataset limitation
+
+Weakness may arise from the generalization of the data. When working with data provided by authoritative sources like the World Health Organization (WHO), it’s important to recognize the methodological nuances underlying the calculations. In this case, the dataset includes average life expectancy values, which are themselves estimates derived from sophisticated statistical and demographic models. The accuracy of the derived averages depends heavily on the statistical methods used by WHO. Since the initial dataset offers the average of the life expectancy of each country which are calculated after several factor, these assumptions cascade into our analysis. The "average of averages" cannot rectify inaccuracies or gaps in the original model.
+
+By acknowledging these limitations and incorporating appropriate statistical techniques, for further studies, it would be suggested to use a more variety of models such as the multilevel modeling to increase the accuracy of the model by cross validation or comparing the results from other models as well. Study deeper into the correlations with more factors we discussed above would let us notice which factors influences life expectancy. Like mentioned in the introduction, this analysis aims to empower policymakers by providing critical insights into factors affecting life expectancy across various regions, genders, and income groups. By addressing identified limitations and leveraging data-driven strategies, analyses can better capture the complexities of life expectancy data and provide insights that align more closely with real-world dynamics while policymakers can implement targeted interventions to improve healthcare access, reduce disparities, and enhance the overall quality of life for their populations. 
 
 \newpage
 
@@ -466,23 +691,30 @@ For easier visualization, we created four tables, which are grouped by life expe
 
 After completing the cleaning, we saved the final dataset in both Parquet and CSV formats for later analysis.
 
-## Data Cleaning Table
+## Data Cleaning Full Table
 
 ```{r}
-#| label: tbl-cleaned_leab
-#| tbl-cap: "Life expectancy over countries and years"
+#| label: tbl-cleaned_average
+#| tbl-cap: "Full cleaned Average life expectancy"
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-#Show the first 200 lines of the  graph of cleaned table leab
-leab_first_200 <- head(leab, 200)
-
-kable(leab_first_200, 
-      col.names = names(leab), 
-      align = "l", 
-      caption = "Life Expectancy over countries and years (first 200 rows)") 
+# Create a nicely formatted kable table
+average_life_expectancy %>%
+  kable(
+    col.names = c("Country", "Gender", "Income Group", "Region", "Average Life Expectancy"),
+    align = c("l", "l", "l", "l", "r"),
+    digits = 2
+  ) %>%
+  kable_styling(
+    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    full_width = FALSE,
+    position = "center"
+  ) %>%
+  row_spec(0, bold = TRUE, color = "white", background = "#0073C2") %>% # Style the header row
+  column_spec(5, bold = TRUE, background = "#F7F7F7")
 
 ```
 
@@ -551,17 +783,28 @@ How many hours of physical activity do you engage in per week? - Less than 1 hou
 
 **9. Smoking Habits**
 
-Do you smoke? - Yes - No
+Do you smoke? 
+
+-   Yes 
+-   No
 
 **10. Alcohol Consumption**
 
-How often do you consume alcoholic beverages? - Never - Occasionally (e.g., social drinking) - Frequently
+How often do you consume alcoholic beverages? 
+
+-   Never 
+-   Occasionally (e.g., social drinking) 
+-   Frequently
 
 **Section 3: Environmental and Social Factors**
 
 **11.Living Environment**
 
-How would you describe your living area? - Urban - Suburban - Rural
+How would you describe your living area? 
+
+-   Urban 
+-   Suburban 
+-   Rural
 
 **Final Section**
 
@@ -626,7 +869,6 @@ kable(
 
 ```
 
-## Additional graph for analysis
 
 \newpage
 
