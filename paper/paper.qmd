@@ -6,7 +6,7 @@ author:
 thanks: "Code and data are available at: [https://github.com/wendyhuan/lifeexpectancy](https://github.com/wendyhuan/lifeexpectancy)."
 date: 02 December 2024
 date-format: long
-abstract: "This paper analyze life expectancy and its determinants through 184 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 65,70, 75,80. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
+abstract: "This paper analyze life expectancy and its determinants through 184 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 62.35, 68.40, 73.38, 79.38. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
 toc-depth: 3
@@ -49,6 +49,7 @@ library(gridExtra)
 library(caret)
 library(tinytex)
 
+
 # load data
 lelecleaned_data <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lelecleaned.parquet")
 lea60 <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lea60.parquet")
@@ -60,6 +61,7 @@ sum_sta <- read_parquet("~/lifeexpectancy/data/02-analysis_data/sum_sta.parquet"
 matable <- read_parquet("~/lifeexpectancy/data/02-analysis_data/matable.parquet")
 femaletable <- read_parquet("~/lifeexpectancy/data/02-analysis_data/femaletable.parquet")
 model_developed <- readRDS(file = "~/lifeexpectancy/models/ledata_normal_model.rds")
+bothg_average_life_expectancy <- read_parquet("~/lifeexpectancy/data/02-analysis_data/bothg_average_life_expectancy.parquet")
 ```
 
 # Introduction
@@ -82,7 +84,7 @@ The structure of the paper is as follows: [@sec-data] outlines the data sources 
 
 The data used in this analysis originates from The World Health Organization’s (WHO) and Global Health Observatory (GHO) [@lifeexpectancy]. This data-set related to life expectancy, health factors for 184 countries has been collected from WHO data repository website and its corresponding economic data was collected from United Nation website. Among all categories of health-related factors only those socio-economic factors on the national level were chosen for global scale analysis.
 
-This analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various predictors conducted across multiple countries, capturing the support for a country to determine the predicting factor which is contributing to lower value of life expectancy.
+This analysis uses the statistical programming language R [@citeR] and several libraries, including `tidyverse` [@tidyverse], `janitor` [@janitor], `knitr` [@knitr], `dplyr` [@dplyr], `arrow` [@arrow], `purrr` [@purrr], `sf` [@sf], and `here` [@here] for data manipulation. `ggplot2` [@ggplot2], `ggcorrplot` [@ggcorrplot] and `kableExtra` [@kableExtra] for visualization. The dataset covers various predictors conducted across multiple countries, capturing the support for a country to determine the predicting factor which is contributing to lower value of life expectancy.
 
 ## Measurement
 
@@ -94,15 +96,15 @@ The measurement process refers to how real-world factors—such as the Gender, g
 
 **Gender(`Gender`)**: The gender of the population of each country is included as a categorical variable (Male/Female/Both Sex).
 
-**Region(Region)**: This is a categorical variable that classifies the geographic location of the countries. It is mapped one by one by the name of the country. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’).
+**Region(`Region`)**: This is a categorical variable that classifies the geographic location of the countries. It is mapped one by one by the name of the country. The data is stored as the name of the continent(‘Africa’, ‘Oceania’, ‘Asia’, ‘Europe’, ‘North America’, ‘South America’).
 
 ## Data Cleaning
 
 The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. The goal of this cleaning process is to create a table including income group (high, upper middle, lower middle, low), gender (Male, Female, Both Sex), region (Asia, Europe, North America, South America, Africa, Oceania) as rows and life expectancy as column.
 
-To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. For easier summary and convenience for graph drawing, we calculate the average of life expectancy of each country under 6 years. Also, we calculate the average of 6 years life expectancy according to the other 4 income groups and different gender by mutate according to the different factors. We then merge the columns of each table into a summary table for easy looking. 
+To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. For easier summary and convenience for graph drawing, we calculate the average of life expectancy of each country under 6 years. Also, we calculate the average of 6 years life expectancy according to the other 4 income groups and different gender by mutate according to the different factors. We then merge the columns of each table into a summary table for easy looking.
 
-@fig-sum_sta shows the average of life expectancy under male, female, 6 different regions and 4 income groups. Life expectancy according to different countries have attached and be found in data cleaning full data in @sec-appendix.  
+@tbl-sum_sta shows the average of life expectancy under male, female, 6 different regions and 4 income groups. Life expectancy according to different countries have attached and be found in data cleaning full data in @sec-appx.
 
 The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
@@ -110,34 +112,25 @@ More information on the data cleaning process can be found in @sec-appx.
 
 ```{r}
 #| label: tbl-sum_sta
-#| fig-cap: "This table shows the cleaned data of life expectancy at different predictor. We could visual that high income has the highest life expectancy of 79.8, compared to lower income has the least life expectancy of 62.35. Among all the region, it's clear that Africa has the least 64.17, while Europe has the highest 78.50 years old. Female has slightly higher life expectancy than male. "
+#| tbl-cap: "This table shows the cleaned data of life expectancy at different predictor. We could visual that high income has the highest life expectancy of 79.8, compared to lower income has the least life expectancy of 62.35. Among all the region, it's clear that Africa has the least 64.17, while Europe has the highest 78.50 years old. Female has slightly higher life expectancy than male. "
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-# Format and display the sum_sta table
-# Load necessary libraries
-library(knitr)
-library(kableExtra)
-
 # Format and style the sum_sta table using kableExtra
 sum_sta %>%
-  kbl(
+  kable(
     col.names = c("Region/Income/Gender", "Life Expectancy"),  # Column names
     align = c("l", "c"),                                       # Left-align column 1, center-align column 2
-    digits = 2,                                                # Round values to 2 decimal places
-    booktabs = TRUE,                                           # LaTeX-style table rule
-  ) %>%
-  kable_styling(
-    latex_options = c("striped", "hold_position"),             # Add striped rows and prevent table floating
+    digits = 2 ) %>%
+  kable_styling(          # Add striped rows and prevent table floating
     full_width = FALSE,                                        # Prevent table from stretching to full width
     font_size = 10                                             # Adjust font size
-  ) %>%
-  add_header_above(c(" " = 1, "Life Expectancy Summary" = 1),bold = TRUE) %>%
-  add_header_above(c(" " = 2), bold = TRUE) # Add a header row
+  ) 
   
 ```
+
 ## Outcome Variables
 
 The outcome variable is **Life Expectancy**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average.
@@ -188,9 +181,7 @@ ggplot(life_expectancy_bins, aes(x = AgeRange, y = Percentage, fill = AgeRange))
 
 The **predictor variables** (or independent variables) are the factors believed to influence the life expectancy:
 
-1.  **Income Group(`Income_Group`)**: The income group of a country is the key factor influencing the life expectancy. This variable provides context for comparing life expectancy between different levels of country income group. The division of the life expectancy by the income group of a country because income levels often correlate strongly with various factors affecting health and longevity. Higher income countries typically have more resources to invest in robust healthcare systems, with better living conditions while lower income countries often face challenges such as inadequate healthcare infrastructure and malnutrition.
-
-Following by the four income group, we would like to see the distribution of the income group of 184 WHO member countries. @fid-income shows that there are 55 countries at the high income group, 26 countries at low income group, 54 countries at the lower-middle group while there are 49 countries at the upper-middle group. With significant less low income countries, we expect to see the life expectancy lie in a comparably higher range. On the other hand, there might exist sever outliers dropping the mean.
+1.  **Income Group(`Income_Group`)**: The income group of a country is the key factor influencing the life expectancy. This variable provides context for comparing life expectancy between different levels of country income group. The division of the life expectancy by the income group of a country because income levels often correlate strongly with various factors affecting health and longevity. Higher income countries typically have more resources to invest in robust healthcare systems, with better living conditions while lower income countries often face challenges such as inadequate healthcare infrastructure and malnutrition. Following by the four income group, we would like to see the distribution of the income group of 184 WHO member countries. @fig-income shows that there are 55 countries at the high income group, 26 countries at low income group, 54 countries at the lower-middle group while there are 49 countries at the upper-middle group. With significant less low income countries, we expect to see the life expectancy lie in a comparably higher range. On the other hand, there might exist sever outliers dropping the mean.
 
 2.  **Gender(`Gender`)**: The gender of the population of each country is included as a categorical variable (Male/Female/Both Sex). This is a key variable in the dataset because gender has been fully recognized connected with the biological physical factor which directly effect the life expectancy. @fig-gender shows that the with an stable average of 74, life expectancy of female is constantly higher than male's average of 70. The line plot reveals a steady increase until 2019, followed by a sharp decline in 2020, which is assumed to be associated with the impact of COVID-19.
 
@@ -198,7 +189,7 @@ Following by the four income group, we would like to see the distribution of the
 
 ```{r}
 #| label: fig-income
-#| fig-cap: "Distribution of country income group."
+#| fig-cap: "Distribution of country income group. Among 184 WHO member countries, there are 55 high income countries, 54 lower middle income countries and 49 upper middle income countries. There are significant less lower income countries, which we could assume there might exist less outliers in life experctanncy."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -309,7 +300,7 @@ The table below shows the basic summary of the mean, median, max, standard devia
 
 ```{r}
 #| label: fig-summary
-#| fig-cap: "Summary statistics of the number of life expectancy over countries and years. "
+#| fig-cap: "Summary statistics of the number of life expectancy over countries and years. Less difference between mean and median, showing that the life expectancy distribution might shows a naturally bell curve.However, variance is slightly high indicates that the tails on both sides might be long. "
 #| echo: false
 #| eval: true
 #| warning: false
@@ -318,36 +309,25 @@ The table below shows the basic summary of the mean, median, max, standard devia
 # Calculate summary statistics
 life_expectancy_stats <- leab %>%
   summarise(
-    Mean = round(mean(`Life Expectancy`, na.rm = TRUE),1),
+    Mean = round(mean(`Life Expectancy`, na.rm = TRUE), 1),
     Median = median(`Life Expectancy`, na.rm = TRUE),
     Max = max(`Life Expectancy`, na.rm = TRUE),
-    SD = round(sd(`Life Expectancy`, na.rm = TRUE),1),
-    Variance = round(var(`Life Expectancy`, na.rm = TRUE),1),
+    SD = round(sd(`Life Expectancy`, na.rm = TRUE), 1),
+    Variance = round(var(`Life Expectancy`, na.rm = TRUE), 1),
     N = sum(!is.na(`Life Expectancy`)) # Count of non-missing values
   )
 
 #Create and format the table using kableExtra
 life_expectancy_stats %>%
-  kbl(
-    caption = "Summary Statistics of Life Expectancy",
+  kable(
     col.names = c("Mean", "Median", "Max", "Standard Deviation", "Variance", "N"),
     align = "c",
     digits = 2 # Ensure numeric values are rounded to 2 decimal places
   ) %>%
   kable_styling(
     full_width = FALSE, 
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"), 
     font_size = 14
-  ) %>%
-  column_spec(1, bold = TRUE, color = "white", background = "darkblue") %>% # Highlight the first column
-  column_spec(2:ncol(life_expectancy_stats), color = "black") %>% # Style the data columns
-  row_spec(0, bold = TRUE, background = "lightgray") %>% # Add a header row styling
-  add_header_above(c(" " = 6)) %>% # Add optional grouping header
-  footnote(
-    general = "This table summarizes the key statistics of life expectancy data.",
-    footnote_as_chunk = TRUE, 
-    general_title = "Note:"
-  )
+  ) 
 
 ```
 
@@ -360,15 +340,16 @@ The goal of the Bayesian model is to incorporate prior knowledge, such as insigh
 The model is specified as follows:
 
 ```{=tex}
-\begin{align} 
-y_i|\mu_i, \sigma &\sim \text{Normal}(\mu_i, \sigma) \text{(1)} \\
-\mu_i &= \alpha + \beta_1 \text{Region}_i + \beta_2 \text{Gender}_i + \beta_3 \text{Income_Group}_i \\text{(2)} \\
-\alpha &\sim \text{Normal}(0, 2.5) \text{(3)}\\
-\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, 2.5) \text{(4)}\\
-\sigma &\sim \text{Exponential}(1) \text{(5)} \\
-\end{align}
-```
 
+\begin{align*} 
+y_i|\mu_i, \sigma &\sim \text{Normal}(\mu_i, \sigma) \\
+\mu_i &= \alpha + \beta_1 \text{Region}_i + \beta_2 \text{Gender}_i + \beta_3 \text{Income\_Group}_i \\
+\alpha &\sim \text{Normal}(0, 2.5) \\
+\beta_1, \beta_2, \beta_3 &\sim \text{Normal}(0, 2.5) \\
+\sigma &\sim \text{Exponential}
+\end{align*}
+
+```
 Where:
 
 -   $yi$ is the outcome variable (Life Expectancy)for the i-th observation.
@@ -381,7 +362,7 @@ Where:
 
 We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. More explanation of the model could be found [Appendix @sec-model-details].
 
-### Model justification {#sec-modjust}
+## Model justification {#sec-modjust}
 
 The linear regression model with Gaussian likelihood was chosen for this analysis due to its simplicity and effectiveness in modeling continuous outcome variables, such as life expectancy. Life expectancy is influenced by multiple factors, including region, income group, and gender. The linear model allows us to examine the average effect of each predictor on the outcome, assuming that the relationships between these predictors and life expectancy are linear.
 
@@ -393,7 +374,7 @@ Additionally, the exponential prior on the standard deviation $\alpha$ captures 
 
 This approach is appropriate given the data structure and the goal of the analysis, which is to estimate and predict life expectancy across different countries, regions, income groups, and genders. The model's assumptions about the data, along with its priors, allow for robust inference in the context of population health predictions.
 
-#### Model Validation
+## Model Validation
 
 To assess the performance of the life expectancy prediction model, two critical metrics were used: Root Mean Squared Error (RMSE) and Out-of-Sample Testing. These methods help ensure that the model generalizes well to unseen data and provides reliable predictions for life expectancy across different regions, income groups, and genders.
 
@@ -406,6 +387,13 @@ Together, RMSE and out-of-sample testing offer a robust framework for model vali
 Extended versions of the table can be found in @tbl-testpredicted.
 
 ```{r}
+#| label: tbl-modelpredict
+#| tbl-cap: "Summary of the life expectancy model, which includes gender, region and income group. The table presents the model RSME and out-of sample testing. Seeing the testing data slightly less than the training data, our model is under good generalization."
+#| echo: false
+#| eval: true
+#| warning: false
+#| message: false
+
 # Split the dataset into training and testing sets (80% train, 20% test)
 set.seed(123)  # Setting seed for reproducibility
 train_index <- createDataPartition(leab$`Life Expectancy`, p = 0.8, list = FALSE)
@@ -415,15 +403,6 @@ test_data <- leab[-train_index, ]
 
 # Predict life expectancy using the test data
 predictions <- predict(model_developed, newdata = test_data)
-```
-
-```{r}
-#| label: tbl-modelpredict
-#| tbl-cap: Summary of the life expectancy model, which includes gender, region and income group. The table presents the model RSME and out-of sample testing.
-#| echo: false
-#| eval: true
-#| warning: false
-#| message: false
 
 # Calculate RMSE
 actual_values <- test_data$`Life Expectancy`
@@ -442,20 +421,15 @@ rmse_table <- data.frame(
 
 # Create a styled table with kableExtra
 rmse_table %>%
-  kbl(
+  kable(
     col.names = c("Dataset", "RMSE"), 
-    caption = "RMSE Comparison for Test and Training Data",
     align = "c", # Center alignment for columns
     digits = 2   # Display RMSE values with two decimal places
   ) %>%
   kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
     full_width = FALSE,
     font_size = 14
-  ) %>%
-  column_spec(1, bold = TRUE, color = "white", background = "steelblue") %>%
-  column_spec(2, color = "black") %>%
-  add_header_above(c(" " = 1, "Root Mean Squared Error (RMSE)" = 1))
+  ) 
 
 ```
 
@@ -471,9 +445,9 @@ Given this, the high variance can be attributed to the diversity in life expecta
 
 ## Overview of model results
 
-Our results are summarized in @tbl-model. We are primarily interest in the general life expectancy regarding to the related predictors. The multiple linear model provides us with the estimates for the intercept and coefficients for the predictors which are male, female, both genders, lower income, lower-middle, upper-middle, high income, Asia, Europe, Africa, Oceania, North America and South America. The intercept represents the estimate of region-standard life expectancy when all the predictors are zero. The coefficients represent the additional life expectancy associated with each predictor. The model results will display the estimates- posterior means or medians for each coefficient including the intercept, uncertainty measures- credible intervals. The output values of each predictor is the regression coefficient, meaning how much the outcome is expected to increase or decrease with one unit increase in the life expectancy (per year) of that predictor, holding all else constant. The value in the brackets represent the Median Absolute Deviation of the posterior distributions of the coefficients. It conveys the dispersion around the median of each coefficients' posterior distribution, exhibiting how spread the distributions are. 
+Our results are summarized in @tbl-model. We are primarily interest in the general life expectancy regarding to the related predictors. The multiple linear model provides us with the estimates for the intercept and coefficients for the predictors which are male, female, both genders, lower income, lower-middle, upper-middle, high income, Asia, Europe, Africa, Oceania, North America and South America. The intercept represents the estimate of region-standard life expectancy when all the predictors are zero. The coefficients represent the additional life expectancy associated with each predictor. The model results will display the estimates- posterior means or medians for each coefficient including the intercept, uncertainty measures- credible intervals. The output values of each predictor is the regression coefficient, meaning how much the outcome is expected to increase or decrease with one unit increase in the life expectancy (per year) of that predictor, holding all else constant. The value in the brackets represent the Median Absolute Deviation of the posterior distributions of the coefficients. It conveys the dispersion around the median of each coefficients' posterior distribution, exhibiting how spread the distributions are.
 
-Num.Obs represents the number of observations made in the model. R2 is the R-squared value which is the proportion of variance in the dependent variable that can be explained bu the independent variable. The R2 adj is the adjusted R squared which accounts for the number of predictors used. Log.lik is the log-likelihood which gives us an idea of the likelihood of the data, higher is the better, but this is typically used for comparison between the models. ELPD and ELPD s.e. explains the log predictive density and its standard error. The ELPD measures the sum of the log predictive densities for each observation, used for model comparison.  LOOIC is an acronym for leave-one-out information criterion in which a lower value indicates a model with better out-of-sample predictive performance. WAIC stands for Watanabe-Akaike information criterion which is another measure of good fit; lower values are better fit. RMSE is the room mean squared error measuring the models's predictive performance where lower values means more accurate predicts. 
+Num.Obs represents the number of observations made in the model. R2 is the R-squared value which is the proportion of variance in the dependent variable that can be explained bu the independent variable. The R2 adj is the adjusted R squared which accounts for the number of predictors used. Log.lik is the log-likelihood which gives us an idea of the likelihood of the data, higher is the better, but this is typically used for comparison between the models. ELPD and ELPD s.e. explains the log predictive density and its standard error. The ELPD measures the sum of the log predictive densities for each observation, used for model comparison. LOOIC is an acronym for leave-one-out information criterion in which a lower value indicates a model with better out-of-sample predictive performance. WAIC stands for Watanabe-Akaike information criterion which is another measure of good fit; lower values are better fit. RMSE is the room mean squared error measuring the models's predictive performance where lower values means more accurate predicts.
 
 ```{r}
 #| label: tbl-model
@@ -487,8 +461,14 @@ Num.Obs represents the number of observations made in the model. R2 is the R-squ
 modelsummary(
   list("Gaussian(Normal)" = model_developed),
   statistic = "mad",  # Median absolute deviation
-  fmt = 2             # Format results to 2 decimal places
-)
+  fmt = 2,     # Format results to 2 decimal places
+  output = "kableExtra"
+) %>%
+  kable_styling(font_size = 8.5,
+                full_width = FALSE,  # Keeps the table from spanning the full width
+    position = "center", # Centers the table
+    bootstrap_options = c("striped", "condensed") # Makes rows tighter
+  )
 
 ```
 
@@ -496,7 +476,7 @@ modelsummary(
 
 @tbl-model is the table of the results from out model. The intercept serves as the baseline, which in this case is 79.53. Asia shows a negative coefficient of -6.22, indicating lower values compared to the baseline, with a relatively large standard error of 21.20. This suggests that as the predictor increases, the outcome tends to increase. In contrast, a negative coefficient implies a decrease in the outcome. Europe exhibits a negligible negative effect of -8.39, though it also has a large standard error of 45.65. The effect for females is more substantial, with a positive coefficient of 2.50 and a standard error of 0.05, indicating considerable variability in the estimate. The male and lower-middle-income groups show minimal negative coefficients, suggesting slight decreases from the baseline. The upper-middle-income group, however, shows a positive effect of 3.40 relative to the baseline. Regions like North America, Oceania, Asia, and Europe all have notable negative coefficients, highlighting significant regional variations. In general, there is a downward trend in coefficients across countries. Most countries exhibit large standard errors, with European countries such as Ireland, Israel, and Italy showing slightly positive trends.
 
-With an R-squared value of 0.976, the model demonstrates a strong level of explanatory power, supporting the accuracy of the results. The adjusted R-squared value is 0.975, which is nearly identical to the R-squared value, indicating the model's robustness with 3,312 observations. The RMSE of 4.37 reflects the average magnitude of the model's prediction errors, suggesting good predictive accuracy. Although values like LOOIC and WAIC are excluded due to the lack of alternative models for comparison, the overall results indicate that the model performs well on the cleaned dataset.Further evaluation of the model results will be done in @sec-model_details. 
+With an R-squared value of 0.976, the model demonstrates a strong level of explanatory power, supporting the accuracy of the results. The adjusted R-squared value is 0.975, which is nearly identical to the R-squared value, indicating the model's robustness with 3,312 observations. The RMSE of 4.37 reflects the average magnitude of the model's prediction errors, suggesting good predictive accuracy. Although values like LOOIC and WAIC are excluded due to the lack of alternative models for comparison, the overall results indicate that the model performs well on the cleaned dataset.Further evaluation of the model results will be done in @sec-model-details.
 
 # Discussion {#sec-discussion}
 
@@ -506,9 +486,9 @@ Thought the result part we have noticed that female constantly have higher life 
 
 ## Insights into Life Expectancy Differences by Income Group
 
-From the summary and analysis of @tbl-regresult, we have seen that high income group has the significant high life expectancy compared to the lower income group, which indicates that life expectancy is significantly influenced by income groups. It is known that income determines access to resources, healthcare and living conditions. Difference in life expectancy across income groups reflect broader inequalities in socioeconomic factors and highlight disparities in global health outcomes. 
+From the summary and analysis of @tbl-sum_sta, we have seen that high income group has the significant high life expectancy compared to the lower income group, which indicates that life expectancy is significantly influenced by income groups. It is known that income determines access to resources, healthcare and living conditions. Difference in life expectancy across income groups reflect broader inequalities in socioeconomic factors and highlight disparities in global health outcomes.
 
-High-income groups have greater access to quality healthcare services, including preventive care, advanced medical treatments, and regular health checkups.Conversely, lower-income groups often face barriers such as cost, lack of infrastructure, and insufficient health insurance coverage, leading to untreated or poorly managed health conditions [@inequalworld]. Other living conditions like access to nutritious food, safe drinking water and sanitary living environments are also linked with high economics. Low-income populations are more likely to experience malnutrition, exposure to environmental toxins, and overcrowded living conditions, all of which negatively impact health and life expectancy. 
+High-income groups have greater access to quality healthcare services, including preventive care, advanced medical treatments, and regular health checkups.Conversely, lower-income groups often face barriers such as cost, lack of infrastructure, and insufficient health insurance coverage, leading to untreated or poorly managed health conditions [@inequalworld]. Other living conditions like access to nutritious food, safe drinking water and sanitary living environments are also linked with high economics. Low-income populations are more likely to experience malnutrition, exposure to environmental toxins, and overcrowded living conditions, all of which negatively impact health and life expectancy.
 
 What's more, lower-income individuals are often exposed to higher levels of chronic stress due to financial instability and job insecurity. Stress is linked to adverse health outcomes such as hypertension, cardiovascular diseases, and mental health issues [@incomeinequality]. Moreover, low-income workers frequently engage in physically demanding or hazardous jobs, increasing their risk of injury and illness. All these factors together makes the lower income countries disadvantage in life expectancy.
 
@@ -556,7 +536,7 @@ Income groups, often categorized as low, middle, or high-income, play a signific
 
 Weakness may arise from the generalization of the data. When working with data provided by authoritative sources like the World Health Organization (WHO), it’s important to recognize the methodological nuances underlying the calculations. In this case, the dataset includes average life expectancy values, which are themselves estimates derived from sophisticated statistical and demographic models. The accuracy of the derived averages depends heavily on the statistical methods used by WHO. Since the initial dataset offers the average of the life expectancy of each country which are calculated after several factor, these assumptions cascade into our analysis. The "average of averages" cannot rectify inaccuracies or gaps in the original model.
 
-By acknowledging these limitations and incorporating appropriate statistical techniques, for further studies, it would be suggested to use a more variety of models such as the multilevel modeling to increase the accuracy of the model by cross validation or comparing the results from other models as well. Study deeper into the correlations with more factors we discussed above would let us notice which factors influences life expectancy. Like mentioned in the introduction, this analysis aims to empower policymakers by providing critical insights into factors affecting life expectancy across various regions, genders, and income groups. By addressing identified limitations and leveraging data-driven strategies, analyses can better capture the complexities of life expectancy data and provide insights that align more closely with real-world dynamics while policymakers can implement targeted interventions to improve healthcare access, reduce disparities, and enhance the overall quality of life for their populations. 
+By acknowledging these limitations and incorporating appropriate statistical techniques, for further studies, it would be suggested to use a more variety of models such as the multilevel modeling to increase the accuracy of the model by cross validation or comparing the results from other models as well. Study deeper into the correlations with more factors we discussed above would let us notice which factors influences life expectancy. Like mentioned in the introduction, this analysis aims to empower policymakers by providing critical insights into factors affecting life expectancy across various regions, genders, and income groups. By addressing identified limitations and leveraging data-driven strategies, analyses can better capture the complexities of life expectancy data and provide insights that align more closely with real-world dynamics while policymakers can implement targeted interventions to improve healthcare access, reduce disparities, and enhance the overall quality of life for their populations.
 
 \newpage
 
@@ -588,31 +568,29 @@ For easier visualization, we created four tables, which are grouped by life expe
 
 After completing the cleaning, we saved the final dataset in both Parquet and CSV formats for later analysis.
 
-## Data Cleaning Full Table
+## Data Cleaning Table
 
 ```{r}
 #| label: tbl-cleaned_average
-#| tbl-cap: "Full cleaned Average life expectancy"
+#| tbl-cap: "Cleaned data of average life expectancy of 6 years by different countries. Full cleaned Average life expectancy by country by gender could be find in https://github.com/wendyhuan/lifeexpectancy/blob/main/data/02-analysis_data/average_life_expectancy.csv"
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
 # Create a nicely formatted kable table
-average_life_expectancy %>%
+bothg_average_life_expectancy %>%
   kable(
-    col.names = c("Country", "Gender", "Income Group", "Region", "Average Life Expectancy"),
+    col.names = c("Country", "Income Group", "Region", "Average Life Expectancy"),
     align = c("l", "l", "l", "l", "r"),
-    digits = 2
-  ) %>%
-  kable_styling(
-    bootstrap_options = c("striped", "hover", "condensed", "responsive"),
+    digits = 2,
+    output = "kableExtra"
+) %>%
+  kable_styling(font_size = 8.5,
     full_width = FALSE,
-    position = "center"
-  ) %>%
-  row_spec(0, bold = TRUE, color = "white", background = "#0073C2") %>% # Style the header row
-  column_spec(5, bold = TRUE, background = "#F7F7F7")
-
+    position = "center",
+    bootstrap_options = c("striped", "condensed")
+  ) 
 ```
 
 ## Idealized Survey
@@ -680,27 +658,27 @@ How many hours of physical activity do you engage in per week? - Less than 1 hou
 
 **9. Smoking Habits**
 
-Do you smoke? 
+Do you smoke?
 
--   Yes 
+-   Yes
 -   No
 
 **10. Alcohol Consumption**
 
-How often do you consume alcoholic beverages? 
+How often do you consume alcoholic beverages?
 
--   Never 
--   Occasionally (e.g., social drinking) 
+-   Never
+-   Occasionally (e.g., social drinking)
 -   Frequently
 
 **Section 3: Environmental and Social Factors**
 
 **11.Living Environment**
 
-How would you describe your living area? 
+How would you describe your living area?
 
--   Urban 
--   Suburban 
+-   Urban
+-   Suburban
 -   Rural
 
 **Final Section**
@@ -713,13 +691,13 @@ Thank you for completing this survey! Your responses will help capture informati
 
 The model developed for predicting life expectancy is a linear regression model, where the goal is to estimate the outcome variable, Life Expectancy, based on multiple predictors: Region, Income Group, and Gender. Here's a more detailed breakdown of the components and structure of the model:
 
-**1. Outcome variable (yi)**
+**1. Outcome variable (**$y_i$)
 
 The outcome variable $y_i$ represents the life expectancy of an country. This is a continuous variable representing the number of years a person is expected to live, assuming all conditions remain constant.
 
-**2. Linear Predictor (μi)**
+**2. Linear Predictor (**$μ_i$)
 
-The linear predictor $μ_i$ is a linear combination of the predictors, which includes an intercept term $α$ and the coefficients $β_1$, $β_2$, $β_3$, corresponding to Region, Income Group, and Gender, respectively. This linear equation models the relationship between life expectancy and the predictors $\mu_i = \alpha + \beta_1(Region) + \beta_2(Income Group) + \beta_3 (Gender)$ The values for these coefficients (betas) represent the expected change in life expectancy for a one-unit change in each respective predictor.
+The linear predictor $μ_i$ is a linear combination of the predictors, which includes an intercept term $α$ and the coefficients $β_1$, $β_2$, $β_3$, corresponding to Region, Income Group, and Gender, respectively. This linear equation models the relationship between life expectancy and the predictors $\mu_i = \alpha + \beta_1(Region) + \beta_2(Income Group) + \beta_3 (Gender)$. The values for these coefficients (betas) represent the expected change in life expectancy for a one-unit change in each respective predictor.
 
 **3. Priors**
 
@@ -727,7 +705,7 @@ The prior distribution for the intercept $α$ and the coefficients $β_1$, $β_2
 
 The prior for $σ$ (residual standard deviation) is assumed to follow an exponential distribution with a rate of 1. This prior reflects the assumption that the variance of the residuals (i.e., the deviation of the actual observations from the predicted values) is positive and that it could reasonably be spread across a wide range of values.
 
-**4. Residual Standard Deviation (σ)** The model also estimates $σ$, which represents the standard deviation of the residuals — the errors between the observed life expectancy values and those predicted by the model. The prior for $σ$ is assumed to follow an exponential distribution with a rate of 1, meaning that smaller values of $σ$ (indicating less variation) are somewhat more likely than larger ones.
+**4. Residual Standard Deviation (**$σ$) The model also estimates $σ$, which represents the standard deviation of the residuals — the errors between the observed life expectancy values and those predicted by the model. The prior for $σ$ is assumed to follow an exponential distribution with a rate of 1, meaning that smaller values of $σ$ (indicating less variation) are somewhat more likely than larger ones.
 
 **5. Gaussian Likelihood** The outcome variable Life Expectancy is modeled using a normal distribution with mean μi (the linear predictor) and standard deviation σ. This means that the residuals (the differences between the observed and predicted values) are assumed to be normally distributed: $y_i| \mu_i, \sigma ~ Normal(\mu_i, \sigma)$ This is a typical assumption in regression models when the data is continuous, and the relationship between the predictors and the outcome is linear.
 
@@ -735,7 +713,7 @@ The prior for $σ$ (residual standard deviation) is assumed to follow an exponen
 
 ```{r}
 #| label: tbl-testpredicted
-#| tbl-cap: "Life expectancy over countries and years"
+#| tbl-cap: "Partical table of the test and training RMSE of Life expectancy over countries and gender of average of 6 years (First 100 rows). Through the model part we could tell that with comparing the training and testing data, the model is well generated without doubt."
 #| echo: false
 #| eval: true
 #| warning: false
@@ -756,16 +734,19 @@ results_df$Indication <- ifelse(results_df$RMSE_Test < results_df$RMSE_Train,
                                  "Model may be overfitting the training data")
 
 # Format the table using kable
-kable(
-  results_df,
-  col.names = c("Country", "Actual Life Expectancy", "Predicted Life Expectancy", "RMSE (Test)", "RMSE (Train)", "Indication"),
+results_df %>%
+  head(100) %>%
+  kable(col.names = c("Country", "Actual Life Expectancy", "Predicted Life Expectancy", "RMSE (Test)", "RMSE (Train)", "Indication"),
   align = c("l", "r", "r", "r", "r", "l"),
   digits = 2,
-  booktabs = TRUE
-)
+  output = "kableExtra"
+) |>
+  kable_styling(font_size = 7.5,
+                full_width = FALSE,  # Keeps the table from spanning the full width
+    position = "center", # Centers the table
+    bootstrap_options = c("striped", "condensed"))
 
 ```
-
 
 \newpage
 
