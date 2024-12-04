@@ -9,13 +9,8 @@ date-format: long
 abstract: "This paper analyze life expectancy and its determinants through 184 countries and make the prediction of people from different Income Group. Multiple Linear regression is used to deploying the life expectanc with gender, income and region. Predictions of life expectancy of people from different income group is made according to these essential predictors. The finding indicates that the life expectancy is tend to get higher as the economic class grows. And we predict that the average age of person from low, lower-middle, upper-middle and high are 62.35, 68.40, 73.38, 79.38. The result of this paper will help in suggesting a country which area should be given importance in order to efficiently improve the life expectancy of its population."
 format: pdf
 toc: true
-pdf-engine: xelatex
-geometry: landscape
 toc-depth: 3
-keep-tex: true
-output:
-  pdf_document:
-    extra_dependencies: ["longtable"]
+geometry: portrait
 number-sections: true
 bibliography: references.bib
 ---
