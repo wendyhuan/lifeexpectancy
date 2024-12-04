@@ -379,9 +379,9 @@ Where:
 
 -   $\sigma$: the residual standard deviation, modeled as an exponential distribution with rate 1.
 
-We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. More explanation of the model could be found [Appendix -@sec-model-details].
+We run the model in R [@citeR] using the `rstanarm` package of @rstanarm. We use the default priors from `rstanarm`. More explanation of the model could be found [Appendix @sec-model-details].
 
-### Model justification
+### Model justification {#sec-modjust}
 
 The linear regression model with Gaussian likelihood was chosen for this analysis due to its simplicity and effectiveness in modeling continuous outcome variables, such as life expectancy. Life expectancy is influenced by multiple factors, including region, income group, and gender. The linear model allows us to examine the average effect of each predictor on the outcome, assuming that the relationships between these predictors and life expectancy are linear.
 
@@ -459,7 +459,7 @@ rmse_table %>%
 
 ```
 
-# Results
+# Results {#sec-result}
 
 ## Data results analysis
 
@@ -498,7 +498,7 @@ modelsummary(
 
 With an R-squared value of 0.976, the model demonstrates a strong level of explanatory power, supporting the accuracy of the results. The adjusted R-squared value is 0.975, which is nearly identical to the R-squared value, indicating the model's robustness with 3,312 observations. The RMSE of 4.37 reflects the average magnitude of the model's prediction errors, suggesting good predictive accuracy. Although values like LOOIC and WAIC are excluded due to the lack of alternative models for comparison, the overall results indicate that the model performs well on the cleaned dataset.Further evaluation of the model results will be done in @sec-model_details. 
 
-# Discussion
+# Discussion {#sec-discussion}
 
 ## Insights into Life Expectancy Differences by Gender
 
@@ -562,7 +562,7 @@ By acknowledging these limitations and incorporating appropriate statistical tec
 
 \appendix
 
-# Appendix {#sec-appendix}
+# Appendix {#sec-appx}
 
 ## Data Cleaning Notes
 
