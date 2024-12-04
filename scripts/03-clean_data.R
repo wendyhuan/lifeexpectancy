@@ -26,7 +26,7 @@ extract_number <- function(x) {
 
 lecleaned_data <- lfex_data %>%
   # Remove rows where 'Location' is NA
-  filter(!is.na(Location)) %>%    
+  filter(!is.na(Location)) %>% 
   # Select the useful predictor from raw data
   select(
     Indicator, Location, Period, Dim1, Value)|>
@@ -203,15 +203,156 @@ lea60 <- lelecleaned_data %>%
 leab <- lelecleaned_data %>%
   filter(Indicator == "Life expectancy at birth (years)")
 
-#Create a table of life expectancy at birth of Male
-male_table <- leab[leab$Gender == 'Male', ]
+#create average life expectancy table through the leab group by the country
+average_life_expectancy <- leab %>%
+  group_by(Country) %>%
+  summarise(
+    Average_Life_Expectancy = mean(`Life Expectancy`, na.rm = TRUE)
+  )
 
+
+# Summarize the table to find the average life expectancy for each country, keeping additional columns
+average_life_expectancy <- leab %>%
+  group_by(Country, Gender, Income_Group, Region) %>%
+  summarise(
+    Average_Life_Expectancy = mean(`Life Expectancy`, na.rm = TRUE),
+    .groups = "drop" # Ungroups after summarizing for a cleaner output
+  )
+
+# Create both gender average life expectancy table 
+bothg_average_life_expectancy <- average_life_expectancy[average_life_expectancy$Gender == "Both sexes", ]
+
+# clean the both gender average without the gender column
+bothg_average_life_expectancy <- bothg_average_life_expectancy|>
+  select(-c(Gender))
+
+#create the gender average table
+gavg_tbl <- bothg_average_life_expectancy|>
+  summarise(
+    "Income/Region/Gender" = "Global",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of Male
+male_table <- average_life_expectancy[average_life_expectancy$Gender == 'Male', ]
+male_table <- male_table|> 
+  summarise(
+    "Income/Region/Gender" = "Male",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+
+# create a maletable of life expectancy
+matable <- leab[leab$Gender == 'Male', ]
+
+# create a femaletable of life expectancy
+femaletable <- leab[leab$Gender == 'Female', ]
+
+
+#Create a table of life expectancy at birth of Africa
+Africa_table <- average_life_expectancy[average_life_expectancy$Region == 'Africa', ]
+Africaavg_table <- Africa_table|> 
+  summarise(
+    "Income/Region/Gender" = "Africa",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of Asia
+Asia_table <- average_life_expectancy[average_life_expectancy$Region == 'Asia', ]
+Asiaavg_table <- Asia_table|> 
+  summarise(
+    "Income/Region/Gender" = "Asia",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of North America
+NAmerica_table <- average_life_expectancy[average_life_expectancy$Region == 'North America', ]
+NAmericaavg_table <- NAmerica_table|> 
+  summarise(
+    "Income/Region/Gender" = "North America",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of South America
+SAmerica_table <- average_life_expectancy[average_life_expectancy$Region == 'South America', ]
+SAmericaavg_table <- SAmerica_table|> 
+  summarise(
+    "Income/Region/Gender" = "South America",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of Oceania
+Oceania_table <- average_life_expectancy[average_life_expectancy$Region == 'Oceania', ]
+Oceaniaavg_table <- Oceania_table|> 
+  summarise(
+    "Income/Region/Gender" = "Oceania",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#Create a table of life expectancy at birth of Europe
+europe_table <- average_life_expectancy[average_life_expectancy$Region == 'Europe', ]
+europeavg_table <- europe_table|> 
+  summarise(
+    "Income/Region/Gender" = "Europe",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
 
 # Create a table of life expectancy at birth of Female
-female_table <- leab[leab$Gender == 'Female', ]
+female_table <- average_life_expectancy[average_life_expectancy$Gender == 'Female', ]
+female_table <- female_table|> 
+  summarise(
+    "Income/Region/Gender" = "Female",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
 
+# Create a table of life expectancy at birth of lower income
+lowerincome_table <- average_life_expectancy[average_life_expectancy$Income_Group == 'lower_income', ]
+lowerincomeavg_table <- lowerincome_table |> 
+  summarise(
+    "Income/Region/Gender" = "lower_income",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
 
+# Create a table of life expectancy at birth of lower middle
+lowermiddle_table <- average_life_expectancy[average_life_expectancy$Income_Group == 'lower_middle', ]
+lowermiddleavg_table <- lowermiddle_table |> 
+  summarise(
+    "Income/Region/Gender" = "lower_middle",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
 
+# Create a table of life expectancy at birth of upper middle
+uppermiddle_table <- average_life_expectancy[average_life_expectancy$Income_Group == 'upper_middle', ]
+uppermiddleavg_table <- uppermiddle_table |> 
+  summarise(
+    "Income/Region/Gender" = "upper_middle",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+# Create a table of life expectancy at birth of high income
+highincome_table <- average_life_expectancy[average_life_expectancy$Income_Group == 'high_income', ]
+highincomeavg_table <- highincome_table |> 
+  summarise(
+    "Income/Region/Gender" = "high_income",
+    "Life expctancy" = mean(Average_Life_Expectancy)
+  )
+
+#create a sum statistics table
+sum_sta <- rbind(
+  gavg_tbl,
+  male_table,
+  female_table,
+  Africaavg_table,
+  Asiaavg_table,
+  NAmericaavg_table,
+  SAmericaavg_table,
+  Oceaniaavg_table,
+  europeavg_table,
+  lowerincomeavg_table,
+  lowermiddleavg_table,
+  uppermiddleavg_table,
+  highincomeavg_table
+)
 
 ### Save table as parquet, csv file
 write_csv(lelecleaned_data, "data/02-analysis_data/lelecleaned.csv")
@@ -219,9 +360,13 @@ write_csv(lea60, "data/02-analysis_data/lea60.csv")
 write_csv(male_table, "data/02-analysis_data/male_table.csv")
 write_csv(female_table, "data/02-analysis_data/female_table.csv")
 write_csv(leab, "data/02-analysis_data/leab.csv")
+write_csv(sum_sta, "data/02-analysis_data/sum_sta.csv")
+write_csv(average_life_expectancy, "data/02-analysis_data/average_life_expectancy.csv")
 write_parquet(lelecleaned_data, "data/02-analysis_data/lelecleaned.parquet")
 write_parquet(lea60, "data/02-analysis_data/lea60.parquet")
 write_parquet(leab, "data/02-analysis_data/leab.parquet")
+write_parquet(sum_sta, "data/02-analysis_data/sum_sta.parquet")
 write_parquet(male_table, "data/02-analysis_data/male_table.parquet")
 write_parquet(female_table, "data/02-analysis_data/female_table.parquet")
+write_parquet(average_life_expectancy, "data/02-analysis_data/average_life_expectancy.parquet")
 
