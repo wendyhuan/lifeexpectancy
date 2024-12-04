@@ -29,6 +29,7 @@ for (p in required_packages) {
   }
 }
 
+
 #load libraries
 library(tidyverse)
 library(sf)
@@ -54,6 +55,11 @@ lea60 <- read_parquet("~/lifeexpectancy/data/02-analysis_data/lea60.parquet")
 leab <- read_parquet("~/lifeexpectancy/data/02-analysis_data/leab.parquet")
 male_table <- read_parquet("~/lifeexpectancy/data/02-analysis_data/male_table.parquet")
 female_table <- read_parquet("~/lifeexpectancy/data/02-analysis_data/female_table.parquet")
+average_life_expectancy <- read_parquet("~/lifeexpectancy/data/02-analysis_data/average_life_expectancy.parquet")
+sum_sta <- read_parquet("~/lifeexpectancy/data/02-analysis_data/sum_sta.parquet")
+matable <- read_parquet("~/lifeexpectancy/data/02-analysis_data/matable.parquet")
+femaletable <- read_parquet("~/lifeexpectancy/data/02-analysis_data/femaletable.parquet")
+model_developed <- readRDS(file = "~/lifeexpectancy/models/ledata_normal_model.rds")
 ```
 
 # Introduction
@@ -94,9 +100,9 @@ The measurement process refers to how real-world factors—such as the Gender, g
 
 The raw life expectancy data underwent a several cleaning steps to ensure it was accurate, consistent and ready for analysis. The goal of this cleaning process is to create a table including income group (high, upper middle, lower middle, low), gender (Male, Female, Both Sex), region (Asia, Europe, North America, South America, Africa, Oceania) as rows and life expectancy as column.
 
-To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female.
+To make such table, we first select and rename key variables from raw data to focus on relevant information. To make the subsequent analysis easier, we then convert variables to the proper data types and eliminate the rows that have missing data values. To keep things neat, we organize the decimal for every piece of numerical data and drop the percentage symbol. The income group column and the region column was not given in the raw dataset. We created a mapping over country name to four income group according to the index given by World Bank Income Group and save the data under "Income_Group". We as well made a mapping to the countries according to its continent and saved as "Region". We again merge the table, removing repeated columns and rows. For easier visualization, we created four tables, which are grouped by life expectancy at age 60, life expectancy at birth, life expectancy at birth of Male and life expectancy at birth of Female. For easier summary and convenience for graph drawing, we calculate the average of life expectancy of each country under 6 years. Also, we calculate the average of 6 years life expectancy according to the other 4 income groups and different gender by mutate according to the different factors. We then merge the columns of each table into a summary table for easy looking. 
 
-@fig-sum_sta shows the average of life expectancy under male, female, 6 different regions and 4 income groups.
+@fig-sum_sta shows the average of life expectancy under male, female, 6 different regions and 4 income groups. Life expectancy according to different countries have attached and be found in data cleaning full data in @sec-appendix.  
 
 The cleaned dataset was then saved as both CSV and Parquet file for efficient storage and further analysis.
 
@@ -104,147 +110,49 @@ More information on the data cleaning process can be found in @sec-appx.
 
 ```{r}
 #| label: tbl-sum_sta
-#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy. With a huge gap between 25 and 50, we could indicate that most of the countries has a life expectancy of. There exist large data with low life expectancy less than 25 years.  "
+#| fig-cap: "This table shows the cleaned data of life expectancy at different predictor. We could visual that high income has the highest life expectancy of 79.8, compared to lower income has the least life expectancy of 62.35. Among all the region, it's clear that Africa has the least 64.17, while Europe has the highest 78.50 years old. Female has slightly higher life expectancy than male. "
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-# find average life expectancy for both sex
-bothsexavg <- leab |>
-  filter(Gender == "Both sexes") |>
-  summarise(
-    "Gender" = "Both sexes",
-    "Average life ex" = mean(`Life Expectancy`))
+# Format and display the sum_sta table
+# Load necessary libraries
+library(knitr)
+library(kableExtra)
 
-#find average life expectancy of female
-female_tableavg <- female_table |>
-  summarise(
-    "Gender" = "Female",
-    "Average life ex" = mean(`Life Expectancy`))
-
-#find average life expectancy of male
-male_tableavg <- male_table |>
-  summarise(
-    "Gender" = "Male",
-    "Average life ex" = mean(`Life Expectancy`))
-
-#find average life expectancy of Africa
-africaavg <- leab |>
-  filter(Region == "Africa") |>
-  summarise(
-    "Group" = "Africa",
-    "Average life ex" = mean(`Life Expectancy`, na.rm = TRUE)
-  )
-
-##find average life expectancy of Asia
-asiaavg <- leab |>
-  filter(Region == "Asia") |>
-  summarise(
-    "Region" = "Asia",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of North America
-naavg <- leab |>
-  filter(Region == "North America") |>
-  summarise(
-    "Region" = "North America",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of South America
-saavg <- leab |>
-  filter(Region == "South America") |>
-  summarise(
-    "Region" = "South Amereica",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of Oceania
-oceaniaavg <- leab |>
-  filter(Region == "Oceania") |>
-  summarise(
-    "Region" = "Oceania",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of Europe
-europeavg <- leab |>
-  filter(Region == "Europe") |>
-  summarise(
-    "Region" = "Europe",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of lower_income
-lowavg <- leab |>
-  filter(Income_Group == "lower_income") |>
-  summarise(
-    "Income_Group" = "lower_income",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of lower_middle
-middleavg <- leab |>
-  filter(Income_Group == "lower_middle") |>
-  summarise(
-    "Income_Group" = "lower_middle",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of upper_middle
-upperavg <- leab |>
-  filter(Income_Group == "upper_middle") |>
-  summarise(
-    "Income_Group" = "upper_middle",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-#find average life expectancy of high_income
-highavg <- leab |>
-  filter(Income_Group == "high_income") |>
-  summarise(
-    "Income_Group" = "high_income",
-    "Average life ex" = mean(`Life Expectancy`)
-  )
-
-# create a summary statistic by binding all the subtables into one
-sum_sta <- bind_rows(
-  bothsexavg,
-  male_tableavg,
-  female_tableavg,
-  africaavg,
-  asiaavg,
-  naavg,
-  saavg,
-  oceaniaavg,
-  europeavg,
-  lowavg,
-  middleavg,
-  upperavg,
-  highavg
-)
-
-# View the combined summary table
-sum_sta
+# Format and style the sum_sta table using kableExtra
+sum_sta %>%
+  kbl(
+    col.names = c("Region/Income/Gender", "Life Expectancy"),  # Column names
+    align = c("l", "c"),                                       # Left-align column 1, center-align column 2
+    digits = 2,                                                # Round values to 2 decimal places
+    booktabs = TRUE,                                           # LaTeX-style table rule
+  ) %>%
+  kable_styling(
+    latex_options = c("striped", "hold_position"),             # Add striped rows and prevent table floating
+    full_width = FALSE,                                        # Prevent table from stretching to full width
+    font_size = 10                                             # Adjust font size
+  ) %>%
+  add_header_above(c(" " = 1, "Life Expectancy Summary" = 1),bold = TRUE) %>%
+  add_header_above(c(" " = 2), bold = TRUE) # Add a header row
   
 ```
 ## Outcome Variables
 
 The outcome variable is **Life Expectancy**. This is the primary dependent variable that the model is designed to predict. It represents the average number of years a person is expected to live, under the condition that current mortality conditions persist. The model seeks to identify the variables affecting this average.
 
-@fig-expectancy visualizes the distribution of life expectancy from 2015 to 2020 as percentages, combining a histogram and a density plot. A large concentration of observations is observed range of 0% to 25%, reflecting a significant proportion of countries with lower life expectancy relative to others in the dataset. Another visible concentration is around 75% to 100%, indicating a group of countries with relatively high life expectancy. The blue density curve overlays the histogram, providing a smoothed representation of the distribution. Peaks in the curve correspond to high frequency within the histogram. The density plot emphasized the bimodal nature of the distribution with two distinct peaks: one around 12 as low life expectancy percentages; another peak around 87as high life expectancy percentage.
+@fig-expectancy visualizes the distribution of life expectancy from 2015 to 2020 as percentages. The histogram visualizes the distribution of life expectancy grouped into 5-year ranges, expressed as percentages. Most of the data lies between the ranges of 66–81 years, with the largest percentage (24.7%) in the 76–81 range. This suggests that a significant portion of individuals have life expectancy within this range. The data also shows smaller percentages at the lower (46–56 years) and higher ends (81–86 years). Additionally, a small percentage of missing (NA) values may highlight areas for data quality. Even we remove the NA while cleaning, the data of NA still exists for not belongs to any of these ranges.
 
 ```{r}
 #| label: fig-expectancy
-#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy. With a huge gap between 25 and 50, we could indicate that most of the countries has a life expectancy of. There exist large data with low life expectancy less than 25 years.  "
+#| fig-cap: "This histogram shows the distribution of the percentage of life expectancy for all years. Among all the life expectancy ranges, 76-81 has the largest percenage of 24.7%, while the 46-51 has the 0.54%. Life expectancy shows a growing trend with the increasing of age and drop sharply comes to the 81-86 range.    "
 #| echo: false
 #| eval: true
 #| warning: false
 #| message: false
 
-# Assuming lelecleaned_data is the data frame containing life expectancy
+# leab is the data frame containing life expectancy of life expectancy at birth of all 3312 data
 # Bin Life Expectancy into 5-year ranges
 life_expectancy_bins <- leab %>%
   
@@ -257,9 +165,6 @@ life_expectancy_bins <- leab %>%
   group_by(AgeRange) %>%
   summarise(Count = n()) %>%
   mutate(Percentage = 100 * Count / sum(Count))
-
-# Print the table showing age ranges and percentages
-print(life_expectancy_bins)
 
 # Plot the percentage distribution
 ggplot(life_expectancy_bins, aes(x = AgeRange, y = Percentage, fill = AgeRange)) +
@@ -276,8 +181,6 @@ ggplot(life_expectancy_bins, aes(x = AgeRange, y = Percentage, fill = AgeRange))
     axis.text.x = element_text(angle = 45, hjust = 1),
     legend.position = "none"
   )
-
-
 
 ```
 
@@ -503,11 +406,6 @@ Together, RMSE and out-of-sample testing offer a robust framework for model vali
 Extended versions of the table can be found in @tbl-testpredicted.
 
 ```{r}
-
-#read the model developed
-model_developed <-
-  readRDS(file = "~/lifeexpectancy/models/ledata_normal_model.rds")
-
 # Split the dataset into training and testing sets (80% train, 20% test)
 set.seed(123)  # Setting seed for reproducibility
 train_index <- createDataPartition(leab$`Life Expectancy`, p = 0.8, list = FALSE)
@@ -516,7 +414,7 @@ train_data <- leab[train_index, ]
 test_data <- leab[-train_index, ]
 
 # Predict life expectancy using the test data
-predictions <- predict(ledata_normal_model, newdata = test_data)
+predictions <- predict(model_developed, newdata = test_data)
 ```
 
 ```{r}
@@ -533,7 +431,7 @@ rmse <- sqrt(mean((predictions - actual_values)^2))
 
 
 # Calculate RMSE for the training set (in-sample testing)
-train_predictions <- predict(ledata_normal_model, newdata = train_data)
+train_predictions <- predict(model_developed, newdata = train_data)
 train_rmse <- sqrt(mean((train_predictions - train_data$`Life Expectancy`)^2))
 
 # Create the RMSE table
@@ -563,10 +461,16 @@ rmse_table %>%
 
 # Results
 
+## Data results analysis
+
+According to the @tbl-sum_sta, we could tell that 
+
+
 ## Overview of model results
 
-Our results are summarized in @tbl-model. We are primarily interest in the
+Our results are summarized in @tbl-model. We are primarily interest in the general life expectancy regarding to the related predictors. The multiple linear model provides us with the estimates for the intercept and coefficients for the predictors which are male, female, both genders, lower income, lower-middle, upper-middle, high income, Asia, Europe, Africa, Oceania, North America and South America. The intercept represents the estimate of region-standard life expectancy when all the predictors are zero. The coefficients represent the additional life expectancy associated with each predictor. The model results will display the estimates- posterior means or medians for each coefficient including the intercept, uncertainty measures- credible intervals. The output values of each predictor is the regression coefficient, meaning how much the outcome is expected to increase or decrease with one unit increase in the life expectancy (per year) of that predictor, holding all else constant. The value in the brackets represent the Median Absolute Deviation of the posterior distributions of the coefficients. It conveys the dispersion around the median of each coefficients' posterior distribution, exhibiting how spread the distributions are. 
 
+Num.Obs represents the number of observations made in the model. R2 is the R-squared value which is the proportion of variance in the dependent variable that can be explained bu the independent variable. The R2 adj is the adjusted R squared which accounts for the number of predictors used. Log.lik is the log-likelihood which gives us an idea of the likelihood of the data, higher is the better, but this is typically used for comparison between the models. ELPD and ELPD s.e. explains the log predictive density and its standard error. The ELPD measures the sum of the log predictive densities for each observation, used for model comparison.  LOOIC is an acronym for leave-one-out information criterion in which a lower value indicates a model with better out-of-sample predictive performance. WAIC stands for Watanabe-Akaike information criterion which is another measure of good fit; lower values are better fit. RMSE is the room mean squared error measuring the models's predictive performance where lower values means more accurate predicts. 
 
 ```{r}
 #| label: tbl-model
@@ -576,12 +480,9 @@ Our results are summarized in @tbl-model. We are primarily interest in the
 #| warning: false
 #| message: false
 
-
-
-
 # Create a model summary with median absolute deviation (mad) for statistics
 modelsummary(
-  list("Gaussian(Normal)" = ledata_normal_model),
+  list("Gaussian(Normal)" = model_developed),
   statistic = "mad",  # Median absolute deviation
   fmt = 2             # Format results to 2 decimal places
 )
@@ -590,16 +491,9 @@ modelsummary(
 
 ## Multiple linear regression results
 
-The 
+@tbl-model is the table of the results from out model. The intercept serves as the baseline, which in this case is 79.53. Asia shows a negative coefficient of -6.22, indicating lower values compared to the baseline, with a relatively large standard error of 21.20. This suggests that as the predictor increases, the outcome tends to increase. In contrast, a negative coefficient implies a decrease in the outcome. Europe exhibits a negligible negative effect of -8.39, though it also has a large standard error of 45.65. The effect for females is more substantial, with a positive coefficient of 2.50 and a standard error of 0.05, indicating considerable variability in the estimate. The male and lower-middle-income groups show minimal negative coefficients, suggesting slight decreases from the baseline. The upper-middle-income group, however, shows a positive effect of 3.40 relative to the baseline. Regions like North America, Oceania, Asia, and Europe all have notable negative coefficients, highlighting significant regional variations. In general, there is a downward trend in coefficients across countries. Most countries exhibit large standard errors, with European countries such as Ireland, Israel, and Italy showing slightly positive trends.
 
-
-```{r}
-#| echo: false
-#| eval: true
-#| label: tbl-regresult
-#| tbl-cap: "Explanatory models of flight time based on wing width and wing length"
-#| warning: false
-```
+With an R-squared value of 0.976, the model demonstrates a strong level of explanatory power, supporting the accuracy of the results. The adjusted R-squared value is 0.975, which is nearly identical to the R-squared value, indicating the model's robustness with 3,312 observations. The RMSE of 4.37 reflects the average magnitude of the model's prediction errors, suggesting good predictive accuracy. Although values like LOOIC and WAIC are excluded due to the lack of alternative models for comparison, the overall results indicate that the model performs well on the cleaned dataset.Further evaluation of the model results will be done in @sec-model_details. 
 
 # Discussion
 
